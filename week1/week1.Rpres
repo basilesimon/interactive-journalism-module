@@ -1,5 +1,7 @@
-Interactive Journalism - Data & Coding module
+Interactive Journalism - Advanced Data & Coding module
 ========================================================
+
+Module code: JOM299
 
 - Module and assessment outline
 - The self-learner attitude
@@ -11,8 +13,40 @@ Assessment
 
 Total mark made of: 
 
-- 25% oral presentation on week 4
-- 75% final project
+- 25% oral presentation and brief (500 words) on week 4 
+- 75% final project using digital skills
+
+Minimum qualifying mark for both: 50
+
+- UK credits: 15
+- ECTS: 7.5
+
+Assessment: Presentation (25%)
+========================================================
+
+- 3-minute presentation in class
+- 500-word brief
+
+Assessment: Final Project(75%)
+========================================================
+
+It's about the story
+========================================================
+
+Never forget this: it's *always* about the story you're telling
+
+What you build and how you build it will follow your story
+
+
+It's about the story
+========================================================
+title:false
+
+![](images/wapo.png)
+
+Massive scrollable image to illustrate how deep below sea flight MH370's black boxes could be located
+
+<http://apps.washingtonpost.com/g/page/world/the-depth-of-the-problem/931/>
 
 The DOM
 ========================================================
@@ -30,6 +64,16 @@ What you can do with Dev Tools:
 - See Javascript code and errors
 - See and edit any file loaded by the page
 
+Access the Dev Tools
+========================================================
+
+On Chrome and Firefox
+- `Ctrl` + `Shift` + `I` 
+- or `Cmd` + `Opt` + `I` on a Mac
+
+Inspect and edit pages and style: <https://developers.google.com/web/tools/chrome-devtools/inspect-styles/?utm_source=dcc&utm_medium=redirect&utm_campaign=2016q3>
+
+
 The Dev Tools: edit HTML
 ========================================================
 
@@ -41,6 +85,10 @@ The Dev Tools: hide some things
 ========================================================
 
 Example: hide something
+
+Homework
+========================================================
+Fix these images: <http://codepen.io/basilesimon/pen/BQgwxG?editors=1100#0>
 
 First Slide
 ========================================================
