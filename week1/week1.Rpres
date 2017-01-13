@@ -51,9 +51,35 @@ Massive scrollable image to illustrate how deep below sea flight MH370's black b
 The DOM
 ========================================================
 
-what is the dom: <http://domenlightenment.com/#1.1>
+What is the DOM?   
+<http://domenlightenment.com/#1.1>
 
-play with the dom: <http://discover-devtools.codeschool.com/chapters/1?locale=en>
+**The DOM is a hierarchy/tree of Javascript node objects**
+
+* It looks like the HTML you wrote
+* It actually is the programming interface around it
+
+The DOM
+========================================================
+
+
+```
+<body>
+
+  <article>
+  
+    <h1>This is a simple title</h1>
+
+    <h1 id="special">This is another title... 
+      <em>with a twist!</em>
+    </h1>
+    
+  </article>
+  
+</body>
+```
+
+Let's have a look: <http://codepen.io/basilesimon/pen/PWNXEK>
 
 The Dev Tools: the Swiss army knife of web work
 ========================================================
@@ -71,7 +97,18 @@ On Chrome and Firefox
 - `Ctrl` + `Shift` + `I` 
 - or `Cmd` + `Opt` + `I` on a Mac
 
-Inspect and edit pages and style: <https://developers.google.com/web/tools/chrome-devtools/inspect-styles/?utm_source=dcc&utm_medium=redirect&utm_campaign=2016q3>
+
+Dev Tools
+========================================================
+title: false
+
+![](images/tools.png)
+
+<https://airwars.org/data/russia-barchart/>
+
+Do things with the Dev Tools
+========================================================
+Inspect and edit pages and style: <https://developers.google.com/web/tools/chrome-devtools/inspect-styles/>
 
 
 The Dev Tools: edit HTML
@@ -88,20 +125,6 @@ Example: hide something
 
 Homework
 ========================================================
-Fix these images: <http://codepen.io/basilesimon/pen/BQgwxG?editors=1100#0>
+* Fix these images: <http://codepen.io/basilesimon/pen/BQgwxG?editors=1100#0>
+* Play with the dom: <http://discover-devtools.codeschool.com/chapters/1?locale=en>
 
-First Slide
-========================================================
-
-For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-Slide With Code
-========================================================
-
-```{r}
-summary(cars)
-```
