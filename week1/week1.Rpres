@@ -24,11 +24,16 @@ Possibly the most important dataviz tool in the business
 
 Module outline, aims. And a bit more
 ========================================================
-Develop a complex skillset
 
-Gain an understanding of data and of modern digital journalism
+## Develop a complex skillset
 
-Have a crucial advantage over others in the industry
+## Gain an understanding of data and of modern digital journalism
+
+## Develop a problem-solving philosophy
+
+## Acquire self-direction in learning
+
+## Have a crucial advantage over others in the industry
 
 The self-learner attitude
 ========================================================
@@ -72,10 +77,26 @@ Assessment: Presentation (25%)
 All documents on Moodle
 
 ## 3-minute presentation in class
+Will take place on Weds 22 Feb or Fri 24 Feb, using a maximum of three slides (optional), followed by brief feedback/questions/discussion
+
 ## 500-word brief
+Deadline: Tues 28 Feb, 5pm – submit on Moodle
 
 Assessment: Final Project(75%)
 ========================================================
+
+Your project should identify and solve a journalistic problem, using data and coding work. Typically this will focus on a story -- either a complete story or an interactive feature forming part of a story. It could also be something for use in a newsroom (eg a tool helpful to journalists). 
+
+Assessment: Final Project(75%)
+========================================================
+Your project must be relevant to journalism (see above), operate at a functional level (at least as a working prototype), and involve all of the following:
+* data techniques, involving scraping, cleaning, analysis and/or presentation, as needed/appropriate to your project
+* adding value through user interactivity
+* use and modification of html, CSS, Javascript, Python, R, d3 
+* and/or other code (not simply plug-and-play elements)
+* use of free and/or low-cost tools
+* problem-solving.
+
 
 It's about the story
 ========================================================
@@ -105,17 +126,6 @@ Massive scrollable image to illustrate how deep below sea flight MH370's black b
 The DOM
 ========================================================
 
-What is the DOM?   
-<http://domenlightenment.com/#1.1>
-
-**The DOM is a hierarchy/tree of Javascript node objects**
-
-* It looks like the HTML you wrote
-* It actually is the programming interface around it
-
-The DOM
-========================================================
-
 
 ```
 <body>
@@ -134,6 +144,18 @@ The DOM
 ```
 
 Let's have a look: <http://codepen.io/basilesimon/pen/PWNXEK>
+
+The DOM
+========================================================
+
+What is the DOM?   
+<http://domenlightenment.com/#1.1>
+
+**The DOM is a hierarchy/tree of Javascript node objects**
+
+* It looks like the HTML you wrote
+* It actually is the programming interface around it
+
 
 The Dev Tools: the Swiss army knife of web work
 ========================================================
@@ -162,7 +184,11 @@ title: false
 
 Do things with the Dev Tools
 ========================================================
-Inspect and edit pages and style: <https://developers.google.com/web/tools/chrome-devtools/inspect-styles/>
+Inspect and edit pages and style: 
+
+- <https://developers.google.com/web/tools/chrome-devtools/inspect-styles/>
+- <https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-styles>
+- <https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-dom>
 
 
 The Dev Tools: edit HTML
@@ -175,7 +201,19 @@ Example: make Donald Trump say anything with the Dev Tools!
 The Dev Tools: hide some things
 ========================================================
 
-Example: hide something
+Example: hide something on the [Google homepage](https://www.google.co.uk/)
+
+![](images/google.png)
+
+And now, hands on
+========================================================
+
+## Learn Javascript on Codecademy
+<https://www.codecademy.com/learn/learn-javascript>
+
+## Learn the command line on Codecademy
+<https://www.codecademy.com/learn/learn-the-command-line>
+
 
 Homework
 ========================================================
