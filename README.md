@@ -40,6 +40,8 @@ On successful completion of this module, you will be expected to be able to:
 
 ##  Week 1 - Module outline, intro to the DevTools and the DOM
 
+[Presentation outline](https://github.com/basilesimon/interactive-journalism-module/blob/master/week1/week1.md)
+
 ##  Week 2 - Intro to Python
 
 ##  Week 3 - Scraping with Python
