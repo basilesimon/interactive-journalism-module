@@ -1,4 +1,5 @@
 import requests
+import csv
 from BeautifulSoup import BeautifulSoup
 
 # this is a variable
@@ -36,6 +37,7 @@ list_of_rows = []
 
 # control flow: for loop
 # find all <tr>, rows
+# the append method appends data to the above lists
 for row in table.findAll('tr'):
 
     # empty list
@@ -43,9 +45,15 @@ for row in table.findAll('tr'):
 
     # find all cells
     for cell in row.findAll('td'):
-        list_of_cells.append(cell.text)
+        # encoding
+        list_of_cells.append(cell.text.encode('utf-8'))
 
     list_of_rows.append(list_of_cells)
 
-print list_of_rows
-print len(list_of_rows)
+# print list_of_rows
+print len('Number of rows:', list_of_rows)
+
+with open('data.csv', 'w') as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(['Date', 'Question', 'Asked_by', 'Response', 'URL', 'Coding', 'Location'])
+    writer.writerows(list_of_rows)
