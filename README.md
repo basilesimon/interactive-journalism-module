@@ -44,6 +44,8 @@ On successful completion of this module, you will be expected to be able to:
 
 ##  Week 2 - Intro to Python
 
+[Presentation outline](https://github.com/basilesimon/interactive-journalism-module/blob/master/week2/week2.md)
+
 ##  Week 3 - Scraping with Python
 
 ##  Week 4 - Intro to R and ggplot
