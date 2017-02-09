@@ -6,11 +6,17 @@ Module code: JOM299
 Housekeeping
 ========================================================
 
-Presentations: either Wed 22nd or Fri 24th February
+## Presentations:
+Either Wed 22nd or Fri 24th February
 
 http://doodle.com/poll/hbizsz6kqedvgsd4
 
 **Fill it in, please!**
+
+## Google News Labs Fellowship:
+TBIJ, FT, Mirror, Full Fact, Telegraph, Guardian, BBC News Labs, Times & Sunday Times, Haymarket
+
+Deadline is **today**: https://newslab.withgoogle.com/fellowship-uk
 
 Reminder
 ========================================================
