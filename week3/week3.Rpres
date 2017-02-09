@@ -1,0 +1,98 @@
+Interactive Journalism - Advanced Data & Coding module
+========================================================
+
+Module code: JOM299
+
+Housekeeping
+========================================================
+
+Presentations: either Wed 22nd or Fri 24th February
+
+http://doodle.com/poll/hbizsz6kqedvgsd4
+
+**Fill it in, please!**
+
+Reminder
+========================================================
+
+> Pick one journalism piece/tool that illustrates a format or technique. Produce a presentation and report on the piece, how it's built, and the landscape of that format/technique in online journalism today.
+
+Example topics
+========================================================
+
+Some examples (please don't use these - come up with one of your own!):
+
+https://www.nytimes.com/interactive/2017/01/15/us/politics/you-draw-obama-legacy.html  
+Storytelling interactivity
+
+https://www.buzzfeed.com/heidiblake/the-tennis-racket  
+Algorithmic journalism, computer-assisted journalism
+
+https://www.theguardian.com/world/interactive/2013/nov/01/snowden-nsa-files-surveillance-revelations-decoded  
+All-rounder
+
+
+More example topics
+========================================================
+
+https://panamapapers.icij.org/  
+http://panamapapers.sueddeutsche.de/articles/56febff0a1bb8d3c3495adf4/  
+Relational database, network analysis, follow-the-money approach
+
+http://drones.pitchinteractive.com/  
+Data-led storytelling
+
+http://www.jplusplus.org/en/project/rentswatch/  
+Crowdfunding + scraping
+
+http://newsroom.tools/  
+http://soundcite.knightlab.com/  
+http://otranscribe.com/  
+Journalism Tools
+
+This week: scraping free text
+========================================================
+
+![](img/guido.png)
+
+Output
+========================================================
+
+This is a comma-separated values format, where every line in the file is a data record.
+
+https://en.wikipedia.org/wiki/Comma-separated_values
+
+```
+MP,Party,Constituency
+Heidi Alexander ,Labour,Lewisham East
+Rushanara Ali ,Labour,Bethnal Green and Bow
+Mr Graham Allen ,Labour,Nottingham North
+Lyn Brown ,Labour,West Ham
+Chris Bryant ,Labour,Rhondda
+Ms Karen Buck ,Labour,Westminster North
+Dawn Butler ,Labour,Brent Central
+```
+
+How?
+========================================================
+
+* Open the page
+* Fire up your DevTools
+* Tinker with the DOM to **spot the consistency**
+* Understand the tree structure to reach the elements you want
+
+Scraping is all about targeting the right element(s), and/or identifying the patterns in the document.
+
+Because through programming, patterns can be pried open and stripped bare, leaving only the relevant information.
+
+Let's get scraping
+========================================================
+
+https://order-order.com/2017/02/08/named-122-mps-voted-brexit/
+
+Running Python for everyone
+========================================================
+
+The Jupyter Notebook:
+
+http://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Notebook%20Basics.ipynb
