@@ -3,8 +3,8 @@ library(dplyr)
 # read data from CSVs
 # data.csv comes from our scraper
 # other one is https://docs.google.com/spreadsheets/d/1wTK5dV2_YjCMsUYlwg0l48uWWf44sKgG8uFVMv5OWlA/edit#gid=893960794
-data = read.csv("/Users/bsimon/Github/scraping-traitors/data.csv")
-data_vote = read.csv("/Users/bsimon/Github/scraping-traitors/leave_vote_in_westminster_constituencies.csv")
+data = read.csv("~/Github/interactive-journalism-module/week4/spotting-traitors/data.csv")
+data_vote = read.csv("~/Github/interactive-journalism-module/week4/spotting-traitors/leave_vote_in_westminster_constituencies.csv")
 
 # marker for MPs who voted against triggering Art 50
 data$vote <- 1
