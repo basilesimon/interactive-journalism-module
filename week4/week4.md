@@ -15,6 +15,8 @@ http://doodle.com/poll/hbizsz6kqedvgsd4
 
 **Fill it in, please!**
 
+Optional: Send Jeremy and/or myself your topics for feedback
+
 Reminder
 ========================================================
 
@@ -58,7 +60,6 @@ This week: intro to R
 
 An overview of R: http://www.nature.com/news/programming-tools-adventures-with-r-1.16609
 
-
 Tool of choice (on university computers, or free download): **RStudio**
 
 RStudio is an IDE:
@@ -66,8 +67,45 @@ RStudio is an IDE:
 * A text editor
 * An interpreter to run your script or commands
 * And many other tools
+* (and it's on the university computers!)
 
-Variables
+
+R in the newsroom
+========================================================
+
+https://rddj.info/  
+Collection of resources and tutorials
+
+http://rforjournalists.com/ and https://twitter.com/rforjournalists  
+One for your RSS feeds (from Trinity Mirror's Rob Grant, alumni of this course)
+
+And of course, one of our own: http://www.interhacktives.com/2017/01/25/scrape-tweets-r-journalists/  
+
+http://datajournalismhandbook.org/1.0/en/understanding_data_6.html  
+What do people use?
+
+R in the newsroom
+========================================================
+
+http://blog.revolutionanalytics.com/2015/12/buzzfeed-uses-r-for-data-journalism.html  
+Data-journalism at Buzzfeed
+
+> To me, nothing beats R for exploratory data-analysis. You can quickly reshape your data and produce a vast array of different graphics suited to address any questions you might have. The R package ggplot2 is particulary helpful for that.
+
+source: http://gijn.org/2016/04/25/a-data-journalism-experts-personal-toolkit/
+
+R in the newsroom
+========================================================
+
+* Extremely quick to get off the line
+* Many built-in functions to explore a dataset (mean, average, quantiles, etc.)
+* Quick chart prototyping with `ggplot` (see next week)
+
+Our study of MPs who betrayed their constituency took me about 30 minutes. I bet it would have taken longer by hand.  
+
+Plus, structured dataset as output => can be sent to Graphics or Data team for a map or further analysis...
+
+Variables: = or <- ?
 ========================================================
 
 ```
@@ -84,7 +122,7 @@ or
 1
 ```
 
-Operations like we expect them:
+Operations on variables work like we expect:
 
 ```
 > a <- 3
@@ -96,7 +134,7 @@ Operations like we expect them:
 A list = a "vector"
 ========================================================
 
-In Python world, we'd write
+In Python world, we'd create list by typing:
 
 ```
 list = [1, 2, 10]
@@ -117,13 +155,17 @@ We have indexes... but not zero-padded like in Python
 10
 ```
 
+A list = a "vector"
+========================================================
 
+![](https://media.giphy.com/media/EsmlrgWNx5v0Y/giphy.gif)
 
 Some awesome with vectors
 ========================================================
 Instant operations on vectors:
 
 ```
+> list <- c(1, 2, 10)
 > list +2
 3 4 12
 ```
@@ -132,12 +174,11 @@ Also:
 Mean of values in list:
 
 ```
-list <- c(1, 2, 10)
 > mean(list)
 4.33333
 ```
 
-Exponential:
+Exponential, and so on:
 
 ```
 > exp(list)
@@ -248,6 +289,8 @@ data = read.csv("path/to/the/file/data.csv")
 
 This imports and parses the data contained in the (valid) CSV file you gave it
 
+**Aside note:** path to files!
+
 Merging datasets
 ========================================================
 
@@ -277,4 +320,49 @@ https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html
 http://genomicsclass.github.io/book/pages/dplyr_tutorial.html
 
 Fab tool to work with tabular data: `dplyr`, a plugin/package for R.
+
+Example: the `mutate()` function  
+Add a new column which is a function of other columns
+
+```
+mutate(dataframe, new_column = function(other_column))
+```
+
+Mutating datasets
+========================================================
+```
+> mutate(df, new_column = df$list + 10)
+  list names qualifications new
+1    1   one         simple  11
+2    2   two         double  12
+3   10   ten        rubbish  20
+```
+
+Mutating datasets
+========================================================
+```
+> mutate(df, listIsBiggerThanFive = ifelse(list > 5, TRUE, FALSE))
+  list names qualifications listIsBiggerThanFive
+1    1   one         simple                FALSE
+2    2   two         double                FALSE
+3   10   ten        rubbish                 TRUE
+```
+
+Writing a CSV file
+========================================================
+
+```
+data_to_write = write.csv("path/to/the/file/data.csv", row.names=TRUE)
+```
+
+This imports and parses the data contained in the (valid) CSV file you gave it
+
+**Aside note:** path to files!
+
+Homework
+========================================================
+
+https://www.codeschool.com/courses/try-r
+
+https://www.datacamp.com/
 
