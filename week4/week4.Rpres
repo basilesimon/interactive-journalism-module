@@ -117,6 +117,10 @@ We have indexes... but not zero-padded like in Python
 10
 ```
 
+
+
+Some awesome with vectors
+========================================================
 Instant operations on vectors:
 
 ```
@@ -124,16 +128,11 @@ Instant operations on vectors:
 3 4 12
 ```
 
-Some awesome with vectors
-========================================================
-
-```
-list <- c(1, 2, 10)
-```
-
+Also:   
 Mean of values in list:
 
 ```
+list <- c(1, 2, 10)
 > mean(list)
 4.33333
 ```
@@ -201,7 +200,7 @@ You can use `$` and the column name to access the list items
 one  ten  two
 ```
 
-Good bit: you can create/edit columns with way
+Good bit: you can create/edit columns with $
 
 ```
 > df$names <- "lol"  #rename all items in column
@@ -226,20 +225,56 @@ Why? We keep versions in memory and can have a look at if things worked well
 new_dataframe <- old_dataframe + 1
 ```
 
-More example topics
+DOWNLOADS
 ========================================================
 
-More example topics
+Dataset we scraped last week: https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/master/week4/spotting-traitors/data.csv
+
+Leave vote by Westminster constituency: https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/master/week4/spotting-traitors/leave_vote_in_westminster_constituencies.csv
+
+What we're going to do
 ========================================================
 
-More example topics
+We're going to check if any of the 122 names we collected last week comes from a constituency that voted Leave in June 2016.
+
+If the constituency did so and the MP voted against powers to trigger Article 50, well...
+
+Reading a CSV file
 ========================================================
 
-More example topics
+```
+data = read.csv("path/to/the/file/data.csv")
+```
+
+This imports and parses the data contained in the (valid) CSV file you gave it
+
+Merging datasets
 ========================================================
 
-More example topics
+http://www.cookbook-r.com/Manipulating_data/Merging_data_frames/
+
+```
+id  names           id  surnames
+1   basile          1       simon
+2   luke            2   skywalker
+3   john            3     watson
+```
+```
+merge(dataset1, dataset2, by="Column in common")
+```
+Result: 
+```
+  id title.x   title.y
+1  1  basile      simon
+2  2    luke  skywalker
+3  3    john     watson
+```
+
+Mutating datasets
 ========================================================
 
+https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html
+http://genomicsclass.github.io/book/pages/dplyr_tutorial.html
 
+Fab tool to work with tabular data: `dplyr`, a plugin/package for R.
 
