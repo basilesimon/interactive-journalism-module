@@ -174,7 +174,7 @@ colors <- ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
   geom_point(shape=21) +
   scale_size_area(max_size = 15) +
   scale_x_continuous(breaks = seq(0, 70000, 10000)) +
-  scale_y_continuous(labels = scales::percent)
+  scale_y_continuous(labels = scales::percent, trans=log2_trans())
 colors
 ```
 
@@ -200,18 +200,18 @@ label
 
 ```r
 moreLabels <- colors +
-  annotate("text", x = 29000, y = .05, label = "Construction and building") +
-  annotate("text", x = 12000, y = .56, label = "Education") +
-  annotate("text", x = 49000, y = .75, label = "Health sector") +
-  annotate("text", x = 10000, y = .16, label = "Hairdressers") +
+  annotate("text", x = 31500, y = .05, label = "Construction and building") +
+  annotate("text", x = 12000, y = .52, label = "Education") +
+  annotate("text", x = 43500, y = .85, label = "Health sector") +
+  annotate("text", x = 10000, y = .15, label = "Hairdressers") +
   annotate("text", x = 12000, y = .39, label = "Sports and recreation") +
-  annotate("text", x = 20000, y = .7, label = "Arts") +
+  annotate("text", x = 21000, y = .7, label = "Arts") +
   annotate("text", x = 40000, y = .35, label = "Real estate") +
-  annotate("text", x = 14000, y = .07, label = "Taxis") +
-  annotate("text", x = 35000, y = .66, label = "IT and programming") +
-  annotate("text", x = 50000, y = .62, label = "Consultancies") +
+  annotate("text", x = 14000, y = .08, label = "Taxis") +
+  annotate("text", x = 36000, y = .7, label = "IT and programming") +
+  annotate("text", x = 48000, y = .59, label = "Consultancies") +
   annotate("text", x = 18000, y = .24, label = "Retail") +
-  annotate("text", x = 60000, y = .77, label = "Legal and accounting")
+  annotate("text", x = 58000, y = .85, label = "Legal and accounting")
 moreLabels
 ```
 
