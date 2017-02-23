@@ -51,7 +51,7 @@ Let's load some CSV data:
 
 ```{r}
 library(readr)
-data <- read_csv("~/Github/interactive-journalism-module/week5/exercise/data.csv")
+data <- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/master/week5/exercise/data.csv")
 
 library(ggplot2)
 ```
@@ -139,7 +139,7 @@ labels
 Let's load some annotated data (additional column)
 ========================================================
 ```{r}
-data_annotated <- read_csv("~/Github/interactive-journalism-module/week5/exercise/data_annotated.csv")
+data_annotated <- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/master/week5/exercise/data_annotated.csv")
 df <- data_annotated
 ```
 
