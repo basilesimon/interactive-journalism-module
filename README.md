@@ -48,13 +48,23 @@ On successful completion of this module, you will be expected to be able to:
 
 ##  Week 3 - Scraping with Python
 
-##  Week 4 - Intro to R and ggplot
+[Presentation outline](https://github.com/basilesimon/interactive-journalism-module/blob/master/week3/week3.md)
 
-##  Week 5 - Data wrangling in R
+##  Week 4 - Intro to R in the newsroom
 
-##  Week 6 - Intro to D3.js
+[Presentation outline](https://github.com/basilesimon/interactive-journalism-module/blob/master/week4/week4.md)
 
-##  Week 7 - Re-using other people's work in D3
+##  Week 5 - Presentations and assessments
+
+[Presentation outline](https://github.com/basilesimon/interactive-journalism-module/blob/master/week5/week5.md)
+
+##  Week 6 - ggplot2 by example
+
+[Presentation outline](https://github.com/basilesimon/interactive-journalism-module/blob/master/week6/week6.md)
+
+##  Week 7 - Intro to D3
+
+[Presentation outline](https://github.com/basilesimon/interactive-journalism-module/blob/master/week6/week6.md)
 
 ##  Week 8 - Using alternative libraries to D3
 
