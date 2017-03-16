@@ -50,6 +50,31 @@ Highcharts
 
 _Image source: Highcharts.com_
 
+First chart
+========================================================
+
+http://www.highcharts.com/docs/getting-started/your-first-chart
+
+What you need:
+
+* An HTML `<div>`
+* Some Javascript instantiating a charts on your `<div>`
+
+Example:
+
+http://jsfiddle.net/highcharts/kh5jY/
+
+Options
+========================================================
+
+http://www.highcharts.com/docs/getting-started/how-to-set-options
+
+Javascript objects?!?
+
+![](img/obj.png)
+
+Image source: https://www.w3schools.com/js/js_objects.asp
+
 Series
 ========================================================
 
@@ -71,5 +96,42 @@ Should remind you of lists and objects:
 }
 ```
 
+Chart types
+========================================================
+
+Highcharts allow you to build all kinds of charts: 
+
+http://www.highcharts.com/docs/chart-and-series-types/chart-types
+
+Using `series`, we can combine chart types:
+
+http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/combo/
+
+Demos
+========================================================
+
+http://www.highcharts.com/demo
+
 Highcharts
 ========================================================
+
+Highcharts
+========================================================
+Chart.js
+========================================================
+
+http://www.chartjs.org/
+
+http://jsfiddle.net/jsanz/uLUAT/
+
+https://jsfiddle.net/milostimotic/e8n4xd4z/
+
+http://jsfiddle.net/achudars/NXPhL/
+
+Graphical alternatives
+========================================================
+
+https://plot.ly/create/
+
+https://quartz.github.io/Chartbuilder/
+
