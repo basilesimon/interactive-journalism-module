@@ -42,16 +42,18 @@ Upon successful completion of this module, you will be expected to be able to:
 
 ## Week 1 - The basics
 
-  The mysterious creature that is the DOM, what is a webpage actually, using the DevTools.  
+  The mysterious creature that is the DOM, what a webpage actually is, and using the DevTools.  
 
-  We'll have a look at the very basics of working with the web. Having done the pre-course work (Codecademy Javascript tutorial), we hopefully won't lost much time. No set-up involved, just simple practical exercises in browser
+  We'll have a look at the very basics of working with the web. Having done the pre-course work (Codecademy Javascript tutorial), we hopefully won't lost much time. No set-up involved, just simple practical exercises in a web browser
+
 
 * Session 1: practical exercises
 * Session 2: more exercises
 
 ## Week 2 - Working with Python and data
 
-  A foundation session in which we'll talk about some more basics such as file format and, er, where do you write code in the first place. We'll rattle through some online resources, places, and communities where you can get help if you're stuck with a problem.
+  A foundation session in which we'll talk about some basics such as file formats and, er, where do you write code in the first place. We'll rattle through some online resources and communities where you can get help if you're stuck with a problem.
+  During the second session we'll see the basics of the Python programming language.
 
 * Session 1: file formats, writing code
 * Session 2: intro to Python
@@ -65,7 +67,7 @@ Upon successful completion of this module, you will be expected to be able to:
 
 ## Week 4 - R in the newsroom
 
-  Armed with our new best friend RStudio, we'll explore the fantastic `tidyverse` and plot our first charts.
+  Armed with our new best friend RStudio, we'll introduce the R programming language and explore the fantastic `tidyverse`, as well as plotting our first charts.
 
 * Session 1: the tidyverse
 * Session 2: ggplot
