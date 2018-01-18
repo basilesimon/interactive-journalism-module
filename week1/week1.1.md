@@ -34,12 +34,17 @@ Module outline, aims. And a bit more
 Assessment: a split mark
 ========================================================
 
-tktktk
+## 25% mark on week 5 presentation and brief
+## 75% mark on final project
+## bonus on week 3
 
-Assessment: mark one
+Week 5 presentation and brief
 ========================================================
 
-tktktk
+* 500-word written brief
+* 3-minute presentation in class on Wed 21 and Fri 23 (class split in half)
+
+Moodle brief
 
 Assessment: mark two - final project
 ========================================================
@@ -62,6 +67,23 @@ Your project must be relevant to journalism (see above), operate at a functional
 
 (that's also from the spec)
 
+Cherry on top: week 3
+========================================================
+
+Build a simple interactive thing in Javascript.
+
+This can be a series of buttons on which to click to change a displayed information, for example.
+
+The action triggered by an interaction will involve a function.
+
+Example: web page displays "1". Upon clicking on a button, display "2", then "3", and so on.
+Example: Ask the user for a number to add, and display the result of n+1
+
+You'll also be assessed on "self-learning"...
+========================================================
+
+wat?
+
 The self-learner attitude
 ========================================================
 Engage in the community of data-journalists, news hackers and tinkerers
@@ -76,7 +98,13 @@ More about self-learning
 
 ## Never forget this: it's *always* about the story you're telling
 
-The DOM
+https://www.thetimes.co.uk/article/german-coalition-what-are-angela-merkels-options-mlq00j00p
+
+https://www.thetimes.co.uk/article/patiently-waiting-ambulance-response-times-in-your-area-gdrw9vwzc
+
+https://www.thetimes.co.uk/article/postgraduates-pay-higher-interest-rate-on-loans-to-study-hsclslzv3
+
+And now to business: the DOM
 ========================================================
 
 What is the DOM?   

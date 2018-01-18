@@ -1,8 +1,5 @@
 JOM299 - MA in Interactive Journalism - Advanced Data & Coding module
 ========================================================
-author: Basile Simon - @basilesimon
-date: 
-autosize: true
 
 Recap from last session
 =======================================================
@@ -153,3 +150,36 @@ thisIsAVariable.forEach(function(element) {
   applyFunction(element);
 })
 ```
+
+Writing code: online text editors
+=======================================================
+
+Normally you'd write code in files with different extensions (`.jpg` for an image, then `.js` for Javascript, `.html` for HTML...)
+
+Purpose: no need to put files on your computer
+Just write code and go
+
+Tip: you might need the devtools to see your javascript!
+ 
+ * JSBin
+ * Codepen
+ 
+Reminder: week 3 project
+=======================================================
+
+On week 3, you have to come in with a project saved in Codepen/JSBin.
+
+**Build a simple interactive thing in Javascript.**
+
+This can be a series of buttons on which to click to change a displayed information, for example.
+
+The action triggered by an interaction will involve a function.
+
+Example: web page displays "1". Upon clicking on a button, display "2", then "3", and so on.
+Example: Ask the user for a number to add, and display the result of n+1
+
+Examples
+=======================================================
+
+https://codepen.io/basilesimon/pen/xpmGmN?editors=1010#
+
