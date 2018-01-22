@@ -182,4 +182,3 @@ Examples
 =======================================================
 
 https://codepen.io/basilesimon/pen/xpmGmN?editors=1010#
-
