@@ -11,7 +11,7 @@
 
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
 
-<link rel="stylesheet" href="presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="../presentation/mozilla-devrel-light.css"/>
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
 <!-- If the query includes 'print-pdf', include the PDF print sheet -->
 <script>
@@ -29,113 +29,137 @@
 <div class="reveal">
 <div class="slides">
 <section>
-<section id="slide-org86fc129">
-<h2 id="org86fc129"><span class="done DONE">DONE</span> 1.2: More exercises</h2>
+<section id="slide-org3d5f5d8">
+<h2 id="org3d5f5d8">1.2: More exercises</h2>
 </section>
 </section>
 <section>
-<section id="slide-orge28b741">
-<h3 id="orge28b741">recap from last session</h3>
+<section id="slide-org1611a39">
+<h3 id="org1611a39">recap from last session</h3>
 <ul>
-<li>what is the DOM: a tree-like structure and a programming interface around it</li>
-<li>HTML structures</li>
-<li>Basics of Javascript: our way to interact with the DOM (among others)</li>
+<li class="fragment appear">what is the DOM: a tree-like structure and a programming interface around it</li>
+<li class="fragment appear">HTML structures</li>
+<li class="fragment appear">Basics of Javascript: our way to interact with the DOM (among others)</li>
 
 </ul>
 </section>
 </section>
 <section>
-<section id="slide-org9dbd5f3">
-<h3 id="org9dbd5f3">picking up the homework: exercise 1</h3>
+<section id="slide-org876dc4f">
+<h3 id="org876dc4f">picking up the homework: exercise 1</h3>
+<div class="outline-text-3" id="text-org876dc4f">
+</div>
+</section>
+<section id="slide-org944f936">
+<h4 id="org944f936">Image one: spot the typo</h4>
+<div class="org-src-container">
+
+<pre><code class="html" ><img src="http://some-url/image.jpg" />
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="html" ><img scr="http://some-url/image.jpg" />
+</code></pre>
+</div>
+
 <p>
-Image one: we want `src=&#x2026;`, not `scr=&#x2026;` - pay attention to typos!
-Image two: missing closing bracket `&gt;`
-Image three: all good!
+we want `src=&#x2026;`, not `scr=&#x2026;` - pay attention to typos!
 </p>
+</section>
+<section id="slide-org1d74b57">
+<h4 id="org1d74b57">Image two</h4>
+<p>
+missing closing bracket `&gt;`
+</p>
+</section>
+<section id="slide-org006c804" data-background="https://media.giphy.com/media/d31x1fB3jEBvQ7E4/giphy.gif" data-background-transition="slide">
+<h4 id="org006c804">Image three: all good</h4>
 
 </section>
 </section>
 <section>
-<section id="slide-org424a71b">
-<h3 id="org424a71b">picking up the homework: exercise 2</h3>
-<p>
-```
-#toHide { visibility: hidden; }
-```
-</p>
+<section id="slide-orgd1e7344">
+<h3 id="orgd1e7344">picking up the homework: exercise 2</h3>
+<div class="org-src-container">
+
+<pre><code class="css" >#toHide { visibility: hidden; }
+</code></pre>
+</div>
 
 <p>
 or
 </p>
 
-<p>
-```
-#toHide { display: none; }
-```
-</p>
+<div class="org-src-container">
+
+<pre><code class="css" >#toHide { display: none; }
+</code></pre>
+</div>
 </section>
 </section>
 <section>
-<section id="slide-org2f63059">
-<h3 id="org2f63059">codecademy homework</h3>
+<section id="slide-org008f5dd">
+<h3 id="org008f5dd">codecademy homework</h3>
 </section>
 </section>
 <section>
-<section id="slide-orgd496b98">
-<h3 id="orgd496b98">what's a variable?</h3>
+<section id="slide-org2aa46cd">
+<h3 id="org2aa46cd">what's a variable?</h3>
 <p>
 A variable is a store, in which you can put different data:
 </p>
 <ul>
-<li>your age (a number)</li>
-<li>your name (a string)</li>
-<li>the result of a logical operation (true/false)</li>
+<li class="fragment appear">your age (a number)</li>
+<li class="fragment appear">your name (a string)</li>
+<li class="fragment appear">the result of a logical operation (true/false)</li>
 
 </ul>
 
-<p>
-```
-var myAge = 26;
+<div class="org-src-container">
+
+<pre><code class="js" >var myAge = 26;
 var myName = "Basile";
 var doITeachAtCity = true;
-```
-</p>
+</code></pre>
+</div>
 
 </section>
 </section>
 <section>
-<section id="slide-orgb0efcff">
-<h3 id="orgb0efcff">what are the different data types?</h3>
+<section id="slide-org656aa2d">
+<h3 id="org656aa2d">what are the different data types?</h3>
 <ul>
-<li>string: takes quotation marks around it. example: `var name = "basile"; var age = "30"`</li>
-<li>number: no quotation marks. example: `var number = 10; var budget = 1245.5`</li>
-<li>boolean: logical operators: `var basileIsHere = true; var basileIsShaved = false;`</li>
-<li>array/list</li>
-<li>object</li>
-<li>null/undefined</li>
+<li><b>string</b>: takes quotation marks around it. example: `var name = "basile"; var age = "30"`</li>
+<li><b>number</b>: no quotation marks. example: `var number = 10; var budget = 1245.5`</li>
+<li><b>boolean</b>: logical operators: `var basileIsHere = true; var basileIsShaved = false;`</li>
+<li><b>array/list</b></li>
+<li><b>object</b></li>
+<li><b>null/undefined</b></li>
 
 </ul>
 </section>
 </section>
 <section>
-<section id="slide-org2267c8c">
-<h3 id="org2267c8c">data types: lists/arrays</h3>
-<p>
-```
-var thisIsAList = [1,2,3,'basile'];
-```
-</p>
+<section id="slide-orgb9c144a">
+<h3 id="orgb9c144a">data types: lists/arrays</h3>
+<div class="org-src-container">
+
+<pre><code class="js" >var thisIsAList = [1,2,3,'basile'];
+</code></pre>
+</div>
 
 <p>
 contained between brackets, they store items in them. we can access these items like so:
 </p>
 
-<p>
-```
-thisIsAList[0] <i>/ 1
-thisIsAList[3] /</i> 'basile'
-```
-</p>
+<div class="org-src-container">
+
+<pre><code class="js" >thisIsAList[0] // 1
+thisIsAList[3] // 'basile'
+</code></pre>
+</div>
 
 <p>
 Note: lists are said 'zero-padded'
@@ -143,101 +167,92 @@ Note: lists are said 'zero-padded'
 </section>
 </section>
 <section>
-<section id="slide-orgadb15d7">
-<h3 id="orgadb15d7">data types: objects</h3>
-<p>
-```
-var thisIsAnObject = { name: 'basile', age: 26 };
-```
-</p>
+<section id="slide-org5f8e6af">
+<h3 id="org5f8e6af">data types: objects</h3>
+<div class="org-src-container">
+
+<pre><code class="js" >var thisIsAnObject = { name: 'basile', age: 26 };
+</code></pre>
+</div>
 
 <p>
 kind of like lists, but object items can be accessed by their key, like so:
 </p>
 
-<p>
-```
-thisIsAnObject.name <i>/ 'basile'
-thisIsAnObject.age /</i> 26
-```
-</p>
+<div class="org-src-container">
+
+<pre><code class="js" >console.log(thisIsAnObject.name); // 'basile'
+console.log(thisIsAnObject.age); // 26
+</code></pre>
+</div>
 
 </section>
 </section>
 <section>
-<section id="slide-orge5f142d">
-<h3 id="orge5f142d">iterating: the for loop</h3>
+<section id="slide-orgd058f8e">
+<h3 id="orgd058f8e">the for loop</h3>
 <p>
 very useful pattern: `for` iterates over list items.
 </p>
 
-<p>
-```
-var myList = [1,2,10,37];
-for (var i = 0; i&lt;myList.length; i++) {
-console.log(myList[i] + 1;
+<div class="org-src-container">
+
+<pre><code class="js" >var myList = [1,2,10,37];
+
+myList.forEach(function(element) {
+  console.log(element);
 }
 // 2, 3, 11, 38
-```
-</p>
+</code></pre>
+</div>
 
 <p>
-&gt; for each item at the i-th place in my array, i being equal to 0, inferior to my list's length so I don't go too far, and i being increment by one everytime I'm done, log the said item plus one.
+for each item at the i-th place in my array, i being equal to 0, inferior to my list's length so I don't go too far, and i being increment by one everytime I'm done, log the said item plus one.
 </p>
 
 </section>
-</section>
-<section>
-<section id="slide-org8476d4b">
-<h3 id="org8476d4b">pretty: the function</h3>
-<p>
-```
-function myFunction() {
-// I do things here!
-}
-```
-</p>
+<section id="slide-orgfceb09c">
+<h4 id="orgfceb09c">another function</h4>
+<div class="org-src-container">
 
-<p>
-```
-function sayMyName(name) {
-console.log('HELLO' + name);
-}
+<pre><code class="js" >function sayMyName(name) {
+  console.log('HELLO' + name);
+};
 sayMyName('basile') // HELLO BASILE
-```
-</p>
+</code></pre>
+</div>
 
 </section>
 </section>
 <section>
-<section id="slide-org148d904">
-<h3 id="org148d904">the function</h3>
+<section id="slide-orgfc673ef">
+<h3 id="orgfc673ef">the function</h3>
 <p>
 iterating over an array with a function
-```js
-// define a function like so
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="js" >// define a function like so
 function applyFunction(takesAVariableIn) {
   console.log(takesAVariableIn + ' is great'!
 }
-</p>
 
-<p>
 // define a variable, an array/list in this case
 var thisIsAVariable = ['basile', 'city uni'];
-</p>
 
-<p>
 // for each element of the array, run the function
 thisIsAVariable.forEach(function(element) {
   applyFunction(element);
 })
-```
-</p>
+</code></pre>
+</div>
+
 </section>
 </section>
 <section>
-<section id="slide-org1a9723b">
-<h3 id="org1a9723b">writing code: online code editors</h3>
+<section id="slide-org97638aa">
+<h3 id="org97638aa">writing code: online code editors</h3>
 <p>
 Purpose: no need to put files on your computer
 Just write code and go
@@ -255,15 +270,16 @@ Tip: you might need the devtools to see your javascript!
 </section>
 </section>
 <section>
-<section id="slide-org435a566">
-<h3 id="org435a566">online code editor demo: week 3 project</h3>
+<section id="slide-org7662ace">
+<h3 id="org7662ace">online code editor demo: week 3 project</h3>
 </section>
 </section>
 <section>
-<section id="slide-org2214dc6">
-<h3 id="org2214dc6"><span class="done DONE">DONE</span> examples</h3>
+<section id="slide-org2b8e9ef">
+<h3 id="org2b8e9ef">examples</h3>
 <p>
-<a href="https://codepen.io/basilesimon/pen/xpmGmN?editors=1010">https://codepen.io/basilesimon/pen/xpmGmN?editors=1010</a>#</p>
+<a href="https://codepen.io/basilesimon/pen/xpmGmN?editors=1010">https://codepen.io/basilesimon/pen/xpmGmN?editors=1010</a>
+</p>
 </section>
 </section>
 </div>

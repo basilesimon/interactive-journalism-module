@@ -10,6 +10,7 @@
 #+REVEAL_MAX_SCALE: 2.5
 #+OPTIONS: reveal_center:nil 
 #+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t 
+#+OPTIONS: org-html-indent:nil
 #+REVEAL_TRANS: linear
 #+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Title">
 #+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
@@ -82,7 +83,7 @@
 
 * 1.1: The basics
   :LOGBOOK:
-  CLOCK: [2018-01-23 Tue 17:51]
+  CLOCK: [2018-01-23 Tue 17:51]--[2018-01-23 Tue 18:29] =>  0:38
   CLOCK: [2018-01-18 Thu 20:31]--[2018-01-18 Thu 20:56] =>  0:25
   CLOCK: [2017-12-27 Wed 16:00]--[2017-12-27 Wed 16:39] =>  0:39
   :END:
@@ -95,7 +96,6 @@
    - Useful resources
    - Intro to the DevTools, the DOM, and debugging your things
 ** topics covered in this module
-   #+ATTR_REVEAL: :frag (appear)
    - Introduction to programming and the web with Javascript
    - Basic web scraping with Python
    - Exploratory analysis and day-to-day work with R
@@ -193,6 +193,7 @@
    - Change styles of any page
    - See Javascript code and errors
    - See and edit any file loaded by the page
+
 ** let's access the Dev Tools
    On Chrome and Firefox
    - `Ctrl` + `Shift` + `I` 
@@ -206,119 +207,131 @@
 
 ** editing HTML with the Dev Tools
    Example: make Donald Trump say anything with the Dev Tools!
+
 ** hiding things with the Dev Tools
    Example: hide something on the [[https://www.google.co.uk/][Google homepage]]
+
 ** homework
 -  [[http://codepen.io/basilesimon/pen/BQgwxG?editors=1100#0][Fix these images]]
 -  [[http://codepen.io/basilesimon/pen/PWjJwg][Hide DOM elements]]
 -  [[http://discover-devtools.codeschool.com/chapters/1?locale=en][Play with the dom]]
 
-* DONE 1.2: More exercises
-  CLOSED: [2018-01-22 Mon 21:43]
+* 1.2: More exercises
   :LOGBOOK:
+  CLOCK: [2018-01-23 Tue 18:29]
   CLOCK: [2018-01-18 Thu 21:24]--[2018-01-18 Thu 21:32] =>  0:08
   CLOCK: [2018-01-15 Mon 20:54]--[2018-01-15 Mon 21:29] =>  0:35
   CLOCK: [2018-01-15 Mon 20:30]--[2018-01-15 Mon 20:54] =>  0:24
   CLOCK: [2017-12-27 Wed 16:39]--[2017-12-27 Wed 16:54] =>  0:15
   :END:
 ** recap from last session
+   #+ATTR_REVEAL: :frag (appear)
    - what is the DOM: a tree-like structure and a programming interface around it
    - HTML structures
    - Basics of Javascript: our way to interact with the DOM (among others)
 ** picking up the homework: exercise 1
 
-   Image one: we want `src=...`, not `scr=...` - pay attention to typos!
-   Image two: missing closing bracket `>`
-   Image three: all good!
+*** Image one: spot the typo
+    #+BEGIN_SRC html
+    <img src="http://some-url/image.jpg" />
+    #+END_SRC
+
+    #+BEGIN_SRC html
+    <img scr="http://some-url/image.jpg" />
+    #+END_SRC
+
+    we want `src=...`, not `scr=...` - pay attention to typos!
+*** Image two
+    missing closing bracket `>`
+*** Image three: all good
+    :PROPERTIES:
+    :reveal_background: https://media.giphy.com/media/d31x1fB3jEBvQ7E4/giphy.gif
+    :reveal_background_trans: slide
+    :END:
 
 ** picking up the homework: exercise 2
-   ```
+   #+BEGIN_SRC css
    #toHide { visibility: hidden; }
-   ```
+   #+END_SRC
 
    or
 
-   ```
+   #+BEGIN_SRC css
    #toHide { display: none; }
-   ```
+   #+END_SRC
 ** codecademy homework
 ** what's a variable?
 
    A variable is a store, in which you can put different data:
+   #+ATTR_REVEAL: :frag (appear)
    - your age (a number)
    - your name (a string)
    - the result of a logical operation (true/false)
    
-   ```
+   #+BEGIN_SRC js
    var myAge = 26;
    var myName = "Basile";
    var doITeachAtCity = true;
-   ```
+   #+END_SRC
 
 ** what are the different data types?
-   - string: takes quotation marks around it. example: `var name = "basile"; var age = "30"`
-   - number: no quotation marks. example: `var number = 10; var budget = 1245.5`
-   - boolean: logical operators: `var basileIsHere = true; var basileIsShaved = false;`
-   - array/list
-   - object
-   - null/undefined
+   - *string*: takes quotation marks around it. example: `var name = "basile"; var age = "30"`
+   - *number*: no quotation marks. example: `var number = 10; var budget = 1245.5`
+   - *boolean*: logical operators: `var basileIsHere = true; var basileIsShaved = false;`
+   - *array/list*
+   - *object*
+   - *null/undefined*
 ** data types: lists/arrays
-   ```
+   #+BEGIN_SRC js
    var thisIsAList = [1,2,3,'basile'];
-   ```
+   #+END_SRC
 
    contained between brackets, they store items in them. we can access these items like so:
 
-   ```
+   #+BEGIN_SRC js
    thisIsAList[0] // 1
    thisIsAList[3] // 'basile'
-   ```
+   #+END_SRC
 
    Note: lists are said 'zero-padded'
 ** data types: objects
-   ```
+   #+BEGIN_SRC js
    var thisIsAnObject = { name: 'basile', age: 26 };
-   ```
+   #+END_SRC
 
    kind of like lists, but object items can be accessed by their key, like so:
 
-   ```
-   thisIsAnObject.name // 'basile'
-   thisIsAnObject.age // 26
-   ```
+   #+BEGIN_SRC js
+   console.log(thisIsAnObject.name); // 'basile'
+   console.log(thisIsAnObject.age); // 26
+   #+END_SRC
 
-** iterating: the for loop
-
+** the for loop
    very useful pattern: `for` iterates over list items.
 
-   ```
+   #+BEGIN_SRC js
    var myList = [1,2,10,37];
-   for (var i = 0; i<myList.length; i++) {
-   console.log(myList[i] + 1;
+
+   myList.forEach(function(element) {
+     console.log(element);
    }
    // 2, 3, 11, 38
-   ```
+   #+END_SRC
 
-   > for each item at the i-th place in my array, i being equal to 0, inferior to my list's length so I don't go too far, and i being increment by one everytime I'm done, log the said item plus one.
+   for each item at the i-th place in my array, i being equal to 0, inferior to my list's length so I don't go too far, and i being increment by one everytime I'm done, log the said item plus one.
 
-** pretty: the function
-
-   ```
-   function myFunction() {
-   // I do things here!
-   }
-   ```
-
-   ```
+*** another function
+   #+BEGIN_SRC js
    function sayMyName(name) {
-   console.log('HELLO' + name);
-   }
+     console.log('HELLO' + name);
+   };
    sayMyName('basile') // HELLO BASILE
-   ```
+   #+END_SRC
 
 ** the function
    iterating over an array with a function
-   ```js
+
+   #+BEGIN_SRC js
    // define a function like so
    function applyFunction(takesAVariableIn) {
      console.log(takesAVariableIn + ' is great'!
@@ -331,7 +344,8 @@
    thisIsAVariable.forEach(function(element) {
      applyFunction(element);
    })
-   ```
+   #+END_SRC
+
 ** writing code: online code editors
    
    Purpose: no need to put files on your computer
@@ -339,12 +353,13 @@
 
    Tip: you might need the devtools to see your javascript!
    
-   * JSBin
-   * Codepen
+   - JSBin
+   - Codepen
 ** online code editor demo: week 3 project
-** DONE examples
-   CLOSED: [2018-01-18 Thu 23:27]
-   https://codepen.io/basilesimon/pen/xpmGmN?editors=1010#
+** examples
+   https://codepen.io/basilesimon/pen/xpmGmN?editors=1010
+
+
 * TODO 2.1: File formats, writing code
   :LOGBOOK:
   CLOCK: [2018-01-18 Thu 12:07]--[2018-01-18 Thu 13:33] =>  1:26
