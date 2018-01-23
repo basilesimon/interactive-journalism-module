@@ -13,7 +13,7 @@
 #+REVEAL_TRANS: linear
 #+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Title">
 #+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
-#+REVEAL_EXTRA_CSS: presentation/mozilla-devrel-light.css
+#+REVEAL_EXTRA_CSS: ../presentation/mozilla-devrel-light.css
 #+REVEAL_PLUGINS: (highlight)
 #+REVEAL_HLEVEL: 2
 
@@ -80,91 +80,112 @@
 ** DONE week-by-week outline
    CLOSED: [2018-01-18 Thu 11:55]
 
-* DONE 1.1: The basics
-  CLOSED: [2018-01-23 Tue 00:30]
+* 1.1: The basics
   :LOGBOOK:
+  CLOCK: [2018-01-23 Tue 17:51]
   CLOCK: [2018-01-18 Thu 20:31]--[2018-01-18 Thu 20:56] =>  0:25
   CLOCK: [2017-12-27 Wed 16:00]--[2017-12-27 Wed 16:39] =>  0:39
   :END:
 ** module information
    Module code: JOM299
+   Title: Advanced Data and Coding
 
    - Module and assessment outline
    - The self-learner attitude
    - Useful resources
    - Intro to the DevTools, the DOM, and debugging your things
-** topics of the module
+** topics covered in this module
+   #+ATTR_REVEAL: :frag (appear)
    - Introduction to programming and the web with Javascript
    - Basic web scraping with Python
    - Exploratory analysis and day-to-day work with R
    - Putting charts on the web
-** module outline according to the spec
-   - Develop a complex skillset
-   - Gain an understanding of data and of modern digital journalism
-   - Develop a problem-solving philosophy
-   - Acquire self-direction in learning
-   - Have a crucial advantage over others in the industry
+** module outline and goals according to the spec
+   - Develop a *complex skillset*
+   - Gain an *understanding of data* and of modern digital journalism
+   - Develop a *problem-solving philosophy*
+   - Acquire *self-direction in learning*
+
+** and I add to this:
+ *Have a crucial advantage over others in the industry*
 
 ** assessment: mark split between...
 *** 25% presentation and brief
+   Will take place on *week 5*
+
+   i.e.
+- Wed 21 
+- or Fri 23
 *** 75% final project
-** assessment one: 
-   week 5, Wed 21 + Fri 23
-** assessment two: 
    mid-April?
 ** cherry on top: build in JS week 3
+    #+BEGIN_QUOTE
+    Build a simple interactive thing, in Javascript. This can be a series of buttons on which to click to change a displayed information, for example. The action triggered will involve a function. Example: display "1". Upon clicking this button, a function adds 2 and displays "3". Ask the user for a number to add, display the result of 3+n.
+    #+END_QUOTE
+
+   We'll talk about this project in class
+
 ** assessment two: final project
-   > Your project should identify and solve a journalistic problem, using data and coding work. Typically this will focus on a story -- either a complete story or an interactive feature forming part of a story. It could also be something for use in a newsroom (eg a tool helpful to journalists). 
-   (that's from the course specs)
+    
+   #+BEGIN_QUOTE
+   Your project should identify and solve a journalistic problem, using data and coding work. Typically this will focus on a story -- either a complete story or an interactive feature forming part of a story. It could also be something for use in a newsroom (eg a tool helpful to journalists). 
+   #+END_QUOTE
+
+   that's from the course specs
 
 ** more about the final project
    Your project must be relevant to journalism (see above), operate at a functional level (at least as a working prototype), and involve all of the following:
 
-   -  data techniques, involving scraping, cleaning, analysis and/or presentation, as needed/appropriate to your project
-   -  adding value through user interactivity
-   -  use and modification of html, CSS, Javascript, Python, R, d3 
-   -  and/or other code (not simply plug-and-play elements)
-   -  use of free and/or low-cost tools
-   -  problem-solving.
+   - data techniques, involving scraping, cleaning, analysis and/or presentation, as needed/appropriate to your project
+   - adding value through user interactivity
+   - use and modification of html, CSS, Javascript, Python, R, d3 
+   - and/or other code (not simply plug-and-play elements)
+   - use of free and/or low-cost tools
+   - problem-solving.
+
    (that's also from the spec)
 
-** the self-learner attitude
-   Engage in the community of data-journalists, news hackers and tinkerers
+** the self-learner attitude - what is that?
+   I want you to engage in the community of data-journalists, news hackers and tinkerers
 
-   - [Tips for self-learning (Hacker News)](https://news.ycombinator.com/item?id=13148319)  
-   - [/r/dataisbeautiful community](https://www.reddit.com/r/dataisbeautiful/)  
-   - [News Nerdery (Slack)](http://newsnerdery.org/)
+   - [[https://news.ycombinator.com/item?id=13148319][Tips for self-learning (Hacker News)]]
+   - [[https://www.reddit.com/r/dataisbeautiful/][/r/dataisbeautiful community]]
+   - [[http://newsnerdery.org/][News Nerdery (Slack)]]
    - RSS feeds, Twitter...
 
-** self-learning and getting to know the field
-   it's about the story, etc.
+** without further ado...
+    :PROPERTIES:
+    :reveal_background: https://media.giphy.com/media/26uf6o80xhd6MKGIw/giphy.gif
+    :reveal_background_trans: slide
+    :END:
 
 ** what is the DOM?
-   <http://domenlightenment.com/#1.1>
-   > The DOM is a hierarchy/tree of Javascript node objects
+   [http://domenlightenment.com/#1.1]
+
+   #+BEGIN_QUOTE
+   The DOM is a hierarchy/tree of Javascript node objects
+   #+END_QUOTE
 
    - It looks like the HTML you wrote
    - It actually is the programming interface around it
+
 ** programming interface?
-   ```
+   #+BEGIN_SRC html
    <body>
+     <article>
+       <h1>This is a simple title</h1>
 
-   <article>
-  
-   <h1>This is a simple title</h1>
-
-   <h1 id="special">This is another title... 
-   <em>with a twist!</em>
-   </h1>
-    
-   </article>
-  
+       <h1 id="special">This is another title... 
+         <em>with a twist!</em>
+       </h1>
+     </article>
    </body>
-   ```
+   #+END_SRC
 
-   Let's have a look: <http://codepen.io/basilesimon/pen/PWNXEK>
+   Let's have a look: [[http://codepen.io/basilesimon/pen/PWNXEK][Codepen]]
 
 ** wait, console.log()?
+   #+ATTR_REVEAL: :frag (appear)
    The Dev Tools: the Swiss army knife of web work
 
    What you can do with Dev Tools:
@@ -179,18 +200,18 @@
 
 ** do things with the Dev Tools
    Inspect and edit pages and style: 
-   - <https://developers.google.com/web/tools/chrome-devtools/inspect-styles/>
-   - <https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-styles>
-   - <https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-dom>
+   - [[https://developers.google.com/web/tools/chrome-devtools/inspect-styles/][exercise one]]
+   - [[https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-styles][exercise two]]
+   - [[https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-dom][exercise three]]
 
 ** editing HTML with the Dev Tools
    Example: make Donald Trump say anything with the Dev Tools!
 ** hiding things with the Dev Tools
-   Example: hide something on the [Google homepage](https://www.google.co.uk/)
+   Example: hide something on the [[https://www.google.co.uk/][Google homepage]]
 ** homework
--  Fix these images: <http://codepen.io/basilesimon/pen/BQgwxG?editors=1100#0>  
--  Hide DOM elements: <http://codepen.io/basilesimon/pen/PWjJwg>  
--  Play with the dom: <http://discover-devtools.codeschool.com/chapters/1?locale=en>
+-  [[http://codepen.io/basilesimon/pen/BQgwxG?editors=1100#0][Fix these images]]
+-  [[http://codepen.io/basilesimon/pen/PWjJwg][Hide DOM elements]]
+-  [[http://discover-devtools.codeschool.com/chapters/1?locale=en][Play with the dom]]
 
 * DONE 1.2: More exercises
   CLOSED: [2018-01-22 Mon 21:43]
