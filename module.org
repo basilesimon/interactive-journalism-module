@@ -1,0 +1,510 @@
+#+Title: JOM299
+#+Author: Basile Simon
+#+Email: @basilesimon
+
+#+OPTIONS: toc:nil num:nil
+#+OPTIONS: reveal_width:1200
+#+OPTIONS: reveal_height:800
+#+REVEAL_MARGIN: 0.1
+#+REVEAL_MIN_SCALE: 0.5
+#+REVEAL_MAX_SCALE: 2.5
+#+OPTIONS: reveal_center:nil 
+#+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t 
+#+OPTIONS: org-html-indent:nil
+#+REVEAL_TRANS: linear
+#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Title">
+#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
+#+REVEAL_EXTRA_CSS: ../presentation/mozilla-devrel-light.css
+#+REVEAL_PLUGINS: (highlight)
+#+REVEAL_HLEVEL: 2
+
+
+* teaching plan
+** Week 1 - The basics
+
+  The mysterious creature that is the DOM, what a webpage actually is, and using the DevTools.  
+
+  We'll have a look at the very basics of working with the web. Having done the pre-course work (Codecademy Javascript tutorial), we hopefully won't lost much time. No set-up involved, just simple practical exercises in a web browser
+
+*** Session 1: practical exercises
+*** Session 2: more exercises
+
+** Week 2 - Working with Python and data
+
+  A foundation session in which we'll talk about some basics such as file formats and, er, where do you write code in the first place. We'll rattle through some online resources and communities where you can get help if you're stuck with a problem.
+  During the second session we'll see the basics of the Python programming language.
+
+*** Session 1: file formats, writing code
+*** Session 2: intro to Python
+
+** Week 3 - Concrete scraping examples in Python
+
+  A heavy session made up of short examples we'll study and extract data from.
+
+*** Session 1: simple scraping
+*** Session 2: more complex scraping, saving data
+
+** Week 4 - R in the newsroom
+
+  Armed with our new best friend RStudio, we'll introduce the R programming language and explore the fantastic `tidyverse`, as well as plotting our first charts.
+
+*** Session 1: the tidyverse
+*** Session 2: ggplot
+
+** Week 5 - Concrete R exercises
+
+  We'll touch on statistics concepts and keep proving how great R is at prototyping and wrangling data and charts.
+
+*** Session 1: data cleaning exercises
+*** Session 2: enough stats to keep you out of trouble
+
+** Week 6 - More R
+   
+  ???
+
+** Week 7 - Into Javascript charts world
+
+  An overview of what is data viz and how central D3.js is to the discipline. We'll however pivot quickly towards Highcharts.js for its simplicity. As for the R sessions, we'll work through basic plotting then more complex examples.
+
+*** Session 1: overview of the discipline, Highcharts
+*** Session 2: Highcharts + misc explorations
+
+** Weeks 8, 9, 10 - Project work
+
+  We will go round the room and take questions from students about their final project. Come prepared with actual problems, be happy to work collaboratively and to make progress in class while we tackle challenges collectively, on the big screen. These sessions are usually the time when "ha-ha" moments happen.
+
+
+* moodle
+  :LOGBOOK:
+  CLOCK: [2018-01-18 Thu 11:32]--[2018-01-18 Thu 11:55] =>  0:23
+  :END:
+** DONE week-by-week outline
+   CLOSED: [2018-01-18 Thu 11:55]
+
+* 1.1: The basics
+  :LOGBOOK:
+  CLOCK: [2018-01-23 Tue 17:51]--[2018-01-23 Tue 18:29] =>  0:38
+  CLOCK: [2018-01-18 Thu 20:31]--[2018-01-18 Thu 20:56] =>  0:25
+  CLOCK: [2017-12-27 Wed 16:00]--[2017-12-27 Wed 16:39] =>  0:39
+  :END:
+** module information
+   Module code: JOM299
+   Title: Advanced Data and Coding
+
+   - Module and assessment outline
+   - The self-learner attitude
+   - Useful resources
+   - Intro to the DevTools, the DOM, and debugging your things
+** topics covered in this module
+   - Introduction to programming and the web with Javascript
+   - Basic web scraping with Python
+   - Exploratory analysis and day-to-day work with R
+   - Putting charts on the web
+** module outline and goals according to the spec
+   - Develop a *complex skillset*
+   - Gain an *understanding of data* and of modern digital journalism
+   - Develop a *problem-solving philosophy*
+   - Acquire *self-direction in learning*
+
+** and I add to this:
+ *Have a crucial advantage over others in the industry*
+
+** assessment: mark split between...
+*** 25% presentation and brief
+   Will take place on *week 5*
+
+   i.e.
+- Wed 21 
+- or Fri 23
+*** 75% final project
+   mid-April?
+** cherry on top: build in JS week 3
+    #+BEGIN_QUOTE
+    Build a simple interactive thing, in Javascript. This can be a series of buttons on which to click to change a displayed information, for example. The action triggered will involve a function. Example: display "1". Upon clicking this button, a function adds 2 and displays "3". Ask the user for a number to add, display the result of 3+n.
+    #+END_QUOTE
+
+   We'll talk about this project in class
+
+** assessment two: final project
+    
+   #+BEGIN_QUOTE
+   Your project should identify and solve a journalistic problem, using data and coding work. Typically this will focus on a story -- either a complete story or an interactive feature forming part of a story. It could also be something for use in a newsroom (eg a tool helpful to journalists). 
+   #+END_QUOTE
+
+   that's from the course specs
+
+** more about the final project
+   Your project must be relevant to journalism (see above), operate at a functional level (at least as a working prototype), and involve all of the following:
+
+   - data techniques, involving scraping, cleaning, analysis and/or presentation, as needed/appropriate to your project
+   - adding value through user interactivity
+   - use and modification of html, CSS, Javascript, Python, R, d3 
+   - and/or other code (not simply plug-and-play elements)
+   - use of free and/or low-cost tools
+   - problem-solving.
+
+   (that's also from the spec)
+
+** the self-learner attitude - what is that?
+   I want you to engage in the community of data-journalists, news hackers and tinkerers
+
+   - [[https://news.ycombinator.com/item?id=13148319][Tips for self-learning (Hacker News)]]
+   - [[https://www.reddit.com/r/dataisbeautiful/][/r/dataisbeautiful community]]
+   - [[http://newsnerdery.org/][News Nerdery (Slack)]]
+   - RSS feeds, Twitter...
+
+** without further ado...
+    :PROPERTIES:
+    :reveal_background: https://media.giphy.com/media/26uf6o80xhd6MKGIw/giphy.gif
+    :reveal_background_trans: slide
+    :END:
+
+** what is the DOM?
+   [http://domenlightenment.com/#1.1]
+
+   #+BEGIN_QUOTE
+   The DOM is a hierarchy/tree of Javascript node objects
+   #+END_QUOTE
+
+   - It looks like the HTML you wrote
+   - It actually is the programming interface around it
+
+** programming interface?
+   #+BEGIN_SRC html
+   <body>
+     <article>
+       <h1>This is a simple title</h1>
+
+       <h1 id="special">This is another title... 
+         <em>with a twist!</em>
+       </h1>
+     </article>
+   </body>
+   #+END_SRC
+
+   Let's have a look: [[http://codepen.io/basilesimon/pen/PWNXEK][Codepen]]
+
+** wait, console.log()?
+   #+ATTR_REVEAL: :frag (appear)
+   The Dev Tools: the Swiss army knife of web work
+
+   What you can do with Dev Tools:
+   - Edit the DOM directly
+   - Change styles of any page
+   - See Javascript code and errors
+   - See and edit any file loaded by the page
+
+** let's access the Dev Tools
+   On Chrome and Firefox
+   - `Ctrl` + `Shift` + `I` 
+   - or `Cmd` + `Opt` + `I` on a Mac
+
+** do things with the Dev Tools
+   Inspect and edit pages and style: 
+   - [[https://developers.google.com/web/tools/chrome-devtools/inspect-styles/][exercise one]]
+   - [[https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-styles][exercise two]]
+   - [[https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-dom][exercise three]]
+
+** editing HTML with the Dev Tools
+   Example: make Donald Trump say anything with the Dev Tools!
+
+** hiding things with the Dev Tools
+   Example: hide something on the [[https://www.google.co.uk/][Google homepage]]
+
+** homework
+-  [[http://codepen.io/basilesimon/pen/BQgwxG?editors=1100#0][Fix these images]]
+-  [[http://codepen.io/basilesimon/pen/PWjJwg][Hide DOM elements]]
+-  [[http://discover-devtools.codeschool.com/chapters/1?locale=en][Play with the dom]]
+
+* 1.2: More exercises
+  :LOGBOOK:
+  CLOCK: [2018-01-23 Tue 18:29]
+  CLOCK: [2018-01-18 Thu 21:24]--[2018-01-18 Thu 21:32] =>  0:08
+  CLOCK: [2018-01-15 Mon 20:54]--[2018-01-15 Mon 21:29] =>  0:35
+  CLOCK: [2018-01-15 Mon 20:30]--[2018-01-15 Mon 20:54] =>  0:24
+  CLOCK: [2017-12-27 Wed 16:39]--[2017-12-27 Wed 16:54] =>  0:15
+  :END:
+** recap from last session
+   #+ATTR_REVEAL: :frag (appear)
+   - what is the DOM: a tree-like structure and a programming interface around it
+   - HTML structures
+   - Basics of Javascript: our way to interact with the DOM (among others)
+** picking up the homework: exercise 1
+
+*** Image one: spot the typo
+    #+BEGIN_SRC html
+    <img src="http://some-url/image.jpg" />
+    #+END_SRC
+
+    #+BEGIN_SRC html
+    <img scr="http://some-url/image.jpg" />
+    #+END_SRC
+
+    we want `src=...`, not `scr=...` - pay attention to typos!
+*** Image two
+    missing closing bracket `>`
+*** Image three: all good
+    :PROPERTIES:
+    :reveal_background: https://media.giphy.com/media/d31x1fB3jEBvQ7E4/giphy.gif
+    :reveal_background_trans: slide
+    :END:
+
+** picking up the homework: exercise 2
+   #+BEGIN_SRC css
+   #toHide { visibility: hidden; }
+   #+END_SRC
+
+   or
+
+   #+BEGIN_SRC css
+   #toHide { display: none; }
+   #+END_SRC
+** codecademy homework
+** what's a variable?
+
+   A variable is a store, in which you can put different data:
+   #+ATTR_REVEAL: :frag (appear)
+   - your age (a number)
+   - your name (a string)
+   - the result of a logical operation (true/false)
+   
+   #+BEGIN_SRC js
+   var myAge = 26;
+   var myName = "Basile";
+   var doITeachAtCity = true;
+   #+END_SRC
+
+** what are the different data types?
+   - *string*: takes quotation marks around it. example: `var name = "basile"; var age = "30"`
+   - *number*: no quotation marks. example: `var number = 10; var budget = 1245.5`
+   - *boolean*: logical operators: `var basileIsHere = true; var basileIsShaved = false;`
+   - *array/list*
+   - *object*
+   - *null/undefined*
+** data types: lists/arrays
+   #+BEGIN_SRC js
+   var thisIsAList = [1,2,3,'basile'];
+   #+END_SRC
+
+   contained between brackets, they store items in them. we can access these items like so:
+
+   #+BEGIN_SRC js
+   thisIsAList[0] // 1
+   thisIsAList[3] // 'basile'
+   #+END_SRC
+
+   Note: lists are said 'zero-padded'
+** data types: objects
+   #+BEGIN_SRC js
+   var thisIsAnObject = { name: 'basile', age: 26 };
+   #+END_SRC
+
+   kind of like lists, but object items can be accessed by their key, like so:
+
+   #+BEGIN_SRC js
+   console.log(thisIsAnObject.name); // 'basile'
+   console.log(thisIsAnObject.age); // 26
+   #+END_SRC
+
+** the for loop
+   very useful pattern: `for` iterates over list items.
+
+   #+BEGIN_SRC js
+   var myList = [1,2,10,37];
+
+   myList.forEach(function(element) {
+     console.log(element);
+   }
+   // 2, 3, 11, 38
+   #+END_SRC
+
+   for each item at the i-th place in my array, i being equal to 0, inferior to my list's length so I don't go too far, and i being increment by one everytime I'm done, log the said item plus one.
+
+*** another function
+   #+BEGIN_SRC js
+   function sayMyName(name) {
+     console.log('HELLO' + name);
+   };
+   sayMyName('basile') // HELLO BASILE
+   #+END_SRC
+
+** the function
+   iterating over an array with a function
+
+   #+BEGIN_SRC js
+   // define a function like so
+   function applyFunction(takesAVariableIn) {
+     console.log(takesAVariableIn + ' is great'!
+   }
+
+   // define a variable, an array/list in this case
+   var thisIsAVariable = ['basile', 'city uni'];
+
+   // for each element of the array, run the function
+   thisIsAVariable.forEach(function(element) {
+     applyFunction(element);
+   })
+   #+END_SRC
+
+** writing code: online code editors
+   
+   Purpose: no need to put files on your computer
+   Just write code and go
+
+   Tip: you might need the devtools to see your javascript!
+   
+   - JSBin
+   - Codepen
+** online code editor demo: week 3 project
+** examples
+   https://codepen.io/basilesimon/pen/xpmGmN?editors=1010
+
+
+* TODO 2.1: File formats, writing code
+  :LOGBOOK:
+  CLOCK: [2018-01-18 Thu 12:07]--[2018-01-18 Thu 13:33] =>  1:26
+  :END:
+** Python
+   
+   Python is a programming language created in 1991.
+
+   It is the most taught programming language around the world.
+
+** Why Python?
+
+   Newsroom use: https://www.poynter.org/news/introduction-newsroom-programming-technologies
+
+   Python is very easy to read and to use - and many newsrooms use it.
+
+** Running your Pythons
+
+   A Python script is a file, eg `example.py`
+
+   You run this file through the **command line** with 
+
+   > `python example.py`
+
+** wait what?
+** Python script
+
+   You write Python code, as well as most code, in a **script file** on your computer.
+
+   image
+
+** To write code, you use a text editor
+
+   https://www.sublimetext.com/
+
+   > Why not Word, Mac's TextEdit?
+
+   These softwares are word processors. They add _lots_ of code around the words you actually see on screen.
+
+** TODO The command line
+** DONE File formats
+   CLOSED: [2018-01-18 Thu 22:58]
+
+   As for scripts (instructions) and web pages, we sometimes need to store data in files ("datasets").
+
+   That's what you'd get from the ONS, data.gov.uk, an API, etc.
+
+   There are different file formats for different purposes.
+
+** DONE File formats: CSV
+   CLOSED: [2018-01-18 Thu 23:05]
+
+   Standing for Comma-Separated Values, CSV will be of much use to us when it comes to data.
+
+   `myfile.csv`
+
+   Think of a spreadsheet without any formatting: 
+   * every line in the file is a row,
+   * every comma-separated value is a cell
+
+** DONE CSV structure
+   CLOSED: [2018-01-18 Thu 23:02]
+
+   ```
+   name, occupation, height
+   basile, journalist, 187
+   donald, politician, 188
+   ```
+
+** DONE File formats: JSON
+   CLOSED: [2018-01-18 Thu 22:58]
+
+   Standing for JavaScript Object Notation, JSON is almost universally used on the web.
+
+   `myfile.json`
+
+   Structure in objects (`var anObject = {};`) separated by commas.
+   Made up of `key: value` pairs.
+
+** DONE JSON structure
+   CLOSED: [2018-01-18 Thu 22:58]
+   ```
+   var json = {
+     "name": "Basile Simon",
+     "occupation": "journalist",
+     "friends": [ "pierre", "donald", "theresa"]
+   }
+   ```
+
+   `json.name => "Basile Simon"`
+   `json.friends[0]` => "pierre"`
+
+   https://codepen.io/basilesimon/pen/MrZWZg?editors=1010#
+
+** DONE JSON and CSV in this course
+   CLOSED: [2018-01-18 Thu 23:04]
+
+   We're likely to store data when scraping, cleaning, etc. in CSV format.
+   We'll probably use, or "parse" CSV data into JSON for the web.
+
+   d3.js has a CSV parser: from the CSV above
+
+   ```
+   name, occupation, height
+   basile, journalist, 187
+   donald, politician, 188
+   ```
+
+   we parse it as JSON, so we can run `data.name` and get "basile" back
+
+** DONE File formats: Excel, databases
+   CLOSED: [2018-01-18 Thu 23:05]
+
+   Excel/ Google Spreadsheets are **visual representations** or CSV data
+
+   Databases come with, as the DOM does, their programming interface and language (eg SQL)
+
+** googling for answers: StackOverflow
+* TODO 2.2: An intro to Python
+  :LOGBOOK:
+  CLOCK: [2018-01-18 Thu 22:12]--[2018-01-18 Thu 23:12] =>  1:00
+  :END:
+** ipython notebooks
+** Let's see some syntax
+** Variables
+** Variables (2)
+** Variables (3)
+** Conditional execution: `if/else`
+** Conditional execution: `if/else` (2)
+** Control flow: `for` loop
+** Methods and functions
+** Modules
+** Scraping?
+** Scraping with Python
+** Scraping in ddj
+** Scraping lessons
+** Scraping exercises for the brave
+** Additional reading
+** Additional reading (2)
+
+** TODO Exercises
+* TODO 3.1: Simple scraping in Python
+* TODO 3.2: More complex scraping in Python?
+* 4.1: R in the newsroom: the tidyverse
+  https://tidyverse-intro.github.io/index.html
+* 4.2: R in the newsroom: ggplot
+* 5.1: Data cleaning in R
+* 5.2: Some stats in R
