@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-org86fc129">
+<h2 id="org86fc129"><span class="done DONE">DONE</span> 1.2: More exercises</h2>
+</section>
+</section>
+<section>
+<section id="slide-orge28b741">
+<h3 id="orge28b741">recap from last session</h3>
+<ul>
+<li>what is the DOM: a tree-like structure and a programming interface around it</li>
+<li>HTML structures</li>
+<li>Basics of Javascript: our way to interact with the DOM (among others)</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org9dbd5f3">
+<h3 id="org9dbd5f3">picking up the homework: exercise 1</h3>
+<p>
+Image one: we want `src=&#x2026;`, not `scr=&#x2026;` - pay attention to typos!
+Image two: missing closing bracket `&gt;`
+Image three: all good!
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org424a71b">
+<h3 id="org424a71b">picking up the homework: exercise 2</h3>
+<p>
+```
+#toHide { visibility: hidden; }
+```
+</p>
+
+<p>
+or
+</p>
+
+<p>
+```
+#toHide { display: none; }
+```
+</p>
+</section>
+</section>
+<section>
+<section id="slide-org2f63059">
+<h3 id="org2f63059">codecademy homework</h3>
+</section>
+</section>
+<section>
+<section id="slide-orgd496b98">
+<h3 id="orgd496b98">what's a variable?</h3>
+<p>
+A variable is a store, in which you can put different data:
+</p>
+<ul>
+<li>your age (a number)</li>
+<li>your name (a string)</li>
+<li>the result of a logical operation (true/false)</li>
+
+</ul>
+
+<p>
+```
+var myAge = 26;
+var myName = "Basile";
+var doITeachAtCity = true;
+```
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgb0efcff">
+<h3 id="orgb0efcff">what are the different data types?</h3>
+<ul>
+<li>string: takes quotation marks around it. example: `var name = "basile"; var age = "30"`</li>
+<li>number: no quotation marks. example: `var number = 10; var budget = 1245.5`</li>
+<li>boolean: logical operators: `var basileIsHere = true; var basileIsShaved = false;`</li>
+<li>array/list</li>
+<li>object</li>
+<li>null/undefined</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org2267c8c">
+<h3 id="org2267c8c">data types: lists/arrays</h3>
+<p>
+```
+var thisIsAList = [1,2,3,'basile'];
+```
+</p>
+
+<p>
+contained between brackets, they store items in them. we can access these items like so:
+</p>
+
+<p>
+```
+thisIsAList[0] <i>/ 1
+thisIsAList[3] /</i> 'basile'
+```
+</p>
+
+<p>
+Note: lists are said 'zero-padded'
+</p>
+</section>
+</section>
+<section>
+<section id="slide-orgadb15d7">
+<h3 id="orgadb15d7">data types: objects</h3>
+<p>
+```
+var thisIsAnObject = { name: 'basile', age: 26 };
+```
+</p>
+
+<p>
+kind of like lists, but object items can be accessed by their key, like so:
+</p>
+
+<p>
+```
+thisIsAnObject.name <i>/ 'basile'
+thisIsAnObject.age /</i> 26
+```
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orge5f142d">
+<h3 id="orge5f142d">iterating: the for loop</h3>
+<p>
+very useful pattern: `for` iterates over list items.
+</p>
+
+<p>
+```
+var myList = [1,2,10,37];
+for (var i = 0; i&lt;myList.length; i++) {
+console.log(myList[i] + 1;
+}
+// 2, 3, 11, 38
+```
+</p>
+
+<p>
+&gt; for each item at the i-th place in my array, i being equal to 0, inferior to my list's length so I don't go too far, and i being increment by one everytime I'm done, log the said item plus one.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org8476d4b">
+<h3 id="org8476d4b">pretty: the function</h3>
+<p>
+```
+function myFunction() {
+// I do things here!
+}
+```
+</p>
+
+<p>
+```
+function sayMyName(name) {
+console.log('HELLO' + name);
+}
+sayMyName('basile') // HELLO BASILE
+```
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org148d904">
+<h3 id="org148d904">the function</h3>
+<p>
+iterating over an array with a function
+```js
+// define a function like so
+function applyFunction(takesAVariableIn) {
+  console.log(takesAVariableIn + ' is great'!
+}
+</p>
+
+<p>
+// define a variable, an array/list in this case
+var thisIsAVariable = ['basile', 'city uni'];
+</p>
+
+<p>
+// for each element of the array, run the function
+thisIsAVariable.forEach(function(element) {
+  applyFunction(element);
+})
+```
+</p>
+</section>
+</section>
+<section>
+<section id="slide-org1a9723b">
+<h3 id="org1a9723b">writing code: online code editors</h3>
+<p>
+Purpose: no need to put files on your computer
+Just write code and go
+</p>
+
+<p>
+Tip: you might need the devtools to see your javascript!
+</p>
+
+<ul>
+<li>JSBin</li>
+<li>Codepen</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org435a566">
+<h3 id="org435a566">online code editor demo: week 3 project</h3>
+</section>
+</section>
+<section>
+<section id="slide-org2214dc6">
+<h3 id="org2214dc6"><span class="done DONE">DONE</span> examples</h3>
+<p>
+<a href="https://codepen.io/basilesimon/pen/xpmGmN?editors=1010">https://codepen.io/basilesimon/pen/xpmGmN?editors=1010</a>#</p>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>

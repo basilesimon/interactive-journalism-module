@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-org5b57c9a">
+<h2 id="org5b57c9a"><span class="done DONE">DONE</span> 1.1: The basics</h2>
+</section>
+</section>
+<section>
+<section id="slide-orge18de14">
+<h3 id="orge18de14">module information</h3>
+<p>
+Module code: JOM299
+</p>
+
+<ul>
+<li>Module and assessment outline</li>
+<li>The self-learner attitude</li>
+<li>Useful resources</li>
+<li>Intro to the DevTools, the DOM, and debugging your things</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org227bce9">
+<h3 id="org227bce9">topics of the module</h3>
+<ul>
+<li>Introduction to programming and the web with Javascript</li>
+<li>Basic web scraping with Python</li>
+<li>Exploratory analysis and day-to-day work with R</li>
+<li>Putting charts on the web</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgfb8b0ec">
+<h3 id="orgfb8b0ec">module outline according to the spec</h3>
+<ul>
+<li>Develop a complex skillset</li>
+<li>Gain an understanding of data and of modern digital journalism</li>
+<li>Develop a problem-solving philosophy</li>
+<li>Acquire self-direction in learning</li>
+<li>Have a crucial advantage over others in the industry</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org78be5e4">
+<h3 id="org78be5e4">assessment: mark split between&#x2026;</h3>
+<div class="outline-text-3" id="text-org78be5e4">
+</div>
+</section>
+<section id="slide-org2187624">
+<h4 id="org2187624">25% presentation and brief</h4>
+</section>
+<section id="slide-org0420430">
+<h4 id="org0420430">75% final project</h4>
+</section>
+</section>
+<section>
+<section id="slide-org7b5424c">
+<h3 id="org7b5424c">assessment one:</h3>
+<p>
+week 5, Wed 21 + Fri 23
+</p>
+</section>
+</section>
+<section>
+<section id="slide-orgbd304a3">
+<h3 id="orgbd304a3">assessment two:</h3>
+<p>
+mid-April?
+</p>
+</section>
+</section>
+<section>
+<section id="slide-org544a878">
+<h3 id="org544a878">cherry on top: build in JS week 3</h3>
+</section>
+</section>
+<section>
+<section id="slide-orgd28eb9f">
+<h3 id="orgd28eb9f">assessment two: final project</h3>
+<p>
+&gt; Your project should identify and solve a journalistic problem, using data and coding work. Typically this will focus on a story &#x2013; either a complete story or an interactive feature forming part of a story. It could also be something for use in a newsroom (eg a tool helpful to journalists). 
+(that's from the course specs)
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgfae285a">
+<h3 id="orgfae285a">more about the final project</h3>
+<p>
+Your project must be relevant to journalism (see above), operate at a functional level (at least as a working prototype), and involve all of the following:
+</p>
+
+<ul>
+<li>data techniques, involving scraping, cleaning, analysis and/or presentation, as needed/appropriate to your project</li>
+<li>adding value through user interactivity</li>
+<li>use and modification of html, CSS, Javascript, Python, R, d3</li>
+<li>and/or other code (not simply plug-and-play elements)</li>
+<li>use of free and/or low-cost tools</li>
+<li>problem-solving.</li>
+
+</ul>
+<p>
+(that's also from the spec)
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org572e76a">
+<h3 id="org572e76a">the self-learner attitude</h3>
+<p>
+Engage in the community of data-journalists, news hackers and tinkerers
+</p>
+
+<ul>
+<li>[Tips for self-learning (Hacker News)](<a href="https://news.ycombinator.com/item?id=13148319">https://news.ycombinator.com/item?id=13148319</a>)</li>
+<li>[/r/dataisbeautiful community](<a href="https://www.reddit.com/r/dataisbeautiful/">https://www.reddit.com/r/dataisbeautiful/</a>)</li>
+<li>[News Nerdery (Slack)](<a href="http://newsnerdery.org/">http://newsnerdery.org/</a>)</li>
+<li>RSS feeds, Twitter&#x2026;</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org6a78d02">
+<h3 id="org6a78d02">self-learning and getting to know the field</h3>
+<p>
+it's about the story, etc.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org00417fb">
+<h3 id="org00417fb">what is the DOM?</h3>
+<p>
+<a href="http://domenlightenment.com/#1.1">http://domenlightenment.com/#1.1</a>
+&gt; The DOM is a hierarchy/tree of Javascript node objects
+</p>
+
+<ul>
+<li>It looks like the HTML you wrote</li>
+<li>It actually is the programming interface around it</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgb9d9572">
+<h3 id="orgb9d9572">programming interface?</h3>
+<p>
+```
+&lt;body&gt;
+</p>
+
+<p>
+&lt;article&gt;
+</p>
+
+<p>
+&lt;h1&gt;This is a simple title&lt;/h1&gt;
+</p>
+
+<p>
+&lt;h1 id="special"&gt;This is another title&#x2026; 
+&lt;em&gt;with a twist!&lt;/em&gt;
+&lt;/h1&gt;
+</p>
+
+<p>
+&lt;/article&gt;
+</p>
+
+<p>
+&lt;/body&gt;
+```
+</p>
+
+<p>
+Let's have a look: <a href="http://codepen.io/basilesimon/pen/PWNXEK">http://codepen.io/basilesimon/pen/PWNXEK</a>
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org3594d52">
+<h3 id="org3594d52">wait, console.log()?</h3>
+<p>
+The Dev Tools: the Swiss army knife of web work
+</p>
+
+<p>
+What you can do with Dev Tools:
+</p>
+<ul>
+<li>Edit the DOM directly</li>
+<li>Change styles of any page</li>
+<li>See Javascript code and errors</li>
+<li>See and edit any file loaded by the page</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgda55173">
+<h3 id="orgda55173">let's access the Dev Tools</h3>
+<p>
+On Chrome and Firefox
+</p>
+<ul>
+<li>`Ctrl` + `Shift` + `I`</li>
+<li>or `Cmd` + `Opt` + `I` on a Mac</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgc776a8c">
+<h3 id="orgc776a8c">do things with the Dev Tools</h3>
+<p>
+Inspect and edit pages and style: 
+</p>
+<ul>
+<li><a href="https://developers.google.com/web/tools/chrome-devtools/inspect-styles/">https://developers.google.com/web/tools/chrome-devtools/inspect-styles/</a></li>
+<li><a href="https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-styles">https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-styles</a></li>
+<li><a href="https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-dom">https://developers.google.com/web/tools/chrome-devtools/inspect-styles/edit-dom</a></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orga4830ab">
+<h3 id="orga4830ab">editing HTML with the Dev Tools</h3>
+<p>
+Example: make Donald Trump say anything with the Dev Tools!
+</p>
+</section>
+</section>
+<section>
+<section id="slide-org59ae77c">
+<h3 id="org59ae77c">hiding things with the Dev Tools</h3>
+<p>
+Example: hide something on the [Google homepage](<a href="https://www.google.co.uk/">https://www.google.co.uk/</a>)
+</p>
+</section>
+</section>
+<section>
+<section id="slide-org7dab29d">
+<h3 id="org7dab29d">homework</h3>
+<ul>
+<li>Fix these images: <a href="http://codepen.io/basilesimon/pen/BQgwxG?editors=1100#0">http://codepen.io/basilesimon/pen/BQgwxG?editors=1100#0</a></li>
+<li>Hide DOM elements: <a href="http://codepen.io/basilesimon/pen/PWjJwg">http://codepen.io/basilesimon/pen/PWjJwg</a></li>
+<li>Play with the dom: <a href="http://discover-devtools.codeschool.com/chapters/1?locale=en">http://discover-devtools.codeschool.com/chapters/1?locale=en</a></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>
