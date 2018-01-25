@@ -29,29 +29,59 @@
 <div class="reveal">
 <div class="slides">
 <section>
-<section id="slide-org3d5f5d8">
-<h2 id="org3d5f5d8">1.2: More exercises</h2>
+<section id="slide-org1cb3288">
+<h2 id="org1cb3288">1.2: More exercises</h2>
 </section>
 </section>
 <section>
-<section id="slide-org1611a39">
-<h3 id="org1611a39">recap from last session</h3>
+<section id="slide-org6bd3a66">
+<h3 id="org6bd3a66">useful links</h3>
+<ul>
+<li><a href="https://www.thetimes.co.uk/article/digital-news-work-experience-qmg8f9585">The Times and Sunday Times work experience</a></li>
+
+</ul>
+<p>
+<a href="https://www.theguardian.com/gnmeducationcentre/journalism-work-experience-opportunities-young-people">- The Guardian work experience</a>
+</p>
+</section>
+</section>
+<section>
+<section id="slide-orga29da29">
+<h3 id="orga29da29">final projects</h3>
+<p>
+<a href="https://ellawilksharper.github.io/a-day-in-the-life-of-mps/">https://ellawilksharper.github.io/a-day-in-the-life-of-mps/</a>
+<a href="https://nellmooney.github.io/thecasting/">https://nellmooney.github.io/thecasting/</a>
+<a href="https://alexandrama.github.io/trump-frequent-mentions/">https://alexandrama.github.io/trump-frequent-mentions/</a>
+</p>
+</section>
+</section>
+<section>
+<section id="slide-org11d6076">
+<h3 id="org11d6076">recap from last session</h3>
 <ul>
 <li class="fragment appear">what is the DOM: a tree-like structure and a programming interface around it</li>
 <li class="fragment appear">HTML structures</li>
 <li class="fragment appear">Basics of Javascript: our way to interact with the DOM (among others)</li>
 
 </ul>
+
+<p class="fragment (appear)">
+Let's have a look: <a href="http://codepen.io/basilesimon/pen/PWNXEK" class="fragment (appear)">Codepen</a>
+</p>
+
 </section>
 </section>
 <section>
-<section id="slide-org876dc4f">
-<h3 id="org876dc4f">picking up the homework: exercise 1</h3>
-<div class="outline-text-3" id="text-org876dc4f">
-</div>
+<section id="slide-orge3f08d6">
+<h3 id="orge3f08d6">picking up the homework: exercise 1</h3>
+<ul>
+<li><a href="http://codepen.io/basilesimon/pen/BQgwxG?editors=1100#0">Fix these images</a></li>
+
+</ul>
+
 </section>
-<section id="slide-org944f936">
-<h4 id="org944f936">Image one: spot the typo</h4>
+<section id="slide-org96c2d08">
+<h4 id="org96c2d08">Image one: spot the typo</h4>
 <div class="org-src-container">
 
 <pre><code class="html" ><img src="http://some-url/image.jpg" />
@@ -68,20 +98,44 @@
 we want `src=&#x2026;`, not `scr=&#x2026;` - pay attention to typos!
 </p>
 </section>
-<section id="slide-org1d74b57">
-<h4 id="org1d74b57">Image two</h4>
+<section id="slide-org77ffb46">
+<h4 id="org77ffb46">Image two</h4>
 <p>
 missing closing bracket `&gt;`
 </p>
+
+<pre  class="example">
+// bad
+&lt;img src="http://some-url/image.jpg"
+</pre>
+
+<div class="org-src-container">
+
+<pre><code class="html" >// good
+<img src="http://some-url/image.jpg" />
+</code></pre>
+</div>
 </section>
-<section id="slide-org006c804" data-background="https://media.giphy.com/media/d31x1fB3jEBvQ7E4/giphy.gif" data-background-transition="slide">
-<h4 id="org006c804">Image three: all good</h4>
+<section id="slide-org1e1c82d" data-background="https://media.giphy.com/media/d31x1fB3jEBvQ7E4/giphy.gif" data-background-transition="slide">
+<h4 id="org1e1c82d">Image three: all good</h4>
 
 </section>
 </section>
 <section>
-<section id="slide-orgd1e7344">
-<h3 id="orgd1e7344">picking up the homework: exercise 2</h3>
+<section id="slide-org4254280">
+<h3 id="org4254280">picking up the homework: exercise 2</h3>
+<div class="outline-text-3" id="text-org4254280">
+</div>
+</section>
+<section id="slide-orgd5d06d5">
+<h4 id="orgd5d06d5">"how to hide div css" google search</h4>
+<p>
+<a href="https://www.sitepoint.com/five-ways-to-hide-elements-in-css/">google search</a>
+</p>
+
+</section>
+<section id="slide-org40510f7">
+<h4 id="org40510f7">solution</h4>
 <div class="org-src-container">
 
 <pre><code class="css" >#toHide { visibility: hidden; }
@@ -97,16 +151,17 @@ or
 <pre><code class="css" >#toHide { display: none; }
 </code></pre>
 </div>
+
 </section>
 </section>
 <section>
-<section id="slide-org008f5dd">
-<h3 id="org008f5dd">codecademy homework</h3>
+<section id="slide-org1b88628">
+<h3 id="org1b88628">codecademy homework</h3>
 </section>
 </section>
 <section>
-<section id="slide-org2aa46cd">
-<h3 id="org2aa46cd">what's a variable?</h3>
+<section id="slide-org552c868">
+<h3 id="org552c868">what's a variable?</h3>
 <p>
 A variable is a store, in which you can put different data:
 </p>
@@ -128,22 +183,46 @@ var doITeachAtCity = true;
 </section>
 </section>
 <section>
-<section id="slide-org656aa2d">
-<h3 id="org656aa2d">what are the different data types?</h3>
+<section id="slide-org2347d7e">
+<h3 id="org2347d7e">what are the different data types?</h3>
 <ul>
-<li><b>string</b>: takes quotation marks around it. example: `var name = "basile"; var age = "30"`</li>
-<li><b>number</b>: no quotation marks. example: `var number = 10; var budget = 1245.5`</li>
-<li><b>boolean</b>: logical operators: `var basileIsHere = true; var basileIsShaved = false;`</li>
-<li><b>array/list</b></li>
-<li><b>object</b></li>
-<li><b>null/undefined</b></li>
+<li class="fragment appear"><b>string</b>: takes quotation marks around it. example:</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment (appear)"><code class="js" >var name = "basile"; var age = "30";
+</code></pre>
+</div>
+<ul>
+<li class="fragment appear"><b>number</b>: no quotation marks. example:</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment (appear)"><code class="js" >var number = 10; var budget = 1245.5;
+</code></pre>
+</div>
+<ul>
+<li class="fragment appear"><b>boolean</b>: logical operators:</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre class="fragment (appear)"><code class="js" >var basileIsHere = true; var basileIsShaved = false;
+</code></pre>
+</div>
+<ul>
+<li class="fragment appear"><b>array/list</b> (more later)</li>
+<li class="fragment appear"><b>object</b> (more later)</li>
+<li class="fragment appear"><b>null/undefined</b></li>
 
 </ul>
 </section>
 </section>
 <section>
-<section id="slide-orgb9c144a">
-<h3 id="orgb9c144a">data types: lists/arrays</h3>
+<section id="slide-orgb3042ef">
+<h3 id="orgb3042ef">data types: lists/arrays</h3>
 <div class="org-src-container">
 
 <pre><code class="js" >var thisIsAList = [1,2,3,'basile'];
@@ -167,8 +246,8 @@ Note: lists are said 'zero-padded'
 </section>
 </section>
 <section>
-<section id="slide-org5f8e6af">
-<h3 id="org5f8e6af">data types: objects</h3>
+<section id="slide-org329cf45">
+<h3 id="org329cf45">data types: objects</h3>
 <div class="org-src-container">
 
 <pre><code class="js" >var thisIsAnObject = { name: 'basile', age: 26 };
@@ -189,44 +268,94 @@ console.log(thisIsAnObject.age); // 26
 </section>
 </section>
 <section>
-<section id="slide-orgd058f8e">
-<h3 id="orgd058f8e">the for loop</h3>
+<section id="slide-orga6b060f">
+<h3 id="orga6b060f">what we use data types for</h3>
+<p>
+different data have different use cases.
+</p>
+
+<ul>
+<li class="fragment appear">text is obviously a <b><b>string</b></b></li>
+<li class="fragment appear">if you try to plot numbers on a chart or do maths, you better use <b><b>numbers</b></b>, not strings</li>
+<li class="fragment appear"><b><b>booleans</b></b> will be useful to do logical checks, e.g. "show me all MPs whose age is over 60"</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org5c9844c">
+<h3 id="org5c9844c">what we use data types for (repeat)</h3>
+<p>
+different data have different use cases.
+</p>
+
+<ul>
+<li class="fragment appear"><p>
+<b><b>lists</b></b> can be <b>iterated over</b>, i.e. "for each element in this list, do that"
+</p>
+
+<p>
+think of an Excel column with a formula that you drag down to apply it to all cells
+</p></li>
+
+</ul>
+<ul>
+<li class="fragment appear"><b><b>objects</b></b> are excellent <b>data stores</b> and more rich than so-called <b>flat</b> lists</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgda41ee7">
+<h3 id="orgda41ee7">the for loop</h3>
 <p>
 very useful pattern: `for` iterates over list items.
 </p>
 
 <div class="org-src-container">
 
-<pre><code class="js" >var myList = [1,2,10,37];
+<pre class="fragment (appear)"><code class="js" >var myList = [1,2,10,37];
 
 myList.forEach(function(element) {
   console.log(element);
+  console.log(element + 1);
 }
+// 1, 2, 10, 37
 // 2, 3, 11, 38
 </code></pre>
 </div>
 
-<p>
-for each item at the i-th place in my array, i being equal to 0, inferior to my list's length so I don't go too far, and i being increment by one everytime I'm done, log the said item plus one.
-</p>
+<ul>
+<li class="fragment appear">for each item  in my array,</li>
+<li class="fragment appear">log the said item plus one.</li>
+
+</ul>
 
 </section>
-<section id="slide-orgfceb09c">
-<h4 id="orgfceb09c">another function</h4>
+</section>
+<section>
+<section id="slide-orgd79ed28">
+<h3 id="orgd79ed28">the function</h3>
+<p>
+functions are used to break down your code into separate, simple tasks
+</p>
+
 <div class="org-src-container">
 
 <pre><code class="js" >function sayMyName(name) {
   console.log('HELLO' + name);
 };
-sayMyName('basile') // HELLO BASILE
+sayMyName('basile') // HELLO basile
 </code></pre>
 </div>
 
 </section>
 </section>
 <section>
-<section id="slide-orgfc673ef">
-<h3 id="orgfc673ef">the function</h3>
+<section id="slide-org89268af">
+<h3 id="org89268af">the function (repeat)</h3>
 <p>
 iterating over an array with a function
 </p>
@@ -251,8 +380,8 @@ thisIsAVariable.forEach(function(element) {
 </section>
 </section>
 <section>
-<section id="slide-org97638aa">
-<h3 id="org97638aa">writing code: online code editors</h3>
+<section id="slide-org19ad114">
+<h3 id="org19ad114">writing code: online code editors</h3>
 <p>
 Purpose: no need to put files on your computer
 Just write code and go
@@ -267,19 +396,56 @@ Tip: you might need the devtools to see your javascript!
 <li>Codepen</li>
 
 </ul>
+
 </section>
 </section>
 <section>
-<section id="slide-org7662ace">
-<h3 id="org7662ace">online code editor demo: week 3 project</h3>
+<section id="slide-org4531232">
+<h3 id="org4531232">let's have a look</h3>
+<p>
+<a href="https://codepen.io/basilesimon/pen/GybzoE?editors=1010#0">https://codepen.io/basilesimon/pen/GybzoE?editors=1010#0</a>
+<a href="https://codepen.io/basilesimon/pen/XVLOXv?editors=1010">https://codepen.io/basilesimon/pen/XVLOXv?editors=1010</a>
+</p>
 </section>
 </section>
 <section>
-<section id="slide-org2b8e9ef">
-<h3 id="org2b8e9ef">examples</h3>
+<section id="slide-org02f6a32">
+<h3 id="org02f6a32">online code editor demo: week 3 project</h3>
+</section>
+</section>
+<section>
+<section id="slide-orgb074ea1">
+<h3 id="orgb074ea1">examples</h3>
 <p>
 <a href="https://codepen.io/basilesimon/pen/xpmGmN?editors=1010">https://codepen.io/basilesimon/pen/xpmGmN?editors=1010</a>
 </p>
+
+</section>
+</section>
+<section>
+<section id="slide-org8bf0852">
+<h3 id="org8bf0852">let's practice</h3>
+<p>
+an addition I made yesterday to my dataviz catalogue for the Times:
+</p>
+
+<p>
+<a href="https://github.com/times/dataviz-catalogue/pull/28">https://github.com/times/dataviz-catalogue/pull/28</a>
+</p>
+
+<p>
+practice: <a href="https://codepen.io/basilesimon/pen/MrMNXX">https://codepen.io/basilesimon/pen/MrMNXX</a>
+</p>
+
+<p class="fragment (appear)">
+<a href="https://codepen.io/basilesimon/pen/ppXGBz" class="fragment (appear)">https://codepen.io/basilesimon/pen/ppXGBz</a>
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org1d6007d">
+<h3 id="org1d6007d">homework</h3>
 </section>
 </section>
 </div>

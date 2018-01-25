@@ -83,6 +83,7 @@
 
 * 1.1: The basics
   :LOGBOOK:
+  CLOCK: [2018-01-23 Tue 22:45]--[2018-01-23 Tue 23:04] =>  0:19
   CLOCK: [2018-01-23 Tue 17:51]--[2018-01-23 Tue 18:29] =>  0:38
   CLOCK: [2018-01-18 Thu 20:31]--[2018-01-18 Thu 20:56] =>  0:25
   CLOCK: [2017-12-27 Wed 16:00]--[2017-12-27 Wed 16:39] =>  0:39
@@ -218,18 +219,31 @@
 
 * 1.2: More exercises
   :LOGBOOK:
-  CLOCK: [2018-01-23 Tue 18:29]
+  CLOCK: [2018-01-25 Thu 20:21]
   CLOCK: [2018-01-18 Thu 21:24]--[2018-01-18 Thu 21:32] =>  0:08
   CLOCK: [2018-01-15 Mon 20:54]--[2018-01-15 Mon 21:29] =>  0:35
   CLOCK: [2018-01-15 Mon 20:30]--[2018-01-15 Mon 20:54] =>  0:24
   CLOCK: [2017-12-27 Wed 16:39]--[2017-12-27 Wed 16:54] =>  0:15
   :END:
+** useful links
+   - [[https://www.thetimes.co.uk/article/digital-news-work-experience-qmg8f9585][The Times and Sunday Times work experience]]
+   [[https://www.theguardian.com/gnmeducationcentre/journalism-work-experience-opportunities-young-people][- The Guardian work experience]]
+** final projects
+   [[https://ellawilksharper.github.io/a-day-in-the-life-of-mps/]]
+   [[https://nellmooney.github.io/thecasting/]]
+   [[https://alexandrama.github.io/trump-frequent-mentions/]]
 ** recap from last session
    #+ATTR_REVEAL: :frag (appear)
    - what is the DOM: a tree-like structure and a programming interface around it
    - HTML structures
    - Basics of Javascript: our way to interact with the DOM (among others)
+   
+   #+ATTR_REVEAL: :frag (appear)
+   Let's have a look: [[http://codepen.io/basilesimon/pen/PWNXEK][Codepen]]
+
 ** picking up the homework: exercise 1
+
+-  [[http://codepen.io/basilesimon/pen/BQgwxG?editors=1100#0][Fix these images]]
 
 *** Image one: spot the typo
     #+BEGIN_SRC html
@@ -243,6 +257,16 @@
     we want `src=...`, not `scr=...` - pay attention to typos!
 *** Image two
     missing closing bracket `>`
+
+    #+BEGIN_SRC
+    // bad
+    <img src="http://some-url/image.jpg"
+    #+END_SRC
+
+    #+BEGIN_SRC html
+    // good
+    <img src="http://some-url/image.jpg" />
+    #+END_SRC
 *** Image three: all good
     :PROPERTIES:
     :reveal_background: https://media.giphy.com/media/d31x1fB3jEBvQ7E4/giphy.gif
@@ -250,6 +274,11 @@
     :END:
 
 ** picking up the homework: exercise 2
+*** "how to hide div css" google search
+
+    [[https://www.sitepoint.com/five-ways-to-hide-elements-in-css/][google search]]
+
+*** solution
    #+BEGIN_SRC css
    #toHide { visibility: hidden; }
    #+END_SRC
@@ -259,6 +288,7 @@
    #+BEGIN_SRC css
    #toHide { display: none; }
    #+END_SRC
+
 ** codecademy homework
 ** what's a variable?
 
@@ -275,11 +305,27 @@
    #+END_SRC
 
 ** what are the different data types?
-   - *string*: takes quotation marks around it. example: `var name = "basile"; var age = "30"`
-   - *number*: no quotation marks. example: `var number = 10; var budget = 1245.5`
-   - *boolean*: logical operators: `var basileIsHere = true; var basileIsShaved = false;`
-   - *array/list*
-   - *object*
+   #+ATTR_REVEAL: :frag (appear)
+   - *string*: takes quotation marks around it. example: 
+   #+ATTR_REVEAL: :frag (appear)
+   #+BEGIN_SRC js
+   var name = "basile"; var age = "30";
+   #+END_SRC
+   #+ATTR_REVEAL: :frag (appear)
+   - *number*: no quotation marks. example: 
+   #+ATTR_REVEAL: :frag (appear)
+   #+BEGIN_SRC js
+   var number = 10; var budget = 1245.5;
+   #+END_SRC
+   #+ATTR_REVEAL: :frag (appear)
+   - *boolean*: logical operators: 
+   #+ATTR_REVEAL: :frag (appear)
+   #+BEGIN_SRC js
+   var basileIsHere = true; var basileIsShaved = false;
+   #+END_SRC
+   #+ATTR_REVEAL: :frag (appear)
+   - *array/list* (more later)
+   - *object* (more later)
    - *null/undefined*
 ** data types: lists/arrays
    #+BEGIN_SRC js
@@ -306,29 +352,57 @@
    console.log(thisIsAnObject.age); // 26
    #+END_SRC
 
+** what we use data types for
+
+   different data have different use cases.
+
+   #+ATTR_REVEAL: :frag (appear)
+   - text is obviously a **string**
+   - if you try to plot numbers on a chart or do maths, you better use **numbers**, not strings
+   - **booleans** will be useful to do logical checks, e.g. "show me all MPs whose age is over 60"
+
+** what we use data types for (repeat)
+
+   different data have different use cases.
+
+   #+ATTR_REVEAL: :frag (appear)
+   - **lists** can be *iterated over*, i.e. "for each element in this list, do that"
+   
+     think of an Excel column with a formula that you drag down to apply it to all cells
+   #+ATTR_REVEAL: :frag (appear)
+   - **objects** are excellent *data stores* and more rich than so-called *flat* lists
+
 ** the for loop
    very useful pattern: `for` iterates over list items.
 
+   #+ATTR_REVEAL: :frag (appear)
    #+BEGIN_SRC js
    var myList = [1,2,10,37];
 
    myList.forEach(function(element) {
      console.log(element);
+     console.log(element + 1);
    }
+   // 1, 2, 10, 37
    // 2, 3, 11, 38
    #+END_SRC
 
-   for each item at the i-th place in my array, i being equal to 0, inferior to my list's length so I don't go too far, and i being increment by one everytime I'm done, log the said item plus one.
+   #+ATTR_REVEAL: :frag (appear)
+   - for each item  in my array,
+   - log the said item plus one.
 
-*** another function
+** the function
+
+   functions are used to break down your code into separate, simple tasks
+
    #+BEGIN_SRC js
    function sayMyName(name) {
      console.log('HELLO' + name);
    };
-   sayMyName('basile') // HELLO BASILE
+   sayMyName('basile') // HELLO basile
    #+END_SRC
 
-** the function
+** the function (repeat)
    iterating over an array with a function
 
    #+BEGIN_SRC js
@@ -355,11 +429,26 @@
    
    - JSBin
    - Codepen
+
+** let's have a look 
+   [[https://codepen.io/basilesimon/pen/GybzoE?editors=1010#0]]
+   [[https://codepen.io/basilesimon/pen/XVLOXv?editors=1010]]
 ** online code editor demo: week 3 project
 ** examples
    https://codepen.io/basilesimon/pen/xpmGmN?editors=1010
 
+** let's practice
+   
+   an addition I made yesterday to my dataviz catalogue for the Times:
 
+   [[https://github.com/times/dataviz-catalogue/pull/28]]
+
+   practice: https://codepen.io/basilesimon/pen/MrMNXX
+
+   #+ATTR_REVEAL: :frag (appear)
+   [[https://codepen.io/basilesimon/pen/ppXGBz]]
+
+** homework
 * TODO 2.1: File formats, writing code
   :LOGBOOK:
   CLOCK: [2018-01-18 Thu 12:07]--[2018-01-18 Thu 13:33] =>  1:26
