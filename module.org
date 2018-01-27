@@ -219,7 +219,7 @@
 
 * 1.2: More exercises
   :LOGBOOK:
-  CLOCK: [2018-01-25 Thu 20:21]
+  CLOCK: [2018-01-25 Thu 20:21]--[2018-01-25 Thu 23:51] =>  3:30
   CLOCK: [2018-01-18 Thu 21:24]--[2018-01-18 Thu 21:32] =>  0:08
   CLOCK: [2018-01-15 Mon 20:54]--[2018-01-15 Mon 21:29] =>  0:35
   CLOCK: [2018-01-15 Mon 20:30]--[2018-01-15 Mon 20:54] =>  0:24
@@ -451,147 +451,171 @@
 ** homework
 * TODO 2.1: File formats, writing code
   :LOGBOOK:
+  CLOCK: [2018-01-27 Sat 16:42]--[2018-01-27 Sat 19:42] =>  3:00
   CLOCK: [2018-01-18 Thu 12:07]--[2018-01-18 Thu 13:33] =>  1:26
   :END:
-** Python
+
+** DONE file formats
+   CLOSED: [2018-01-27 Sat 18:31]
+*** File formats
+
+    As for scripts (instructions) and web pages, we sometimes need to store data in files ("datasets").
+
+    That's what you'd get from the ONS, data.gov.uk, an API, etc.
+
+    There are different file formats for different purposes.
+
+*** File formats: CSV
+
+    Standing for Comma-Separated Values, CSV will be of much use to us when it comes to data.
+
+    #+BEGIN_SRC
+    myfile.csv
+    #+END_SRC
+
+    Think of a spreadsheet without any formatting: 
+    * every line in the file is a row,
+    * every comma-separated value is a cell
+
+*** CSV structure
+
+    #+BEGIN_SRC
+    name, occupation, height
+    basile, journalist, 187
+    donald, politician, 188
+    #+END_SRC
+
+*** File formats: JSON
+
+    Standing for JavaScript Object Notation, JSON is almost universally used on the web.
+
+    #+BEGIN_SRC
+    myfile.json
+    #+END_SRC
+
+    Structure in objects (`var anObject = {};`) separated by commas.
+    Made up of `key: value` pairs.
+
+*** JSON structure
+
+    #+BEGIN_SRC
+    var json = {
+      "name": "Basile Simon",
+      "occupation": "journalist",
+      "friends": [ "pierre", "donald", "theresa"]
+    }
+    #+END_SRC
+
+    #+BEGIN_SRC
+    json.name => "Basile Simon"
+    json.friends[0]` => "pierre"
+    #+END_SRC
+
+    https://codepen.io/basilesimon/pen/MrZWZg?editors=1010#
+
+*** JSON and CSV in this course
+
+    We're likely to store data when scraping, cleaning, etc. in CSV format.
+    We'll probably use, or "parse" CSV data into JSON for the web.
+
+    d3.js has a CSV parser: from the CSV above
+
+    #+BEGIN_SRC
+    name, occupation, height
+    basile, journalist, 187
+    donald, politician, 188
+    #+END_SRC
+
+    we parse it as JSON, so we can run `data.name` and get "basile" back
+
+*** File formats: Excel, databases
+
+    Excel/ Google Spreadsheets are **visual representations** or CSV data
+
+    Databases come with, as the DOM does, their programming interface and language (eg SQL)
+
+ ---
+** TODO the iPython notebook
+*** Python
    
-   Python is a programming language created in 1991.
+    Python is a programming language created in 1991.
 
-   It is the most taught programming language around the world.
+    It is the most taught programming language around the world.
 
-** Why Python?
+*** TODO Why Python?
 
-   Newsroom use: https://www.poynter.org/news/introduction-newsroom-programming-technologies
+    Newsroom use: https://www.poynter.org/news/introduction-newsroom-programming-technologies
 
-   Python is very easy to read and to use - and many newsrooms use it.
+    Python is very easy to read and to use - and many newsrooms use it.
+   
+*** running your pythons: the notebook
+    
+    Python also comes with a set of utilities bundled in a GUI: [[http://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Notebook%20Basics.ipynb][the Jupyter Notebook]]
+    
+** data wrangling in Python
+*** preparation: modules
 
-** Running your Pythons
+    #+BEGIN_SRC
+    !pip3 install pandas plotly numpy scipy
+    #+END_SRC
 
-   A Python script is a file, eg `example.py`
+*** links
+    https://matplotlib.org/gallery/statistics/barchart_demo.html
+    https://plot.ly/python/getting-started/
+    http://nbviewer.jupyter.org/github/jvns/pandas-cookbook/blob/v0.1/cookbook/Chapter%205%20-%20Combining%20dataframes%20and%20scraping%20Canadian%20weather%20data.ipynb
+    https://www.analyticsvidhya.com/blog/2016/01/complete-tutorial-learn-data-science-python-scratch-2/
+    https://www.digitalocean.com/community/tutorials/how-to-scrape-web-pages-with-beautiful-soup-and-python-3
+    https://plot.ly/python/ipython-notebook-tutorial/
 
-   You run this file through the **command line** with 
 
-   > `python example.py`
 
-** wait what?
-** Python script
-
-   You write Python code, as well as most code, in a **script file** on your computer.
-
-   image
-
-** To write code, you use a text editor
-
-   https://www.sublimetext.com/
-
-   > Why not Word, Mac's TextEdit?
-
-   These softwares are word processors. They add _lots_ of code around the words you actually see on screen.
-
-** TODO The command line
-** DONE File formats
-   CLOSED: [2018-01-18 Thu 22:58]
-
-   As for scripts (instructions) and web pages, we sometimes need to store data in files ("datasets").
-
-   That's what you'd get from the ONS, data.gov.uk, an API, etc.
-
-   There are different file formats for different purposes.
-
-** DONE File formats: CSV
-   CLOSED: [2018-01-18 Thu 23:05]
-
-   Standing for Comma-Separated Values, CSV will be of much use to us when it comes to data.
-
-   `myfile.csv`
-
-   Think of a spreadsheet without any formatting: 
-   * every line in the file is a row,
-   * every comma-separated value is a cell
-
-** DONE CSV structure
-   CLOSED: [2018-01-18 Thu 23:02]
-
-   ```
-   name, occupation, height
-   basile, journalist, 187
-   donald, politician, 188
-   ```
-
-** DONE File formats: JSON
-   CLOSED: [2018-01-18 Thu 22:58]
-
-   Standing for JavaScript Object Notation, JSON is almost universally used on the web.
-
-   `myfile.json`
-
-   Structure in objects (`var anObject = {};`) separated by commas.
-   Made up of `key: value` pairs.
-
-** DONE JSON structure
-   CLOSED: [2018-01-18 Thu 22:58]
-   ```
-   var json = {
-     "name": "Basile Simon",
-     "occupation": "journalist",
-     "friends": [ "pierre", "donald", "theresa"]
-   }
-   ```
-
-   `json.name => "Basile Simon"`
-   `json.friends[0]` => "pierre"`
-
-   https://codepen.io/basilesimon/pen/MrZWZg?editors=1010#
-
-** DONE JSON and CSV in this course
-   CLOSED: [2018-01-18 Thu 23:04]
-
-   We're likely to store data when scraping, cleaning, etc. in CSV format.
-   We'll probably use, or "parse" CSV data into JSON for the web.
-
-   d3.js has a CSV parser: from the CSV above
-
-   ```
-   name, occupation, height
-   basile, journalist, 187
-   donald, politician, 188
-   ```
-
-   we parse it as JSON, so we can run `data.name` and get "basile" back
-
-** DONE File formats: Excel, databases
-   CLOSED: [2018-01-18 Thu 23:05]
-
-   Excel/ Google Spreadsheets are **visual representations** or CSV data
-
-   Databases come with, as the DOM does, their programming interface and language (eg SQL)
-
-** googling for answers: StackOverflow
 * TODO 2.2: An intro to Python
   :LOGBOOK:
   CLOCK: [2018-01-18 Thu 22:12]--[2018-01-18 Thu 23:12] =>  1:00
   :END:
-** ipython notebooks
-** Let's see some syntax
-** Variables
-** Variables (2)
-** Variables (3)
-** Conditional execution: `if/else`
-** Conditional execution: `if/else` (2)
-** Control flow: `for` loop
-** Methods and functions
-** Modules
-** Scraping?
-** Scraping with Python
-** Scraping in ddj
-** Scraping lessons
-** Scraping exercises for the brave
-** Additional reading
-** Additional reading (2)
+** Running your Pythons
 
-** TODO Exercises
+   A Python script is a file, eg *example.py*
+
+   You run this file through the **command line** with 
+
+   #+BEGIN_SRC
+   > `python example.py`
+   #+END_SRC
+
+** wait what?
+    :PROPERTIES:
+    :reveal_background: https://media.giphy.com/media/z8yYEX4pE3lkc/giphy.gif
+    :reveal_background_trans: slide
+    :END:
+
+** To write code, you use a text editor
+
+   [[https://www.sublimetext.com][for example, Sublime Text]]
+
+   #+BEGIN_QUOTE
+   Why not Word, Mac's TextEdit?
+   #+END_QUOTE
+
+   These softwares are word processors. They add _lots_ of code around the words you actually see on screen.
+
+** TODO The command line
+** TODO Let's see some syntax
+*** Variables
+*** Variables (2)
+*** Variables (3)
+*** Conditional execution: `if/else`
+*** Conditional execution: `if/else` (2)
+*** Control flow: `for` loop
+*** Methods and functions
 * TODO 3.1: Simple scraping in Python
+
+  use session from last year
+
 * TODO 3.2: More complex scraping in Python?
+
+  write twitter api scraping tutorial
+
 * 4.1: R in the newsroom: the tidyverse
   https://tidyverse-intro.github.io/index.html
 * 4.2: R in the newsroom: ggplot
