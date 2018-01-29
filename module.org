@@ -451,6 +451,7 @@
 ** homework
 * TODO 2.1: File formats, writing code
   :LOGBOOK:
+  CLOCK: [2018-01-29 Mon 18:45]
   CLOCK: [2018-01-27 Sat 16:42]--[2018-01-27 Sat 19:42] =>  3:00
   CLOCK: [2018-01-18 Thu 12:07]--[2018-01-18 Thu 13:33] =>  1:26
   :END:
@@ -535,29 +536,55 @@
     Databases come with, as the DOM does, their programming interface and language (eg SQL)
 
  ---
-** TODO the iPython notebook
+** DONE the iPython notebook
+   CLOSED: [2018-01-29 Mon 18:56]
 *** Python
    
     Python is a programming language created in 1991.
 
     It is the most taught programming language around the world.
 
-*** TODO Why Python?
+*** Why Python?
 
     Newsroom use: https://www.poynter.org/news/introduction-newsroom-programming-technologies
 
     Python is very easy to read and to use - and many newsrooms use it.
+
+    **If you can write Python, you can write anything.**
    
+*** What Python looks like
+
+    **Javascript**
+    #+BEGIN_SRC js
+    var foo = 'bar';
+    function myFunction(parameter) {
+      console.log(parameter);
+    };
+    #+END_SRC
+
+    **Python**
+    #+BEGIN_SRC python
+    foo = 'bar'
+    def myFunction(parameter):
+        print(parameter)
+    #+END_SRC
+
 *** running your pythons: the notebook
     
     Python also comes with a set of utilities bundled in a GUI: [[http://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Notebook%20Basics.ipynb][the Jupyter Notebook]]
-    
-** data wrangling in Python
+
+    We can run Python notebooks from the university computers.
+
+    [[./images/jupyter.png]]
+
+** TODO data wrangling in Python
 *** preparation: modules
 
     #+BEGIN_SRC
     !pip3 install pandas plotly numpy scipy
     #+END_SRC
+
+*** white house visitors
 
 *** links
     https://matplotlib.org/gallery/statistics/barchart_demo.html
