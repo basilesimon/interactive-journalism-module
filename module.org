@@ -449,96 +449,94 @@
    [[https://codepen.io/basilesimon/pen/ppXGBz]]
 
 ** homework
-* TODO 2.1: File formats, writing code
+* 2.1: File formats, writing code
   :LOGBOOK:
-  CLOCK: [2018-01-29 Mon 18:45]
+  CLOCK: [2018-01-29 Mon 22:52]--[2018-01-30 Tue 00:25] =>  1:33
+  CLOCK: [2018-01-29 Mon 18:45]--[2018-01-29 Mon 19:30] =>  0:45
   CLOCK: [2018-01-27 Sat 16:42]--[2018-01-27 Sat 19:42] =>  3:00
   CLOCK: [2018-01-18 Thu 12:07]--[2018-01-18 Thu 13:33] =>  1:26
   :END:
 
-** DONE file formats
-   CLOSED: [2018-01-27 Sat 18:31]
-*** File formats
+** file formats
 
-    As for scripts (instructions) and web pages, we sometimes need to store data in files ("datasets").
+   as for scripts (instructions) and web pages, we sometimes need to store data in files ("datasets").
 
-    That's what you'd get from the ONS, data.gov.uk, an API, etc.
+   that's what you'd get from the ONS, data.gov.uk, an API, etc.
 
-    There are different file formats for different purposes.
+   there are different file formats for different purposes.
 
-*** File formats: CSV
+** file formats: CSV
 
-    Standing for Comma-Separated Values, CSV will be of much use to us when it comes to data.
+   standing for Comma-Separated Values, CSV will be of much use to us when it comes to data.
 
-    #+BEGIN_SRC
-    myfile.csv
-    #+END_SRC
+   #+BEGIN_SRC
+   myfile.csv
+   #+END_SRC
 
-    Think of a spreadsheet without any formatting: 
-    * every line in the file is a row,
-    * every comma-separated value is a cell
+   think of a spreadsheet without any formatting: 
+   * every line in the file is a row,
+   * every comma-separated value is a cell
 
 *** CSV structure
 
-    #+BEGIN_SRC
-    name, occupation, height
-    basile, journalist, 187
-    donald, politician, 188
-    #+END_SRC
+   #+BEGIN_SRC
+   name, occupation, height
+   basile, journalist, 187
+   donald, politician, 188
+   #+END_SRC
 
-*** File formats: JSON
+** file formats: JSON
 
-    Standing for JavaScript Object Notation, JSON is almost universally used on the web.
+   standing for JavaScript Object Notation, JSON is almost universally used on the web.
 
-    #+BEGIN_SRC
-    myfile.json
-    #+END_SRC
+   #+BEGIN_SRC
+   myfile.json
+   #+END_SRC
 
-    Structure in objects (`var anObject = {};`) separated by commas.
-    Made up of `key: value` pairs.
+   structure in objects (`var anObject = {};`) separated by commas.
+   made up of `key: value` pairs.
 
 *** JSON structure
 
-    #+BEGIN_SRC
-    var json = {
-      "name": "Basile Simon",
-      "occupation": "journalist",
-      "friends": [ "pierre", "donald", "theresa"]
-    }
-    #+END_SRC
+   #+BEGIN_SRC
+   var json = {
+     "name": "Basile Simon",
+     "occupation": "journalist",
+     "friends": [ "pierre", "donald", "theresa"]
+   }
+   #+END_SRC
 
-    #+BEGIN_SRC
-    json.name => "Basile Simon"
-    json.friends[0]` => "pierre"
-    #+END_SRC
+   #+BEGIN_SRC
+   json.name => "Basile Simon"
+   json.friends[0]` => "pierre"
+   #+END_SRC
 
-    https://codepen.io/basilesimon/pen/MrZWZg?editors=1010#
+   https://codepen.io/basilesimon/pen/MrZWZg?editors=1010#
 
-*** JSON and CSV in this course
 
-    We're likely to store data when scraping, cleaning, etc. in CSV format.
-    We'll probably use, or "parse" CSV data into JSON for the web.
+** JSON and CSV in this course
 
-    d3.js has a CSV parser: from the CSV above
+   we're likely to store data when scraping, cleaning, etc. in CSV format.
+   we'll probably use, or "parse" CSV data into JSON for the web.
 
-    #+BEGIN_SRC
-    name, occupation, height
-    basile, journalist, 187
-    donald, politician, 188
-    #+END_SRC
+   d3.js has a CSV parser: from the CSV above
 
-    we parse it as JSON, so we can run `data.name` and get "basile" back
+   #+BEGIN_SRC
+   name, occupation, height
+   basile, journalist, 187
+   donald, politician, 188
+   #+END_SRC
 
-*** File formats: Excel, databases
+   we parse it as JSON, so we can run `data.name` and get "basile" back
 
-    Excel/ Google Spreadsheets are **visual representations** or CSV data
+** file formats: Excel, databases
 
-    Databases come with, as the DOM does, their programming interface and language (eg SQL)
+   Excel/ Google Spreadsheets are **visual representations** or CSV data
 
- ---
-** DONE the iPython notebook
-   CLOSED: [2018-01-29 Mon 18:56]
-*** Python
+   Databases come with, as the DOM does, their programming interface and language (eg SQL)
+
+** a word about Python
+** Python
    
     Python is a programming language created in 1991.
 
@@ -552,7 +550,7 @@
 
     **If you can write Python, you can write anything.**
    
-*** What Python looks like
+** What Python looks like
 
     **Javascript**
     #+BEGIN_SRC js
@@ -569,7 +567,7 @@
         print(parameter)
     #+END_SRC
 
-*** running your pythons: the notebook
+** running your pythons: the notebook
     
     Python also comes with a set of utilities bundled in a GUI: [[http://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Notebook%20Basics.ipynb][the Jupyter Notebook]]
 
@@ -577,30 +575,23 @@
 
     [[./images/jupyter.png]]
 
-** TODO data wrangling in Python
-*** preparation: modules
-
-    #+BEGIN_SRC
-    !pip3 install pandas plotly numpy scipy
-    #+END_SRC
-
+** data wrangling in Python
 *** white house visitors
-
-*** links
-    https://matplotlib.org/gallery/statistics/barchart_demo.html
-    https://plot.ly/python/getting-started/
-    http://nbviewer.jupyter.org/github/jvns/pandas-cookbook/blob/v0.1/cookbook/Chapter%205%20-%20Combining%20dataframes%20and%20scraping%20Canadian%20weather%20data.ipynb
-    https://www.analyticsvidhya.com/blog/2016/01/complete-tutorial-learn-data-science-python-scratch-2/
-    https://www.digitalocean.com/community/tutorials/how-to-scrape-web-pages-with-beautiful-soup-and-python-3
-    https://plot.ly/python/ipython-notebook-tutorial/
-
-
+*** school earnings
+** links
+   
+   [[https://plot.ly/python/ipython-notebook-tutorial/][A good notebook tutorial]]
+   [[https://plot.ly/python/getting-started/][Plots in Python with Plotly (easy)]]
+   [[http://nbviewer.jupyter.org/github/jvns/pandas-cookbook/blob/v0.1/cookbook/Chapter%205%20-%20Combining%20dataframes%20and%20scraping%20Canadian%20weather%20data.ipynb][An excellent notebook with scraping and plotting]]
+   [[https://www.analyticsvidhya.com/blog/2016/01/complete-tutorial-learn-data-science-python-scratch-2/][Advanced data science methods]]
 
 * TODO 2.2: An intro to Python
   :LOGBOOK:
+  CLOCK: [2018-01-30 Tue 19:12]--[2018-01-30 Tue 23:12] =>  4:00
   CLOCK: [2018-01-18 Thu 22:12]--[2018-01-18 Thu 23:12] =>  1:00
   :END:
-** Running your Pythons
+** DONE Running your Pythons
+   CLOSED: [2018-01-30 Tue 00:26]
 
    A Python script is a file, eg *example.py*
 
@@ -610,13 +601,15 @@
    > `python example.py`
    #+END_SRC
 
-** wait what?
+** DONE wait what?
+   CLOSED: [2018-01-30 Tue 00:26]
     :PROPERTIES:
     :reveal_background: https://media.giphy.com/media/z8yYEX4pE3lkc/giphy.gif
     :reveal_background_trans: slide
     :END:
 
-** To write code, you use a text editor
+** DONE To write code, you use a text editor
+   CLOSED: [2018-01-30 Tue 00:26]
 
    [[https://www.sublimetext.com][for example, Sublime Text]]
 

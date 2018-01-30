@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="../presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-org459cb29">
+<h2 id="org459cb29">2.1: File formats, writing code</h2>
+</section>
+</section>
+<section>
+<section id="slide-org309ed0f">
+<h3 id="org309ed0f">file formats</h3>
+<p>
+as for scripts (instructions) and web pages, we sometimes need to store data in files ("datasets").
+</p>
+
+<p>
+that's what you'd get from the ONS, data.gov.uk, an API, etc.
+</p>
+
+<p>
+there are different file formats for different purposes.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org22a4e9c">
+<h3 id="org22a4e9c">file formats: CSV</h3>
+<p>
+standing for Comma-Separated Values, CSV will be of much use to us when it comes to data.
+</p>
+
+<pre  class="example">
+myfile.csv
+</pre>
+
+<p>
+think of a spreadsheet without any formatting: 
+</p>
+<ul>
+<li>every line in the file is a row,</li>
+<li>every comma-separated value is a cell</li>
+
+</ul>
+
+</section>
+<section id="slide-org02653d2">
+<h4 id="org02653d2">CSV structure</h4>
+<pre  class="example">
+name, occupation, height
+basile, journalist, 187
+donald, politician, 188
+</pre>
+
+</section>
+</section>
+<section>
+<section id="slide-org8b2cdb2">
+<h3 id="org8b2cdb2">file formats: JSON</h3>
+<p>
+standing for JavaScript Object Notation, JSON is almost universally used on the web.
+</p>
+
+<pre  class="example">
+myfile.json
+</pre>
+
+<p>
+structure in objects (`var anObject = {};`) separated by commas.
+made up of `key: value` pairs.
+</p>
+
+</section>
+<section id="slide-org160f2c3">
+<h4 id="org160f2c3">JSON structure</h4>
+<pre  class="example">
+var json = {
+  "name": "Basile Simon",
+  "occupation": "journalist",
+  "friends": [ "pierre", "donald", "theresa"]
+}
+</pre>
+
+<pre  class="example">
+json.name =&gt; "Basile Simon"
+json.friends[0]` =&gt; "pierre"
+</pre>
+
+<p>
+<a href="https://codepen.io/basilesimon/pen/MrZWZg?editors=1010">https://codepen.io/basilesimon/pen/MrZWZg?editors=1010</a>#
+</p>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org70cb6ff">
+<h3 id="org70cb6ff">JSON and CSV in this course</h3>
+<p>
+we're likely to store data when scraping, cleaning, etc. in CSV format.
+we'll probably use, or "parse" CSV data into JSON for the web.
+</p>
+
+<p>
+d3.js has a CSV parser: from the CSV above
+</p>
+
+<pre  class="example">
+name, occupation, height
+basile, journalist, 187
+donald, politician, 188
+</pre>
+
+<p>
+we parse it as JSON, so we can run `data.name` and get "basile" back
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgeda87ce">
+<h3 id="orgeda87ce">file formats: Excel, databases</h3>
+<p>
+Excel/ Google Spreadsheets are <b><b>visual representations</b></b> or CSV data
+</p>
+
+<p>
+Databases come with, as the DOM does, their programming interface and language (eg SQL)
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org840e778">
+<h3 id="org840e778">a word about Python</h3>
+</section>
+</section>
+<section>
+<section id="slide-orge6825bb">
+<h3 id="orge6825bb">Python</h3>
+<p>
+Python is a programming language created in 1991.
+</p>
+
+<p>
+It is the most taught programming language around the world.
+</p>
+
+</section>
+<section id="slide-org9602302">
+<h4 id="org9602302">Why Python?</h4>
+<p>
+Newsroom use: <a href="https://www.poynter.org/news/introduction-newsroom-programming-technologies">https://www.poynter.org/news/introduction-newsroom-programming-technologies</a>
+</p>
+
+<p>
+Python is very easy to read and to use - and many newsrooms use it.
+</p>
+
+<p>
+<b><b>If you can write Python, you can write anything.</b></b>
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org109b2a8">
+<h3 id="org109b2a8">What Python looks like</h3>
+<p>
+<b><b>Javascript</b></b>
+</p>
+<div class="org-src-container">
+
+<pre><code class="js" >var foo = 'bar';
+function myFunction(parameter) {
+  console.log(parameter);
+};
+</code></pre>
+</div>
+
+<p>
+<b><b>Python</b></b>
+</p>
+<div class="org-src-container">
+
+<pre><code class="python" >foo = 'bar'
+def myFunction(parameter):
+    print(parameter)
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org283daeb">
+<h3 id="org283daeb">running your pythons: the notebook</h3>
+<p>
+Python also comes with a set of utilities bundled in a GUI: <a href="http://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Notebook%20Basics.ipynb">the Jupyter Notebook</a>
+</p>
+
+<p>
+We can run Python notebooks from the university computers.
+</p>
+
+
+<div class="figure">
+<p><img src="./images/jupyter.png" alt="jupyter.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org498c6cb">
+<h3 id="org498c6cb">data wrangling in Python</h3>
+<div class="outline-text-3" id="text-org498c6cb">
+</div>
+</section>
+<section id="slide-org975e44b">
+<h4 id="org975e44b">white house visitors</h4>
+</section>
+<section id="slide-orgfbd9774">
+<h4 id="orgfbd9774">school earnings</h4>
+</section>
+</section>
+<section>
+<section id="slide-org0cb2eca">
+<h3 id="org0cb2eca">links</h3>
+<p>
+<a href="https://plot.ly/python/ipython-notebook-tutorial/">A good notebook tutorial</a>
+<a href="https://plot.ly/python/getting-started/">Plots in Python with Plotly (easy)</a>
+<a href="http://nbviewer.jupyter.org/github/jvns/pandas-cookbook/blob/v0.1/cookbook/Chapter%205%20-%20Combining%20dataframes%20and%20scraping%20Canadian%20weather%20data.ipynb">An excellent notebook with scraping and plotting</a>
+<a href="https://www.analyticsvidhya.com/blog/2016/01/complete-tutorial-learn-data-science-python-scratch-2/">Advanced data science methods</a>
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>
