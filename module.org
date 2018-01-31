@@ -591,7 +591,9 @@
   CLOCK: [2018-01-18 Thu 22:12]--[2018-01-18 Thu 23:12] =>  1:00
   :END:
 ** DONE Running your Pythons
-   CLOSED: [2018-01-30 Tue 00:26]
+   CLOSED: [2018-01-30 Tue 21:06]
+
+*** solution one: the old way
 
    A Python script is a file, eg *example.py*
 
@@ -600,6 +602,14 @@
    #+BEGIN_SRC
    > `python example.py`
    #+END_SRC
+
+*** solution two: the notebook
+
+    Python also comes with a set of utilities bundled in a GUI: [[http://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Notebook%20Basics.ipynb][the Jupyter Notebook]]
+
+    We can run Python notebooks from the university computers.
+
+    [[./images/jupyter.png]]
 
 ** DONE wait what?
    CLOSED: [2018-01-30 Tue 00:26]
@@ -620,14 +630,112 @@
    These softwares are word processors. They add _lots_ of code around the words you actually see on screen.
 
 ** TODO The command line
-** TODO Let's see some syntax
-*** Variables
-*** Variables (2)
-*** Variables (3)
-*** Conditional execution: `if/else`
-*** Conditional execution: `if/else` (2)
-*** Control flow: `for` loop
-*** Methods and functions
+** DONE Let's see some syntax
+   CLOSED: [2018-01-30 Tue 21:05]
+*** DONE Variables
+    CLOSED: [2018-01-30 Tue 20:58]
+**** Strings
+
+   #+BEGIN_SRC python
+    variable = 'some text'
+
+    print variable
+    > some text
+   #+END_SRC
+
+**** Integers
+
+   #+BEGIN_SRC python
+    variable = 1
+
+    print variable
+    > 1
+   #+END_SRC
+
+*** DONE Variables (2): Lists
+    CLOSED: [2018-01-30 Tue 20:59]
+
+   #+BEGIN_SRC python
+    list= [1, 2, 'basile']
+
+    print(list)
+    > [1,2,'basile']
+
+    print(list[0])
+    > 1
+
+    print(list[1])
+    > 2
+   #+END_SRC
+
+*** DONE Variables (3): Objects/dictionaries
+    CLOSED: [2018-01-30 Tue 21:00]
+
+   #+BEGIN_SRC python
+    addresses = {'Mum': '07439487463', 'Donal Trump': '573-555-5555'}
+
+    print(addresses['Mum'])
+    > 07439487463
+   #+END_SRC
+
+*** DONE Conditional execution: `if/else`
+    CLOSED: [2018-01-30 Tue 21:00]
+
+   #+BEGIN_SRC python
+    name = 'basile'
+    if name is 'basile'
+       print('okay!')
+
+    > okay!
+   #+END_SRC
+
+*** DONE Conditional execution: `if/else` (2)
+    CLOSED: [2018-01-30 Tue 21:02]
+
+   #+BEGIN_SRC python
+    number = 10
+    if number > 5:
+        print('Wow, that's a big number!')
+   #+END_SRC
+
+*** DONE Booleans
+    CLOSED: [2018-01-30 Tue 21:02]
+    In Python, they are `True` and `False`
+
+   #+BEGIN_SRC python
+    1 == 1
+    "test" != "testing"
+    "test" == 1
+   #+END_SRC
+
+*** DONE Control flow: `for` loop
+    CLOSED: [2018-01-30 Tue 21:05]
+
+   #+BEGIN_SRC python
+    list_of_letters = ['a', 'b', 'c']
+
+    for letter in list_of_letters:
+        print(letter)
+   #+END_SRC
+
+*** DONE Methods and functions
+    CLOSED: [2018-01-30 Tue 21:05]
+
+   #+BEGIN_SRC python
+    def add_two(x):
+        return x + 2
+
+    var = 1
+    print(var)
+    > 1
+
+    add_two(var)
+    > 3
+
+    add_two('basile')
+    > ERROR
+   #+END_SRC
+
 * TODO 3.1: Simple scraping in Python
 
   use session from last year
