@@ -19,7 +19,7 @@
 #+REVEAL_HLEVEL: 2
 
 
-* teaching plan
+* TODO teaching plan
 ** Week 1 - The basics
 
   The mysterious creature that is the DOM, what a webpage actually is, and using the DevTools.  
@@ -34,7 +34,7 @@
   A foundation session in which we'll talk about some basics such as file formats and, er, where do you write code in the first place. We'll rattle through some online resources and communities where you can get help if you're stuck with a problem.
   During the second session we'll see the basics of the Python programming language.
 
-*** Session 1: file formats, writing code
+*** Session 1: file formats, writing code, exploratory data analysis
 *** Session 2: intro to Python
 
 ** Week 3 - Concrete scraping examples in Python
@@ -513,7 +513,6 @@
 
    https://codepen.io/basilesimon/pen/MrZWZg?editors=1010#
 
-
 ** JSON and CSV in this course
 
    we're likely to store data when scraping, cleaning, etc. in CSV format.
@@ -587,9 +586,75 @@
 
 * TODO 2.2: An intro to Python
   :LOGBOOK:
+  CLOCK: [2018-02-01 Thu 23:59]
   CLOCK: [2018-01-30 Tue 19:12]--[2018-01-30 Tue 23:12] =>  4:00
   CLOCK: [2018-01-18 Thu 22:12]--[2018-01-18 Thu 23:12] =>  1:00
   :END:
+** DONE final project inspiration
+   CLOSED: [2018-02-02 Fri 00:15]
+*** matteo
+
+    [[https://matteofgmoschella.github.io/theageofthecyclists/#myPage]]
+
+*** james
+
+    [[https://jsomper.github.io/prisondata/]]
+
+** DONE final project don'ts
+   CLOSED: [2018-02-02 Fri 00:27]
+*** james
+
+    [[https://jsomper.github.io/Antisemitism-project/]]
+
+    it, er... didn't work. like, at all.
+
+    lesson: submit something that works!
+
+*** ayushman
+
+    [[https://ayushman07.github.io/Final-Project/]]
+
+    that's a photo essay without any interactive component to it.
+
+    lesson: there is "data" in the module name. read the spec and make sure you tick the boxes.
+
+** DONE week 5 presentations
+   CLOSED: [2018-02-02 Fri 00:53]
+*** Reminder
+
+    #+BEGIN_QUOTE 
+    Pick one journalism piece/tool that illustrates a format or technique. Produce a presentation and report on the piece, how it's built, and the landscape of that format/technique in online journalism today.
+    #+END_QUOTE
+
+*** Example topics
+
+    Some examples (please don't use these - come up with one of your own!):
+
+    [[https://www.nytimes.com/interactive/2017/01/15/us/politics/you-draw-obama-legacy.html]]
+    Storytelling interactivity
+
+    [[https://www.buzzfeed.com/heidiblake/the-tennis-racket]]
+    Algorithmic journalism, computer-assisted journalism
+
+    [[https://www.theguardian.com/world/interactive/2013/nov/01/snowden-nsa-files-surveillance-revelations-decoded]]
+    All-rounder
+
+*** More example topics
+
+    [[https://panamapapers.icij.org/]]
+    [[http://panamapapers.sueddeutsche.de/articles/56febff0a1bb8d3c3495adf4/]]
+    Relational database, network analysis, follow-the-money approach
+
+    [[http://drones.pitchinteractive.com/]]
+    Data-led storytelling
+
+    [[http://www.jplusplus.org/en/project/rentswatch/]]
+    Crowdfunding + scraping
+
+    [[http://newsroom.tools/]]
+    [[http://otranscribe.com/]]
+    Journalism Tools
+
 ** DONE Running your Pythons
    CLOSED: [2018-01-30 Tue 21:06]
 
@@ -603,6 +668,12 @@
    > `python example.py`
    #+END_SRC
 
+*** DONE wait what?
+    CLOSED: [2018-01-30 Tue 00:26]
+    :PROPERTIES:
+    :reveal_background: https://media.giphy.com/media/z8yYEX4pE3lkc/giphy.gif
+    :reveal_background_trans: slide
+    :END:
 *** solution two: the notebook
 
     Python also comes with a set of utilities bundled in a GUI: [[http://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Notebook%20Basics.ipynb][the Jupyter Notebook]]
@@ -611,12 +682,6 @@
 
     [[./images/jupyter.png]]
 
-** DONE wait what?
-   CLOSED: [2018-01-30 Tue 00:26]
-    :PROPERTIES:
-    :reveal_background: https://media.giphy.com/media/z8yYEX4pE3lkc/giphy.gif
-    :reveal_background_trans: slide
-    :END:
 
 ** DONE To write code, you use a text editor
    CLOSED: [2018-01-30 Tue 00:26]
@@ -629,7 +694,6 @@
 
    These softwares are word processors. They add _lots_ of code around the words you actually see on screen.
 
-** TODO The command line
 ** DONE Let's see some syntax
    CLOSED: [2018-01-30 Tue 21:05]
 *** DONE Variables
@@ -736,6 +800,41 @@
     > ERROR
    #+END_SRC
 
+** DONE web scraping free text in python
+   CLOSED: [2018-02-02 Fri 00:58]
+    [[./images/guido.png]]
+
+*** output
+
+    This is a comma-separated values format, where every line in the file is a data record.
+
+    [[https://en.wikipedia.org/wiki/Comma-separated_values]]
+
+    #+BEGIN_SRC 
+    MP,Party,Constituency
+    Heidi Alexander ,Labour,Lewisham East
+    Rushanara Ali ,Labour,Bethnal Green and Bow
+    Mr Graham Allen ,Labour,Nottingham North
+    Lyn Brown ,Labour,West Ham
+    Chris Bryant ,Labour,Rhondda
+    Ms Karen Buck ,Labour,Westminster North
+    Dawn Butler ,Labour,Brent Central
+    #+END_SRC
+
+*** How?
+
+    - Open the page
+    - Fire up your DevTools
+    - Tinker with the DOM to spot the consistency
+    - Understand the tree structure to reach the elements you want
+
+    Scraping is all about targeting the right element(s), and/or identifying the patterns in the document.
+    
+    Because through programming, patterns can be pried open and stripped bare, leaving only the relevant information.
+
+*** Let's get scraping
+
+    [[https://order-order.com/2017/02/08/named-122-mps-voted-brexit/]]
 * TODO 3.1: Simple scraping in Python
 
   use session from last year
