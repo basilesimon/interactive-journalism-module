@@ -584,14 +584,13 @@
    [[http://nbviewer.jupyter.org/github/jvns/pandas-cookbook/blob/v0.1/cookbook/Chapter%205%20-%20Combining%20dataframes%20and%20scraping%20Canadian%20weather%20data.ipynb][An excellent notebook with scraping and plotting]]
    [[https://www.analyticsvidhya.com/blog/2016/01/complete-tutorial-learn-data-science-python-scratch-2/][Advanced data science methods]]
 
-* TODO 2.2: An intro to Python
+* 2.2: An intro to Python
   :LOGBOOK:
-  CLOCK: [2018-02-01 Thu 23:59]
+  CLOCK: [2018-02-01 Thu 23:59]--[2018-02-02 Fri 01:10] =>  1:11
   CLOCK: [2018-01-30 Tue 19:12]--[2018-01-30 Tue 23:12] =>  4:00
   CLOCK: [2018-01-18 Thu 22:12]--[2018-01-18 Thu 23:12] =>  1:00
   :END:
-** DONE final project inspiration
-   CLOSED: [2018-02-02 Fri 00:15]
+** final project inspiration
 *** matteo
 
     [[https://matteofgmoschella.github.io/theageofthecyclists/#myPage]]
@@ -600,8 +599,7 @@
 
     [[https://jsomper.github.io/prisondata/]]
 
-** DONE final project don'ts
-   CLOSED: [2018-02-02 Fri 00:27]
+** final project don'ts
 *** james
 
     [[https://jsomper.github.io/Antisemitism-project/]]
@@ -618,8 +616,7 @@
 
     lesson: there is "data" in the module name. read the spec and make sure you tick the boxes.
 
-** DONE week 5 presentations
-   CLOSED: [2018-02-02 Fri 00:53]
+** week 5 presentations
 *** Reminder
 
     #+BEGIN_QUOTE 
@@ -655,8 +652,7 @@
     [[http://otranscribe.com/]]
     Journalism Tools
 
-** DONE Running your Pythons
-   CLOSED: [2018-01-30 Tue 21:06]
+** Running your Pythons
 
 *** solution one: the old way
 
@@ -668,8 +664,7 @@
    > `python example.py`
    #+END_SRC
 
-*** DONE wait what?
-    CLOSED: [2018-01-30 Tue 00:26]
+*** wait what?
     :PROPERTIES:
     :reveal_background: https://media.giphy.com/media/z8yYEX4pE3lkc/giphy.gif
     :reveal_background_trans: slide
@@ -683,8 +678,7 @@
     [[./images/jupyter.png]]
 
 
-** DONE To write code, you use a text editor
-   CLOSED: [2018-01-30 Tue 00:26]
+** To write code, you use a text editor
 
    [[https://www.sublimetext.com][for example, Sublime Text]]
 
@@ -694,10 +688,8 @@
 
    These softwares are word processors. They add _lots_ of code around the words you actually see on screen.
 
-** DONE Let's see some syntax
-   CLOSED: [2018-01-30 Tue 21:05]
-*** DONE Variables
-    CLOSED: [2018-01-30 Tue 20:58]
+** Let's see some syntax
+*** Variables
 **** Strings
 
    #+BEGIN_SRC python
@@ -716,8 +708,7 @@
     > 1
    #+END_SRC
 
-*** DONE Variables (2): Lists
-    CLOSED: [2018-01-30 Tue 20:59]
+*** Variables (2): Lists
 
    #+BEGIN_SRC python
     list= [1, 2, 'basile']
@@ -732,8 +723,7 @@
     > 2
    #+END_SRC
 
-*** DONE Variables (3): Objects/dictionaries
-    CLOSED: [2018-01-30 Tue 21:00]
+*** Variables (3): Objects/dictionaries
 
    #+BEGIN_SRC python
     addresses = {'Mum': '07439487463', 'Donal Trump': '573-555-5555'}
@@ -742,8 +732,7 @@
     > 07439487463
    #+END_SRC
 
-*** DONE Conditional execution: `if/else`
-    CLOSED: [2018-01-30 Tue 21:00]
+*** Conditional execution: `if/else`
 
    #+BEGIN_SRC python
     name = 'basile'
@@ -753,8 +742,7 @@
     > okay!
    #+END_SRC
 
-*** DONE Conditional execution: `if/else` (2)
-    CLOSED: [2018-01-30 Tue 21:02]
+*** Conditional execution: `if/else` (2)
 
    #+BEGIN_SRC python
     number = 10
@@ -762,8 +750,7 @@
         print('Wow, that's a big number!')
    #+END_SRC
 
-*** DONE Booleans
-    CLOSED: [2018-01-30 Tue 21:02]
+*** Booleans
     In Python, they are `True` and `False`
 
    #+BEGIN_SRC python
@@ -772,8 +759,7 @@
     "test" == 1
    #+END_SRC
 
-*** DONE Control flow: `for` loop
-    CLOSED: [2018-01-30 Tue 21:05]
+*** Control flow: `for` loop
 
    #+BEGIN_SRC python
     list_of_letters = ['a', 'b', 'c']
@@ -782,8 +768,7 @@
         print(letter)
    #+END_SRC
 
-*** DONE Methods and functions
-    CLOSED: [2018-01-30 Tue 21:05]
+*** Methods and functions
 
    #+BEGIN_SRC python
     def add_two(x):
@@ -800,8 +785,7 @@
     > ERROR
    #+END_SRC
 
-** DONE web scraping free text in python
-   CLOSED: [2018-02-02 Fri 00:58]
+** web scraping free text in python
     [[./images/guido.png]]
 
 *** output
