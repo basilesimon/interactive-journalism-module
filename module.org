@@ -677,7 +677,6 @@
 
     [[./images/jupyter.png]]
 
-
 ** To write code, you use a text editor
 
    [[https://www.sublimetext.com][for example, Sublime Text]]
@@ -820,15 +819,83 @@
 
     [[https://order-order.com/2017/02/08/named-122-mps-voted-brexit/]]
 * TODO 3.1: Simple scraping in Python
+  :LOGBOOK:
+  CLOCK: [2018-02-04 Sun 22:10]--[2018-02-04 Sun 22:23] =>  0:13
+  CLOCK: [2018-02-04 Sun 20:38]--[2018-02-04 Sun 22:00] =>  1:22
+  :END:
 
-  use session from last year
+** recap from last week
+*** Python syntax
 
+    #+BEGIN_SRC python
+    foo = 'bar'
+    aList = [1,2,'lol']
+    if 'lol' in aList:
+        print('element found')
+    for element in foo:
+        if 'lol' is element:
+            print element
+            # > 'lol'
+    #+END_SRC
+
+*** web scraping with BeautifulSoup
+
+    #+BEGIN_SRC python
+    url = 'https://order-order.com/2017/02/08/named-122-mps-voted-brexit/'
+    response = requests.get(url)
+
+    # parses HTML
+    html = response.content
+
+    # magic method
+    soup = BeautifulSoup(html, 'lxml')
+
+    # now we can work
+    soup.findAll('html elements')
+    #+END_SRC
+
+** scraping traitors
+*** understanding the page structure
+    
+    - two <blockquote>
+    - each contaning many <em>
+    - each <em> containing our data points
+ 
+*** mostly, it looks like so
+
+    name (party - constituency)
+
+    eg 
+
+    #+BEGIN_SRC 
+    Martyn Day (Scottish National Party – Linlithgow and East Falkirk)
+    Maria Eagle (Labour – Garston and Halewood)
+    #+END_SRC
+
+*** problems
+
+    - a few _Labour (Co-op)
+    - one SNP- Inverness
+
+    This is the key issue with web scraping: dirty data!
+
+*** back to our notebook!
+** TODO spotting traitors
+   adapt in pandas from https://github.com/basilesimon/interactive-journalism-module/blob/archive/2016-2017/week4/spotting-traitors/script.R
+
+  
 * TODO 3.2: More complex scraping in Python?
+  :LOGBOOK:
+  CLOCK: [2018-02-04 Sun 22:00]--[2018-02-04 Sun 22:10] =>  0:10
+  :END:
 
   write twitter api scraping tutorial
+  resource: https://github.com/woblers/tweezers/blob/master/tweezers_examples.ipynb
 
 * 4.1: R in the newsroom: the tidyverse
   https://tidyverse-intro.github.io/index.html
+  https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html
+
 * 4.2: R in the newsroom: ggplot
 * 5.1: Data cleaning in R
 * 5.2: Some stats in R
