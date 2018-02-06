@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="../presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-org237ed73">
+<h2 id="org237ed73">setup</h2>
+<div class="outline-text-2" id="text-org237ed73">
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org58a4e5f">
+<h3 id="org58a4e5f">register on twitter</h3>
+</section>
+</section>
+<section>
+<section id="slide-org84cec8c">
+<h3 id="org84cec8c">register your phone number with your account</h3>
+<p>
+click on your profile pic (top left-hand side), then head to "Mobile"
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org74b2d72">
+<h3 id="org74b2d72">create your (first?) twitter app</h3>
+<p>
+<a href="https://apps.twitter.com/">https://apps.twitter.com/</a>
+</p>
+
+<p>
+that's a common way to keep control of who's allowed to use your service.
+this way, they can shut your app down <a href="https://www.theverge.com/2015/6/4/8731387/politwoops-sunlight-foundation-twitter">if you abuse your privileges</a>
+</p>
+
+
+<div class="figure">
+<p><img src="./img/twitter-create-app.png" alt="twitter-create-app.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org222a185">
+<h3 id="org222a185">fill in application details</h3>
+
+<div class="figure">
+<p><img src="./img/twitter-app-info.png" alt="twitter-app-info.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org2126c29">
+<h3 id="org2126c29">DO NOT publish your API keys etc.</h3>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>

@@ -903,12 +903,34 @@
   
 * TODO 3.2: More complex scraping in Python?
   :LOGBOOK:
+  CLOCK: [2018-02-06 Tue 18:34]--[2018-02-06 Tue 19:17] =>  0:43
   CLOCK: [2018-02-04 Sun 22:00]--[2018-02-04 Sun 22:10] =>  0:10
   :END:
 
   write twitter api scraping tutorial
   resource: https://github.com/woblers/tweezers/blob/master/tweezers_examples.ipynb
 
+** setup
+*** register on twitter
+
+    - log into your twitter account
+    - register your phone number with your account
+    - click on your profile pic (top left-hand side), then head to "Mobile"
+
+*** create your (first?) twitter app
+
+    https://apps.twitter.com/
+
+    that's a common way to keep control of who's allowed to use your service.
+    this way, they can shut your app down [[https://www.theverge.com/2015/6/4/8731387/politwoops-sunlight-foundation-twitter][if you abuse your privileges]]
+
+    [[./img/twitter-app-create.png]]
+    
+*** fill in application details
+
+    [[./img/twitter-app-info.png]]
+
+*** DO NOT publish your API keys etc.
 * 4.1: R in the newsroom: the tidyverse
   https://tidyverse-intro.github.io/index.html
   https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html
