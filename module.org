@@ -818,7 +818,7 @@
 *** Let's get scraping
 
     [[https://order-order.com/2017/02/08/named-122-mps-voted-brexit/]]
-* TODO 3.1: Simple scraping in Python
+* 3.1: Simple scraping in Python
   :LOGBOOK:
   CLOCK: [2018-02-05 Mon 22:59]--[2018-02-06 Tue 00:50] =>  1:51
   CLOCK: [2018-02-04 Sun 22:10]--[2018-02-04 Sun 22:23] =>  0:13
@@ -829,10 +829,17 @@
 *** Python syntax
 
     #+BEGIN_SRC python
+    # a variable
     foo = 'bar'
+
+    # a list
     aList = [1,2,'lol']
+
+    # an if statement
     if 'lol' in aList:
         print('element found')
+
+    # a for loop
     for element in foo:
         if 'lol' is element:
             print element
@@ -890,7 +897,13 @@
    - each list in our list of list is a row
    - write CSV file
 
+** scraping: result!
+
+   [[./img/results.png]]
+
 ** spotting traitors
+
+   Now that we've got our 122 names we want to see who betrayed their constituency: jump to `spotting-traitors`
 
 *** links we used
     
@@ -903,12 +916,15 @@
   
 * TODO 3.2: More complex scraping in Python?
   :LOGBOOK:
+  CLOCK: [2018-02-06 Tue 22:04]--[2018-02-06 Tue 22:20] =>  0:16
+  CLOCK: [2018-02-06 Tue 20:53]--[2018-02-06 Tue 21:22] =>  0:29
   CLOCK: [2018-02-06 Tue 18:34]--[2018-02-06 Tue 19:17] =>  0:43
   CLOCK: [2018-02-04 Sun 22:00]--[2018-02-04 Sun 22:10] =>  0:10
   :END:
 
   write twitter api scraping tutorial
   resource: https://github.com/woblers/tweezers/blob/master/tweezers_examples.ipynb
+  resource: [[https://dev.to/rodolfoferro/sentiment-analysis-on-trumpss-tweets-using-python-]]
 
 ** setup
 *** register on twitter
@@ -931,6 +947,23 @@
     [[./img/twitter-app-info.png]]
 
 *** DO NOT publish your API keys etc.
+** TODO tools of the trade: the APIs
+** how to use an API?
+
+   - read the documentation
+   - find a convenient wrapper library that does the heavy lifting for you
+
+   in our case: that's [[http://tweepy.readthedocs.io/en/v3.5.0/getting_started.html][tweepy]], a wrapper library around the twitter API built in python.
+
+*** installing tweepy
+
+    #+BEGIN_SRC 
+    pip3 install tweepy
+    #+END_SRC
+
+    [[http://tweepy.readthedocs.io/en/v3.5.0/getting_started.html][Getting started with tweepy]]
+
+
 * 4.1: R in the newsroom: the tidyverse
   https://tidyverse-intro.github.io/index.html
   https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="../presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-orgee30b6d">
+<h2 id="orgee30b6d">3.1: Simple scraping in Python</h2>
+</section>
+</section>
+<section>
+<section id="slide-org844548a">
+<h3 id="org844548a">recap from last week</h3>
+<div class="outline-text-3" id="text-org844548a">
+</div>
+</section>
+<section id="slide-org1f87ba9">
+<h4 id="org1f87ba9">Python syntax</h4>
+<div class="org-src-container">
+
+<pre><code class="python" ># a variable
+foo = 'bar'
+
+# a list
+aList = [1,2,'lol']
+
+# an if statement
+if 'lol' in aList:
+    print('element found')
+
+# a for loop
+for element in foo:
+    if 'lol' is element:
+        print element
+        # > 'lol'
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orge24df66">
+<h4 id="orge24df66">web scraping with BeautifulSoup</h4>
+<div class="org-src-container">
+
+<pre><code class="python" >url = 'https://order-order.com/2017/02/08/named-122-mps-voted-brexit/'
+response = requests.get(url)
+
+# parses HTML
+html = response.content
+
+# magic method
+soup = BeautifulSoup(html, 'lxml')
+
+# now we can work
+soup.findAll('html elements')
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org508dc95">
+<h3 id="org508dc95">scraping traitors</h3>
+<div class="outline-text-3" id="text-org508dc95">
+</div>
+</section>
+<section id="slide-org025156d">
+<h4 id="org025156d">understanding the page structure</h4>
+<ul>
+<li>two &lt;blockquote&gt;</li>
+<li>each contaning many &lt;em&gt;</li>
+<li>each &lt;em&gt; containing our data points</li>
+
+</ul>
+
+</section>
+<section id="slide-org98cf1af">
+<h4 id="org98cf1af">mostly, it looks like so</h4>
+<p>
+"name (party - constituency)"
+</p>
+
+<p>
+eg 
+</p>
+
+<pre  class="example">
+Martyn Day (Scottish National Party – Linlithgow and East Falkirk)
+Maria Eagle (Labour – Garston and Halewood)
+</pre>
+
+</section>
+<section id="slide-orgc489c5c">
+<h4 id="orgc489c5c">problems</h4>
+<ul>
+<li>a few _Labour (Co-op)</li>
+<li>one SNP- Inverness</li>
+
+</ul>
+
+<p>
+This is the key issue with web scraping: dirty data!
+</p>
+
+</section>
+<section id="slide-org5f57732">
+<h4 id="org5f57732">back to our notebook!</h4>
+</section>
+</section>
+<section>
+<section id="slide-orgb4452fc">
+<h3 id="orgb4452fc">scraping: recap</h3>
+<ul>
+<li>for each &lt;em&gt; in each &lt;blockquote&gt;</li>
+<li>split the text in different ways to create our variables</li>
+<li>add our variables to a list</li>
+<li>add this list to another list (a list of list, then)</li>
+<li>each list in our list of list is a row</li>
+<li>write CSV file</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org78ac18b">
+<h3 id="org78ac18b">scraping: result!</h3>
+
+<div class="figure">
+<p><img src="./img/results.png" alt="results.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org583513d">
+<h3 id="org583513d">spotting traitors</h3>
+<p>
+Now that we've got our 122 names we want to see who betrayed their constituency: jump to `spotting-traitors`
+</p>
+
+</section>
+<section id="slide-org31d4c84">
+<h4 id="org31d4c84">links we used</h4>
+<ul>
+<li><a href="https://www.shanelynn.ie/merge-join-dataframes-python-pandas-index-1/#mergetypes">merge types</a></li>
+<li><a href="https://jeffdelaney.me/blog/useful-snippets-in-pandas/">useful pandas snippets</a></li>
+
+</ul>
+
+</section>
+<section id="slide-org8e09a11">
+<h4 id="org8e09a11">reading</h4>
+<ul>
+<li><a href="https://www.datacamp.com/community/tutorials/exploratory-data-analysis-python">more pandas, a course</a></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>
