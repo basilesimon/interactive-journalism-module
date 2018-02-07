@@ -677,7 +677,6 @@
 
     [[./images/jupyter.png]]
 
-
 ** To write code, you use a text editor
 
    [[https://www.sublimetext.com][for example, Sublime Text]]
@@ -819,16 +818,156 @@
 *** Let's get scraping
 
     [[https://order-order.com/2017/02/08/named-122-mps-voted-brexit/]]
-* TODO 3.1: Simple scraping in Python
+* 3.1: Simple scraping in Python
+  :LOGBOOK:
+  CLOCK: [2018-02-05 Mon 22:59]--[2018-02-06 Tue 00:50] =>  1:51
+  CLOCK: [2018-02-04 Sun 22:10]--[2018-02-04 Sun 22:23] =>  0:13
+  CLOCK: [2018-02-04 Sun 20:38]--[2018-02-04 Sun 22:00] =>  1:22
+  :END:
 
-  use session from last year
+** recap from last week
+*** Python syntax
 
+    #+BEGIN_SRC python
+    # a variable
+    foo = 'bar'
+
+    # a list
+    aList = [1,2,'lol']
+
+    # an if statement
+    if 'lol' in aList:
+        print('element found')
+
+    # a for loop
+    for element in foo:
+        if 'lol' is element:
+            print element
+            # > 'lol'
+    #+END_SRC
+
+*** web scraping with BeautifulSoup
+
+    #+BEGIN_SRC python
+    url = 'https://order-order.com/2017/02/08/named-122-mps-voted-brexit/'
+    response = requests.get(url)
+
+    # parses HTML
+    html = response.content
+
+    # magic method
+    soup = BeautifulSoup(html, 'lxml')
+
+    # now we can work
+    soup.findAll('html elements')
+    #+END_SRC
+
+** scraping traitors
+*** understanding the page structure
+    
+    - two <blockquote>
+    - each contaning many <em>
+    - each <em> containing our data points
+ 
+*** mostly, it looks like so
+
+    "name (party - constituency)"
+
+    eg 
+
+    #+BEGIN_SRC 
+    Martyn Day (Scottish National Party – Linlithgow and East Falkirk)
+    Maria Eagle (Labour – Garston and Halewood)
+    #+END_SRC
+
+*** problems
+
+    - a few _Labour (Co-op)
+    - one SNP- Inverness
+
+    This is the key issue with web scraping: dirty data!
+
+*** back to our notebook!
+** scraping: recap
+
+   - for each <em> in each <blockquote>
+   - split the text in different ways to create our variables
+   - add our variables to a list
+   - add this list to another list (a list of list, then)
+   - each list in our list of list is a row
+   - write CSV file
+
+** scraping: result!
+
+   [[./img/results.png]]
+
+** spotting traitors
+
+   Now that we've got our 122 names we want to see who betrayed their constituency: jump to `spotting-traitors`
+
+*** links we used
+    
+   - [[https://www.shanelynn.ie/merge-join-dataframes-python-pandas-index-1/#mergetypes][merge types]]
+   - [[https://jeffdelaney.me/blog/useful-snippets-in-pandas/][useful pandas snippets]]
+
+*** reading
+
+    - [[https://www.datacamp.com/community/tutorials/exploratory-data-analysis-python][more pandas, a course]]
+  
 * TODO 3.2: More complex scraping in Python?
+  :LOGBOOK:
+  CLOCK: [2018-02-06 Tue 22:04]--[2018-02-06 Tue 22:20] =>  0:16
+  CLOCK: [2018-02-06 Tue 20:53]--[2018-02-06 Tue 21:22] =>  0:29
+  CLOCK: [2018-02-06 Tue 18:34]--[2018-02-06 Tue 19:17] =>  0:43
+  CLOCK: [2018-02-04 Sun 22:00]--[2018-02-04 Sun 22:10] =>  0:10
+  :END:
 
   write twitter api scraping tutorial
+  resource: https://github.com/woblers/tweezers/blob/master/tweezers_examples.ipynb
+  resource: [[https://dev.to/rodolfoferro/sentiment-analysis-on-trumpss-tweets-using-python-]]
+
+** setup
+*** register on twitter
+
+    - log into your twitter account
+    - register your phone number with your account
+    - click on your profile pic (top left-hand side), then head to "Mobile"
+
+*** create your (first?) twitter app
+
+    https://apps.twitter.com/
+
+    that's a common way to keep control of who's allowed to use your service.
+    this way, they can shut your app down [[https://www.theverge.com/2015/6/4/8731387/politwoops-sunlight-foundation-twitter][if you abuse your privileges]]
+
+    [[./img/twitter-app-create.png]]
+    
+*** fill in application details
+
+    [[./img/twitter-app-info.png]]
+
+*** DO NOT publish your API keys etc.
+** TODO tools of the trade: the APIs
+** how to use an API?
+
+   - read the documentation
+   - find a convenient wrapper library that does the heavy lifting for you
+
+   in our case: that's [[http://tweepy.readthedocs.io/en/v3.5.0/getting_started.html][tweepy]], a wrapper library around the twitter API built in python.
+
+*** installing tweepy
+
+    #+BEGIN_SRC 
+    pip3 install tweepy
+    #+END_SRC
+
+    [[http://tweepy.readthedocs.io/en/v3.5.0/getting_started.html][Getting started with tweepy]]
+
 
 * 4.1: R in the newsroom: the tidyverse
   https://tidyverse-intro.github.io/index.html
+  https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html
+
 * 4.2: R in the newsroom: ggplot
 * 5.1: Data cleaning in R
 * 5.2: Some stats in R
