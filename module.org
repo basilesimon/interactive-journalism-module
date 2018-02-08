@@ -914,17 +914,87 @@
 
     - [[https://www.datacamp.com/community/tutorials/exploratory-data-analysis-python][more pandas, a course]]
   
-* TODO 3.2: More complex scraping in Python?
+* 3.2: More complex scraping in Python?
   :LOGBOOK:
+  CLOCK: [2018-02-08 Thu 21:37]--[2018-02-08 Thu 21:41] =>  0:04
+  CLOCK: [2018-02-08 Thu 20:18]--[2018-02-08 Thu 21:03] =>  0:45
+  CLOCK: [2018-02-08 Thu 18:27]--[2018-02-08 Thu 19:08] =>  0:41
   CLOCK: [2018-02-06 Tue 22:04]--[2018-02-06 Tue 22:20] =>  0:16
   CLOCK: [2018-02-06 Tue 20:53]--[2018-02-06 Tue 21:22] =>  0:29
   CLOCK: [2018-02-06 Tue 18:34]--[2018-02-06 Tue 19:17] =>  0:43
   CLOCK: [2018-02-04 Sun 22:00]--[2018-02-04 Sun 22:10] =>  0:10
   :END:
+  
+** javascript exercise
 
-  write twitter api scraping tutorial
-  resource: https://github.com/woblers/tweezers/blob/master/tweezers_examples.ipynb
-  resource: [[https://dev.to/rodolfoferro/sentiment-analysis-on-trumpss-tweets-using-python-]]
+   #+BEGIN_QUOTE
+   Build an interactive thing in Javascript, that responds to a user input.
+   #+END_QUOTE
+
+** assessment update
+   #+ATTR_REVEAL: :frag (appear)
+   - still waiting on deadlines to be updated
+   - are you clear on what the week 5 assessment is?
+   - final project: two routes...
+
+** two routes for the final project
+   #+ATTR_REVEAL: :frag (appear)
+
+   - option one: build a full website
+   - option two: host your content on Medium/blog/Wordpress
+
+   Obviously I will assess the two options differently, i.e.
+
+   #+ATTR_REVEAL: :frag (appear)
+   - if you do more website, front-end work, I will be kinder on the data work
+   - if you do little website-building, your data work must be top notch!
+
+** scraping, scraping!
+
+*** web scraping v API
+
+    [[https://www.grepsr.com/web-scraping-vs-api/][a simple comparison]]:
+
+   #+ATTR_REVEAL: :frag (appear)
+    - is an API available/hidden?
+    - is the API actually up-to-date?
+    - rate limiting
+    - but better structure
+   
+   One thing to consider: the ethics of web scraping: see this recent [[https://www.eff.org/deeplinks/2018/01/ninth-circuit-doubles-down-violating-websites-terms-service-not-crime][Ninth Circuit ruling]] that violating a website's term of service is not a crime
+
+*** web scraping
+
+    [[https://blog.hartleybrody.com/web-scraping/][Every website can be scraped]]*
+
+   #+ATTR_REVEAL: :frag (appear)
+   * if you're good enough
+   
+   good practice: set headers in your web requests identifying yourself
+
+   #+BEGIN_SRC python
+   import requests
+ 
+   headers = {'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5);
+                Basile Simon/ London/ basile.simon@thetimes.co.uk'}
+   html = requests.get(url, headers=headers)
+   #+END_SRC
+
+   [[https://medium.freecodecamp.org/how-to-scrape-websites-with-python-and-beautifulsoup-5946935d93fe][A good tutorial]]
+
+*** API scraping
+
+    using an API is using an authorised service
+
+** tools of the trade: the APIs
+
+   [[https://www.theguardian.com/media/pda/2007/dec/14/thenutshellabeginnersguide][even the Guardian has a piece about "what's an API"]]
+
+   #+BEGIN_QUOTE
+   The exception are sites built on open source code, which is sort of like a *worldwide hippy commune* of developers who share their notes. The idea is that they can make better products and software if lots of people collaborate on a project.
+   #+END_QUOTE
+
+   good API example: [[https://postcodes.io/][postcodes.io]]
 
 ** setup
 *** register on twitter
@@ -947,7 +1017,8 @@
     [[./img/twitter-app-info.png]]
 
 *** DO NOT publish your API keys etc.
-** TODO tools of the trade: the APIs
+
+    some people scrape the internet for published credentials. they could take over your account, post whatever they want in your name, including sending DMs. you've been warned.
 ** how to use an API?
 
    - read the documentation
@@ -961,9 +1032,21 @@
     pip3 install tweepy
     #+END_SRC
 
+*** more modules
+
+    #+BEGIN_SRC 
+    pip3 install pandas numpy matplotlib seaborn
+    #+END_SRC
+
+
     [[http://tweepy.readthedocs.io/en/v3.5.0/getting_started.html][Getting started with tweepy]]
 
+** notes from the session
 
+   - [[https://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe][what's a dataframe?]]
+   - [[https://www.datacamp.com/community/tutorials/pandas-tutorial-dataframe-python][mostly everything about pandas dataframes]]
+   - [[https://stackoverflow.com/questions/26047209/what-is-the-difference-between-a-pandas-series-and-a-single-column-dataframe][a Series is one column of a dataframe]]
+   - [[https://medium.freecodecamp.org/series-and-dataframe-in-python-a800b098f68][series and dataframes, cont.]]
 * 4.1: R in the newsroom: the tidyverse
   https://tidyverse-intro.github.io/index.html
   https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html

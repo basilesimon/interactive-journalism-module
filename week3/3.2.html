@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="../presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-org05e9162">
+<h2 id="org05e9162">3.2: More complex scraping in Python?</h2>
+</section>
+</section>
+<section>
+<section id="slide-orgfa3bcf0">
+<h3 id="orgfa3bcf0">javascript exercise</h3>
+<blockquote nil>
+<p>
+Build an interactive thing in Javascript, that responds to a user input.
+</p>
+</blockquote>
+
+</section>
+</section>
+<section>
+<section id="slide-org64c47a5">
+<h3 id="org64c47a5">assessment update</h3>
+<ul>
+<li class="fragment appear">still waiting on deadlines to be updated</li>
+<li class="fragment appear">are you clear on what the week 5 assessment is?</li>
+<li class="fragment appear">final project: two routes&#x2026;</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orge93b7b6">
+<h3 id="orge93b7b6">two routes for the final project</h3>
+<ul>
+<li>option one: build a full website</li>
+<li>option two: host your content on Medium/blog/Wordpress</li>
+
+</ul>
+
+<p>
+Obviously I will assess the two options differently, i.e.
+</p>
+
+<ul>
+<li class="fragment appear">if you do more website, front-end work, I will be kinder on the data work</li>
+<li class="fragment appear">if you do little website-building, your data work must be top notch!</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org74c3a57">
+<h3 id="org74c3a57">scraping, scraping!</h3>
+<div class="outline-text-3" id="text-org74c3a57">
+</div>
+</section>
+<section id="slide-orgbef9ae8">
+<h4 id="orgbef9ae8">web scraping v API</h4>
+<p>
+<a href="https://www.grepsr.com/web-scraping-vs-api/">a simple comparison</a>:
+</p>
+
+<ul>
+<li class="fragment appear">is an API available/hidden?</li>
+<li class="fragment appear">is the API actually up-to-date?</li>
+<li class="fragment appear">rate limiting</li>
+<li class="fragment appear">but better structure</li>
+
+</ul>
+
+<p>
+One thing to consider: the ethics of web scraping: see this recent <a href="https://www.eff.org/deeplinks/2018/01/ninth-circuit-doubles-down-violating-websites-terms-service-not-crime">Ninth Circuit ruling</a> that violating a website's term of service is not a crime
+</p>
+
+</section>
+<section id="slide-orgc1893d6">
+<h4 id="orgc1893d6">web scraping</h4>
+<p>
+<a href="https://blog.hartleybrody.com/web-scraping/">Every website can be scraped</a>*
+</p>
+
+<ul>
+<li class="fragment appear">if you're good enough</li>
+
+</ul>
+
+<p>
+good practice: set headers in your web requests identifying yourself
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="python" >import requests
+
+headers = {'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5);
+             Basile Simon/ London/ basile.simon@thetimes.co.uk'}
+html = requests.get(url, headers=headers)
+</code></pre>
+</div>
+
+<p>
+<a href="https://medium.freecodecamp.org/how-to-scrape-websites-with-python-and-beautifulsoup-5946935d93fe">A good tutorial</a>
+</p>
+
+</section>
+<section id="slide-orgbbcabc5">
+<h4 id="orgbbcabc5">API scraping</h4>
+<p>
+using an API is using an authorised service
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org6d12e54">
+<h3 id="org6d12e54">tools of the trade: the APIs</h3>
+<p>
+<a href="https://www.theguardian.com/media/pda/2007/dec/14/thenutshellabeginnersguide">even the Guardian has a piece about "what's an API"</a>
+</p>
+
+<blockquote nil>
+<p>
+The exception are sites built on open source code, which is sort of like a <b>worldwide hippy commune</b> of developers who share their notes. The idea is that they can make better products and software if lots of people collaborate on a project.
+</p>
+</blockquote>
+
+<p>
+good API example: <a href="https://postcodes.io/">postcodes.io</a>
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org6ec6345">
+<h3 id="org6ec6345">setup</h3>
+<div class="outline-text-3" id="text-org6ec6345">
+</div>
+</section>
+<section id="slide-org765f311">
+<h4 id="org765f311">register on twitter</h4>
+<ul>
+<li>log into your twitter account</li>
+<li>register your phone number with your account</li>
+<li>click on your profile pic (top left-hand side), then head to "Mobile"</li>
+
+</ul>
+
+</section>
+<section id="slide-orge390893">
+<h4 id="orge390893">create your (first?) twitter app</h4>
+<p>
+<a href="https://apps.twitter.com/">https://apps.twitter.com/</a>
+</p>
+
+<p>
+that's a common way to keep control of who's allowed to use your service.
+this way, they can shut your app down <a href="https://www.theverge.com/2015/6/4/8731387/politwoops-sunlight-foundation-twitter">if you abuse your privileges</a>
+</p>
+
+
+<div class="figure">
+<p><img src="./img/twitter-app-create.png" alt="twitter-app-create.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org7760039">
+<h4 id="org7760039">fill in application details</h4>
+
+<div class="figure">
+<p><img src="./img/twitter-app-info.png" alt="twitter-app-info.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org65b36be">
+<h4 id="org65b36be">DO NOT publish your API keys etc.</h4>
+<p>
+some people scrape the internet for published credentials. they could take over your account, post whatever they want in your name, including sending DMs. you've been warned.
+</p>
+</section>
+</section>
+<section>
+<section id="slide-org9e2457a">
+<h3 id="org9e2457a">how to use an API?</h3>
+<ul>
+<li>read the documentation</li>
+<li>find a convenient wrapper library that does the heavy lifting for you</li>
+
+</ul>
+
+<p>
+in our case: that's <a href="http://tweepy.readthedocs.io/en/v3.5.0/getting_started.html">tweepy</a>, a wrapper library around the twitter API built in python.
+</p>
+
+</section>
+<section id="slide-org65287c2">
+<h4 id="org65287c2">installing tweepy</h4>
+<pre  class="example">
+pip3 install tweepy
+</pre>
+
+</section>
+<section id="slide-orgd54c797">
+<h4 id="orgd54c797">more modules</h4>
+<pre  class="example">
+pip3 install pandas numpy matplotlib seaborn
+</pre>
+
+
+<p>
+<a href="http://tweepy.readthedocs.io/en/v3.5.0/getting_started.html">Getting started with tweepy</a>
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgdf4d828">
+<h3 id="orgdf4d828">notes from the session</h3>
+<ul>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe">what's a dataframe?</a></li>
+<li><a href="https://www.datacamp.com/community/tutorials/pandas-tutorial-dataframe-python">mostly everything about pandas dataframes</a></li>
+<li><a href="https://stackoverflow.com/questions/26047209/what-is-the-difference-between-a-pandas-series-and-a-single-column-dataframe">a Series is one column of a dataframe</a></li>
+<li><a href="https://medium.freecodecamp.org/series-and-dataframe-in-python-a800b098f68">series and dataframes, cont.</a></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>
