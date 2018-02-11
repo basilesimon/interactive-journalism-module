@@ -1048,8 +1048,127 @@
    - [[https://stackoverflow.com/questions/26047209/what-is-the-difference-between-a-pandas-series-and-a-single-column-dataframe][a Series is one column of a dataframe]]
    - [[https://medium.freecodecamp.org/series-and-dataframe-in-python-a800b098f68][series and dataframes, cont.]]
 * 4.1: R in the newsroom: the tidyverse
+  :LOGBOOK:
+  CLOCK: [2018-02-10 Sat 15:08]--[2018-02-10 Sat 22:49] =>  7:41
+  :END:
+
+** what is R
+
+   R is a programming language very popular among statisticians, researchers, and data scientists.
+
+   In addition to traditional data structures, R comes out of the box with regression models, time-series support, geo capabilities, and many stats shorthands.
+
+   [[./images/R_logo.svg.png]]
+
+** why R?
+
+   FiveThirtyEight, Buzzfeed, The Times, The Guardian, some German newsrooms...
+
+   for some reason R has gained popularity in newsrooms among data specialists
+
+*** should I choose R or Python?
+
+    no right answer to this question!
+    R v Python: [[https://www.datacamp.com/community/tutorials/r-or-python-for-data-analysis][an infographic]]
+
+   #+ATTR_REVEAL: :frag (appear)
+   - many ways to write R: several schools of thought
+   - Python is more consistent across users: meaningful indentation helps
+   - you can do anything with Python, R is slightly more focused
+   - Python online documentation/community is more beginner-friendly
+   - pure salary from survey: R about +20% (one of the most top-paying languages)
+   
+    R isn't exactly the [[https://en.wikipedia.org/wiki/Zen_of_Python][Zen of Python...]]
+    
+** elements of syntax
+
+*** the basics
+    #+BEGIN_SRC R
+    # a comment
+    
+    # a variable
+    foo <- 'bar'
+    
+    # a list, called a 'vector'
+    foo <- c(1, 2, 'lol')
+    #+END_SRC
+
+*** functions and for loops?
+
+    the so-called "R way" is very much line-by-line, not that much oriented towards functions and iterators
+
+    #+BEGIN_SRC R
+    foo <- c(1, 3, 'some data', 'not to remove')
+    foo_clean <- foo[-(1:2)]
+    #+END_SRC
+
+
+** the tidyverse
+
+   there are several ways to write R. an important one follows Hadley Wickham's philosophy and work at RStudio.
+
+   it is called *[[https://www.tidyverse.org/packages/][the tidyverse]*
+
+   > The tidyverse is a coherent system of packages for data manipulation, exploration and visualization that share a common design philosophy
+
+   [[./images/tidyverse1.png]]
+
+*** tidy data
+
+    [[https://hackyhour.github.io/Goettingen/slides/tidy_slides.html#/][principles of tidy data]], a presentation (built in RStudio!) from Wickham's paper [[http://vita.had.co.nz/papers/tidy-data.pdf]["Tidy Data"]]
+
+*** a set of tools
+
+    example: the pipe `%>%`
+
+    #+BEGIN_SRC javascript
+    const foo = [1,2,10];
+    foo.forEach(function(element) {
+      if (element > 2) {
+        return element;
+      }
+    });
+    #+END_SRC
+
+    #+BEGIN_SRC R
+    foo <- c(1,2,10)
+    foo %>%
+      filter( > 2)
+    #+END_SRC
+
+*** the pipe II
+
+    > The operators pipe their left-hand side values forward into expressions that appear on the right-hand side, i.e. one can replace f(x) with x %>% f(), where %>% is the (main) pipe-operator. 
+
+    #+BEGIN_SRC R
+    the_data <-
+      read.csv('/path/to/data/file.csv') %>%
+      subset(variable_a > x) %>%
+      transform(variable_c = variable_a/variable_b) %>%
+      head(100)
+    #+END_SRC
+
+
+*** pipes and verbs
+
+    #+BEGIN_SRC R
+    cars <- cars %>%
+      mutate(pounds = weight / 1000)
+    #+END_SRC
+
+** dplyr tutorial?
+
+   [[http://genomicsclass.github.io/book/pages/dplyr_tutorial.html]]
+
+** reading
+
+   [[https://rpubs.com/aelhabr/tidyverse-basics][the super helpful cheatsheets]]
+
   https://tidyverse-intro.github.io/index.html
   https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html
+  http://r4ds.had.co.nz/exploratory-data-analysis.html
+  https://www.datacamp.com/courses/introduction-to-the-tidyverse
+  http://www.business-science.io/timeseries-analysis/2017/07/23/tidy-timeseries-analysis-pt-2.html
 
 * 4.2: R in the newsroom: ggplot
 * 5.1: Data cleaning in R
