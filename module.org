@@ -1156,20 +1156,37 @@
       mutate(pounds = weight / 1000)
     #+END_SRC
 
-** dplyr tutorial?
+** dplyr tutorial
 
    [[http://genomicsclass.github.io/book/pages/dplyr_tutorial.html]]
+
+   - `select()`
+   - `filter()`
+   - `%>%`
+   - `mutate()`
+   - `group_by()`
 
 ** reading
 
    [[https://rpubs.com/aelhabr/tidyverse-basics][the super helpful cheatsheets]]
+
+   ---
 
   https://tidyverse-intro.github.io/index.html
   https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html
   http://r4ds.had.co.nz/exploratory-data-analysis.html
   https://www.datacamp.com/courses/introduction-to-the-tidyverse
   http://www.business-science.io/timeseries-analysis/2017/07/23/tidy-timeseries-analysis-pt-2.html
+  https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen
+  http://datadrivenjournalism.net/resources/when_should_i_use_logarithmic_scales_in_my_charts_and_graphs
+  https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y
 
 * 4.2: R in the newsroom: ggplot
+  :LOGBOOK:
+  CLOCK: [2018-02-11 Sun 17:45]--[2018-02-11 Sun 18:08] =>  0:23
+  :END:
+  
+  from session: https://github.com/basilesimon/interactive-journalism-module/blob/archive/2016-2017/week6/week6.md
+
 * 5.1: Data cleaning in R
 * 5.2: Some stats in R
