@@ -1049,8 +1049,28 @@
    - [[https://medium.freecodecamp.org/series-and-dataframe-in-python-a800b098f68][series and dataframes, cont.]]
 * 4.1: R in the newsroom: the tidyverse
   :LOGBOOK:
+  CLOCK: [2018-02-13 Tue 22:24]--[2018-02-13 Tue 22:49] =>  0:25
+  CLOCK: [2018-02-13 Tue 19:38]--[2018-02-13 Tue 20:32] =>  0:54
   CLOCK: [2018-02-10 Sat 15:08]--[2018-02-10 Sat 22:49] =>  7:41
   :END:
+
+** JOM299 final project
+
+   two routes:
+   - build a full website to host your final project
+   - host your piece on a blog/Medium
+   
+   for students picking option one...
+
+*** here is a template!
+
+    [[https://github.com/basilesimon/interactive-journalism-module/tree/master/website-template][see on Github]]
+
+    HTML index file + CSS + Javascript from a web framework called Bootstrap.
+
+    contains all the assets you'd need, with pre-defined CSS and style rules. Download, take the bits you don't want out, play with it as much as you like, and *try to re-use bits of it.*
+
+    the purpose of that framework is to have you write as little basic CSS as possible!
 
 ** what is R
 
@@ -1102,7 +1122,6 @@
     foo_clean <- foo[-(1:2)]
     #+END_SRC
 
-
 ** the tidyverse
 
    there are several ways to write R. an important one follows Hadley Wickham's philosophy and work at RStudio.
@@ -1148,7 +1167,6 @@
       head(100)
     #+END_SRC
 
-
 *** pipes and verbs
 
     #+BEGIN_SRC R
@@ -1165,21 +1183,23 @@
    - `%>%`
    - `mutate()`
    - `group_by()`
+  
+*** let's put that into practice: civilian casualties from Coalition bombings
+
+    Data from airwars.org
 
 ** reading
 
-   [[https://rpubs.com/aelhabr/tidyverse-basics][the super helpful cheatsheets]]
+   - [[https://rpubs.com/aelhabr/tidyverse-basics][the super helpful cheatsheets]]
+   - [[https://tidyverse-intro.github.io/index.html][everything you could want to know about the tidyverse in a handy tutorial]]
+   - [[https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html][pandas v the tidyverse syntax]]
+   - [[https://www.datacamp.com/courses/introduction-to-the-tidyverse][Datacamp tidyverse course]]
+   - [[http://r4ds.had.co.nz/exploratory-data-analysis.html][exploratory data analysis]]
 
    ---
 
-  https://tidyverse-intro.github.io/index.html
-  https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html
-  http://r4ds.had.co.nz/exploratory-data-analysis.html
-  https://www.datacamp.com/courses/introduction-to-the-tidyverse
-  http://www.business-science.io/timeseries-analysis/2017/07/23/tidy-timeseries-analysis-pt-2.html
-  https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen
-  http://datadrivenjournalism.net/resources/when_should_i_use_logarithmic_scales_in_my_charts_and_graphs
-  https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y
+  
+  
 
 * 4.2: R in the newsroom: ggplot
   :LOGBOOK:

@@ -5,6 +5,7 @@
 library('rvest')
 library('dplyr')
 library('ggplot2')
+library('reshape2')
 library('tidyquant')
 library('ggthemes')
 
@@ -14,7 +15,7 @@ url <- 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_Italian_general_el
 # decompose line by line:
 # request to the server, parsing, finding the right element,
 # filling blank cells, adding column titles, removing extra bits
-2018_table <- url %>%
+table_2018 <- url %>%
           read_html() %>%
           html_node(xpath='/html/body/div[3]/div[3]/div[4]/div/table[1]') %>%
           html_table(fill = TRUE) %>%
@@ -23,12 +24,12 @@ url <- 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_Italian_general_el
 
 # I said no for loops - sorry.
 # we just need to convert all of these columns into numbers!
-for(i in c(4:17:ncol(2018_table))) {
-  2018_table[,i] <- as.numeric(as.character(2018_table[,i]))
+for(i in c(4:17:ncol(table_2018))) {
+  table_2018[,i] <- as.numeric(as.character(table_2018[,i]))
 }
 
 # line by line...
-data_2018 <- 2018_table %>%
+data_2018 <- table_2018 %>%
   group_by(date) %>%
   mutate(cut_date = paste(tail(strsplit(date, "–")[[1]], n=1), " 2018")) %>%
   mutate(clean_date = as.Date(cut_date, format="%d %b %Y")) %>%
