@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="../presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-org9829cd6">
+<h2 id="org9829cd6">4.1: R in the newsroom: the tidyverse</h2>
+</section>
+</section>
+<section>
+<section id="slide-orgca0f151">
+<h3 id="orgca0f151">JOM299 final project</h3>
+<p>
+two routes:
+</p>
+<ul>
+<li>build a full website to host your final project</li>
+<li>host your piece on a blog/Medium</li>
+
+</ul>
+
+<p>
+for students picking option one&#x2026;
+</p>
+
+</section>
+<section id="slide-org2004123">
+<h4 id="org2004123">here is a template!</h4>
+<p>
+<a href="https://github.com/basilesimon/interactive-journalism-module/tree/master/website-template">see on Github</a>
+</p>
+
+<p>
+HTML index file + CSS + Javascript from a web framework called Bootstrap.
+</p>
+
+<p>
+contains all the assets you'd need, with pre-defined CSS and style rules. Download, take the bits you don't want out, play with it as much as you like, and <b>try to re-use bits of it.</b>
+</p>
+
+<p>
+the purpose of that framework is to have you write as little basic CSS as possible!
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgaeb2996">
+<h3 id="orgaeb2996">what is R</h3>
+<p>
+R is a programming language very popular among statisticians, researchers, and data scientists.
+</p>
+
+<p>
+In addition to traditional data structures, R comes out of the box with regression models, time-series support, geo capabilities, and many stats shorthands.
+</p>
+
+
+<div class="figure">
+<p><img src="./images/R_logo.svg.png" alt="R_logo.svg.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgdd644d6">
+<h3 id="orgdd644d6">why R?</h3>
+<p>
+FiveThirtyEight, Buzzfeed, The Times, The Guardian, some German newsrooms&#x2026;
+</p>
+
+<p>
+for some reason R has gained popularity in newsrooms among data specialists
+</p>
+
+</section>
+<section id="slide-orgd20fc10">
+<h4 id="orgd20fc10">should I choose R or Python?</h4>
+<p>
+no right answer to this question!
+R v Python: <a href="https://www.datacamp.com/community/tutorials/r-or-python-for-data-analysis">an infographic</a>
+</p>
+
+<ul>
+<li class="fragment appear">many ways to write R: several schools of thought</li>
+<li class="fragment appear">Python is more consistent across users: meaningful indentation helps</li>
+<li class="fragment appear">you can do anything with Python, R is slightly more focused</li>
+<li class="fragment appear">Python online documentation/community is more beginner-friendly</li>
+<li class="fragment appear"><p>
+pure salary from survey: R about +20% (one of the most top-paying languages)
+</p>
+
+<p>
+R isn't exactly the <a href="https://en.wikipedia.org/wiki/Zen_of_Python">Zen of Python&#x2026;</a>
+</p></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org98e73e7">
+<h3 id="org98e73e7">elements of syntax</h3>
+<div class="outline-text-3" id="text-org98e73e7">
+</div>
+</section>
+<section id="slide-org9ffe07a">
+<h4 id="org9ffe07a">the basics</h4>
+<div class="org-src-container">
+
+<pre><code class="R" ># a comment
+
+# a variable
+foo &lt;- 'bar'
+
+# a list, called a 'vector'
+foo &lt;- c(1, 2, 'lol')
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgb586aa3">
+<h4 id="orgb586aa3">functions and for loops?</h4>
+<p>
+the so-called "R way" is very much line-by-line, not that much oriented towards functions and iterators
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >foo &lt;- c(1, 3, 'some data', 'not to remove')
+foo_clean &lt;- foo[-(1:2)]
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgded0137">
+<h3 id="orgded0137">the tidyverse</h3>
+<p>
+there are several ways to write R. an important one follows Hadley Wickham's philosophy and work at RStudio.
+</p>
+
+<p>
+it is called <b>[[<a href="https://www.tidyverse.org/packages/">https://www.tidyverse.org/packages/</a>][the tidyverse]</b>
+</p>
+
+<p>
+&gt; The tidyverse is a coherent system of packages for data manipulation, exploration and visualization that share a common design philosophy
+</p>
+
+
+<div class="figure">
+<p><img src="./images/tidyverse1.png" alt="tidyverse1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgfb5c472">
+<h4 id="orgfb5c472">tidy data</h4>
+<p>
+<a href="https://hackyhour.github.io/Goettingen/slides/tidy_slides.html#/">principles of tidy data</a>, a presentation (built in RStudio!) from Wickham's paper <a href="http://vita.had.co.nz/papers/tidy-data.pdf">"Tidy Data"</a>
+</p>
+
+</section>
+<section id="slide-orgca09598">
+<h4 id="orgca09598">a set of tools</h4>
+<p>
+example: the pipe `%&gt;%`
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="javascript" >const foo = [1,2,10];
+foo.forEach(function(element) {
+  if (element > 2) {
+    return element;
+  }
+});
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="R" >foo &lt;- c(1,2,10)
+foo %&gt;%
+  filter( &gt; 2)
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org39074b2">
+<h4 id="org39074b2">the pipe II</h4>
+<p>
+&gt; The operators pipe their left-hand side values forward into expressions that appear on the right-hand side, i.e. one can replace f(x) with x %&gt;% f(), where %&gt;% is the (main) pipe-operator. 
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >the_data &lt;-
+  read.csv('/path/to/data/file.csv') %&gt;%
+  subset(variable_a &gt; x) %&gt;%
+  transform(variable_c = variable_a/variable_b) %&gt;%
+  head(100)
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org21001dc">
+<h4 id="org21001dc">pipes and verbs</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >cars &lt;- cars %&gt;%
+  mutate(pounds = weight / 1000)
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org21691f3">
+<h3 id="org21691f3">dplyr tutorial</h3>
+<p>
+<a href="http://genomicsclass.github.io/book/pages/dplyr_tutorial.html">http://genomicsclass.github.io/book/pages/dplyr_tutorial.html</a>
+</p>
+
+<ul>
+<li>`select()`</li>
+<li>`filter()`</li>
+<li>`%&gt;%`</li>
+<li>`mutate()`</li>
+<li>`group<sub>by</sub>()`</li>
+
+</ul>
+
+</section>
+<section id="slide-org405cb5b">
+<h4 id="org405cb5b">let's put that into practice: civilian casualties from Coalition bombings</h4>
+<p>
+Data from airwars.org
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orge6a97c8">
+<h3 id="orge6a97c8">reading</h3>
+<ul>
+<li><a href="https://rpubs.com/aelhabr/tidyverse-basics">the super helpful cheatsheets</a></li>
+<li><a href="https://tidyverse-intro.github.io/index.html">everything you could want to know about the tidyverse in a handy tutorial</a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html">pandas v the tidyverse syntax</a></li>
+<li><a href="https://www.datacamp.com/courses/introduction-to-the-tidyverse">Datacamp tidyverse course</a></li>
+<li><a href="http://r4ds.had.co.nz/exploratory-data-analysis.html">exploratory data analysis</a></li>
+
+</ul>
+
+<p>
+&#x2014;
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>
