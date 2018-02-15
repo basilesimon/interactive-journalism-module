@@ -24,7 +24,7 @@ table_2018 <- url %>%
 
 # I said no for loops - sorry.
 # we just need to convert all of these columns into numbers!
-for(i in c(4:17:ncol(table_2018))) {
+for(i in c(4:ncol(table_2018))) {
   table_2018[,i] <- as.numeric(as.character(table_2018[,i]))
 }
 
@@ -41,6 +41,8 @@ ggplot(data = data_2018, aes(clean_date, value, color=variable)) +
     geom_point() + 
     geom_ma(ma_fun = SMA, n = 3)
 
+
+## same for 2017 data
 one_year <- url %>%
           read_html() %>%
           html_node(xpath='/html/body/div[3]/div[3]/div[4]/div/table[2]') %>%
@@ -48,7 +50,7 @@ one_year <- url %>%
           setNames(c('date', 'firm', 'm5s', 'pd', 'fi', 'ln', 'si', 'fdl', 'ap', 'mdp', 'cp/ap', 'leu', 'i', 'lcp', 'others', 'lead')) %>%
           tail(-2)
 
-for(i in c(3:16:ncol(one_year))) {
+for(i in c(3:ncol(one_year))) {
   one_year[,i] <- as.numeric(as.character(one_year[,i]))
 }
 
@@ -63,34 +65,21 @@ ggplot(data = data_2017, aes(clean_date, value, color=variable)) +
   geom_point(aes(shape="21",alpha=1/100)) + 
   geom_ma(ma_fun = SMA, n = 10)
 
-two_years<- url %>%
-          read_html() %>%
-          html_node(xpath='/html/body/div[3]/div[3]/div[4]/div/table[3]') %>%
-          html_table(fill = TRUE) %>%
-          setNames(c('date', 'firm', 'm5s', 'pd', 'fi', 'ln', 'si', 'fdl', 'ap', 'others', 'lead')) %>%
-          tail(-2)
-
-for(i in c(3:13:ncol(two_years))) {
-  two_years[,i] <- as.numeric(as.character(two_years[,i]))
-}
-data_2016 <- two_years %>% group_by(date) %>%
-  mutate(cut_date = paste(tail(strsplit(date, "–")[[1]], n=1), " 2016")) %>%
-  mutate(clean_date = as.Date(cut_date, format="%d %b  %Y")) %>%
-  ungroup() %>%
-  select(-date, -firm, -lead, -cut_date) %>%
-  melt(id="clean_date")
-
-ggplot(data = data_2016, aes(clean_date, value, color=variable)) + 
-  geom_point(aes(shape="21",alpha=1/100)) + 
-  geom_ma(ma_fun = SMA, n = 10)
-
 #########################
 # merge data together now
+data <- merge(data_2018, data_2017, all=TRUE)
 
-temporary_merge <- merge(data_2018, data_2017, all=TRUE)
-data <- merge(temporary_merge, data_2016, all=TRUE)
-
+# rename
+data <- data %>%
+  rename(date = clean_date, party = variable) %>%
+  group_by(party) %>%
+  mutate(mean20_missing = rollapply(value, width = 20,
+                                    fill = NA, partial = TRUE, 
+                                    FUN=function(x) mean(x, na.rm=TRUE),
+                                    align = "right"))
+# visualise
 ggplot(data, 
-       aes(clean_date, value, color=variable)) + 
-  geom_point(aes(shape="21", alpha=1/100)) + 
-  geom_ma(ma_fun = SMA, n = 8)
+       aes(date, color=party)) + 
+  geom_point(aes(y=value, shape="21", alpha=1/100)) + 
+  geom_line(aes(y=mean20_missing, color=party)) +
+  theme_minimal()

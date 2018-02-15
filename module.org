@@ -24,7 +24,7 @@
 
   The mysterious creature that is the DOM, what a webpage actually is, and using the DevTools.  
 
-  We'll have a look at the very basics of working with the web. Having done the pre-course work (Codecademy Javascript tutorial), we hopefully won't lost much time. No set-up involved, just simple practical exercises in a web browser
+  We'll have a look at the very basics of working with the web. Having done the pre-course work (Codecademy Javascript tutorial), we hopefully won't lost much time. No set-up involved, j5ust simple practical exercises in a web browser
 
 *** Session 1: practical exercises
 *** Session 2: more exercises
@@ -1195,18 +1195,180 @@
    - [[https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html][pandas v the tidyverse syntax]]
    - [[https://www.datacamp.com/courses/introduction-to-the-tidyverse][Datacamp tidyverse course]]
    - [[http://r4ds.had.co.nz/exploratory-data-analysis.html][exploratory data analysis]]
-
-   ---
-
   
-  
-
-* 4.2: R in the newsroom: ggplot
+* 4.2: R in the newsroom: scrapin' and cleanin'
   :LOGBOOK:
+  CLOCK: [2018-02-15 Thu 23:00]--[2018-02-15 Thu 23:32] =>  0:32
+  CLOCK: [2018-02-15 Thu 19:28]--[2018-02-15 Thu 20:05] =>  0:37
+  CLOCK: [2018-02-15 Thu 18:18]--[2018-02-15 Thu 19:27] =>  1:09
   CLOCK: [2018-02-11 Sun 17:45]--[2018-02-11 Sun 18:08] =>  0:23
   :END:
   
-  from session: https://github.com/basilesimon/interactive-journalism-module/blob/archive/2016-2017/week6/week6.md
+** the task
 
-* 5.1: Data cleaning in R
+  #+BEGIN_QUOTE
+  We need a poll of polls for the Italian election. By yesterday, please, chop chop.
+  #+END_QUOTE
+  an editor who realises we're two weeks away from an election
+
+** the output
+
+   [[./images/pop.png]]
+
+*** well, not quite...
+
+   [[./images/Rplot.png]]
+
+** the source
+   
+   We need a data source for the polls.
+
+   There is an official source, which is an ASPX app that looked too daunting.
+
+   Easy-looking one: [[https://en.wikipedia.org/wiki/Opinion_polling_for_the_Italian_general_election,_2018#Graphical_summary][a Wikipedia table]]
+
+   So what do we have here?
+
+   #+ATTR_REVEAL: :frag (appear)
+   - a <table> element
+   - several, actually!
+   - contains all the polling from different institutes
+  
+** scraping the source
+
+   #+BEGIN_SRC R
+   # install.packages('rvest')
+   library(rvest)
+
+   url <- 'https://a-url.com'
+   df <- url %>%
+         read_html() %>%
+         html_node(xpath="an/xpath/") %>%
+         html_table()
+   #+END_SRC
+
+*** example
+  
+   #+BEGIN_SRC R
+   url <- 'https://en.wikipedia.org/wiki/List_of_rampage_killers_(school_massacres)'
+   url %>% read_html() %>%
+      html_node(xpath='/html/body/div[3]/div[3]/div[4]/div/table[4]') %>%
+      html_table() %>%
+      View()
+   #+END_SRC
+
+*** problems for us
+
+   #+ATTR_REVEAL: :frag (appear)
+   - our columns are all messed up!
+   - oh, also our numbers look like strings?!
+
+** cleaning our data
+
+   #+ATTR_REVEAL: :frag (appear)
+   - our dates aren't going to be practical to work with
+   - too many columns
+   - not a tidy representation of data
+
+   #+ATTR_REVEAL: :frag (appear)
+   **Rule of thumb for dates**: the closer to YYYY-MM-DD you are the easier it will be to convert to a proper date
+
+*** this horrible code
+
+  #+BEGIN_SRC R
+  mutate(cut_date = paste(tail(strsplit(date, "–")[[1]], n=1), " 2018")) %>%
+  mutate(clean_date = as.Date(cut_date, format="%d %b %Y"))
+  #+END_SRC
+
+  #+BEGIN_SRC R
+  foo = "2-7 Feb"
+  strsplit(foo, "-")[[1]]   -> list: ["2", "7 Feb"]
+  tail(the_above), n=1)     -> "7 Feb"
+  paste(the_above, " 2018") -> "7 Feb 2018"
+  as.Date(the_above, format="%d %b %Y")  is a win!
+  #+END_SRC
+
+*** melting our data into tidy format
+
+    this is what we have:
+
+    |       date | firm | party one | party two | party three | etc |
+    | 2017-01-01 | ipso |        24 |        32 |          10 | n   |
+    | 2017-01-02 | ipso |        22 |        31 |           9 | n   |
+
+*** melting our data into tidy format
+    
+    this is what we want:
+
+    |       date | party | value |
+    | 2017-01-01 | one   |    24 |
+    | 2017-01-01 | two   |    32 |
+    | 2017-01-01 | three |    10 |
+    | 2017-01-02 | one   |    22 |
+    | 2017-01-02 | two   |    31 |
+    | 2017-01-02 | three |     9 |
+
+*** the solution: melt()
+
+    [[http://seananderson.ca/2013/10/19/reshape.html][melt()]]
+
+** visualising our data
+
+   `ggplot` is awesome.
+
+   #+BEGIN_SRC R
+   # install.packages('ggplot2')
+   library(ggplot2)
+
+   ggplot(data, aes( x = a_column, y = another_column )) +
+     geom_point() +
+     geom_bar()
+   #+END_SRC
+
+   dataset + aesthetics (which bit of the data goes where) + coordinate system + geometries
+
+** adding value to our data to answer a question
+
+   #+BEGIN_QUOTE
+   How well do we think these parties are doing, from these very different polls, and over time?
+   #+END_QUOTE
+
+   #+ATTR_REVEAL: :frag (appear)
+   sounds like a job for avering things out.
+
+*** merging data
+
+    our two datasets having been prepared in the same way, with the same column names... the merge is super easy:
+
+    #+BEGIN_SRC R
+    merge(dataframe_1, dataframe_2)
+    #+END_SRC
+
+    normally, you'd do:
+
+    #+BEGIN_SRC R
+    merge(dataframe_1, dataframe_2, by="id")
+    #+END_SRC
+
+    where "id" is a column the two datasets share (remember how we merged on the constituency names for the MPs, in Python...)
+
+*** averaging
+
+    #+BEGIN_SRC R
+    rollapply(value, width = 20,
+       fill = NA, partial = TRUE, 
+       FUN=function(x) mean(x, na.rm=TRUE),
+       align = "right")
+    #+END_SRC
+
+** more
+
+  - [[http://genomicsclass.github.io/book/pages/dplyr_tutorial.html][dplyr tutorial]]
+  - [[https://tidyverse-intro.github.io/index.html][everything you could want to know about the tidyverse in a handy tutorial]]
+ 
+
+* 5.1: R in the newsroom: ggplot
+  from session: https://github.com/basilesimon/interactive-journalism-module/blob/archive/2016-2017/week6/week6.md
+  and
+  https://www.nzz.ch/international/wie-einkommen-arbeitslosigkeit-und-migration-das-wahlverhalten-mitbestimmen-ld.1318290
 * 5.2: Some stats in R
