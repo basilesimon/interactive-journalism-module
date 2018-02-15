@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="../presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-orgae1dff3">
+<h2 id="orgae1dff3">4.2: R in the newsroom: scrapin' and cleanin'</h2>
+</section>
+</section>
+<section>
+<section id="slide-org04f7997">
+<h3 id="org04f7997">the task</h3>
+<blockquote nil>
+<p>
+We need a poll of polls for the Italian election. By yesterday, please, chop chop.
+</p>
+</blockquote>
+<p>
+an editor who realises we're two weeks away from an election
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org8198964">
+<h3 id="org8198964">the output</h3>
+
+<div class="figure">
+<p><img src="./images/pop.png" alt="pop.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgf37d6ea">
+<h4 id="orgf37d6ea">well, not quite&#x2026;</h4>
+
+<div class="figure">
+<p><img src="./images/Rplot.png" alt="Rplot.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org3411d82">
+<h3 id="org3411d82">the source</h3>
+<p>
+We need a data source for the polls.
+</p>
+
+<p>
+There is an official source, which is an ASPX app that looked too daunting.
+</p>
+
+<p>
+Easy-looking one: <a href="https://en.wikipedia.org/wiki/Opinion_polling_for_the_Italian_general_election,_2018#Graphical_summary">a Wikipedia table</a>
+</p>
+
+<p>
+So what do we have here?
+</p>
+
+<ul>
+<li class="fragment appear">a &lt;table&gt; element</li>
+<li class="fragment appear">several, actually!</li>
+<li class="fragment appear">contains all the polling from different institutes</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgc39f299">
+<h3 id="orgc39f299">scraping the source</h3>
+<div class="org-src-container">
+
+<pre><code class="R" ># install.packages('rvest')
+library(rvest)
+
+url &lt;- 'https://a-url.com'
+df &lt;- url %&gt;%
+      read_html() %&gt;%
+      html_node(xpath="an/xpath/") %&gt;%
+      html_table()
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org0563814">
+<h4 id="org0563814">example</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >url &lt;- 'https://en.wikipedia.org/wiki/List_of_rampage_killers_(school_massacres)'
+url %&gt;% read_html() %&gt;%
+   html_node(xpath='/html/body/div[3]/div[3]/div[4]/div/table[4]') %&gt;%
+   html_table() %&gt;%
+   View()
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgb7a0b0e">
+<h4 id="orgb7a0b0e">problems for us</h4>
+<ul>
+<li class="fragment appear">our columns are all messed up!</li>
+<li class="fragment appear">oh, also our numbers look like strings?!</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org9353475">
+<h3 id="org9353475">cleaning our data</h3>
+<ul>
+<li class="fragment appear">our dates aren't going to be practical to work with</li>
+<li class="fragment appear">too many columns</li>
+<li class="fragment appear">not a tidy representation of data</li>
+
+</ul>
+
+<p class="fragment (appear)">
+<b><b>Rule of thumb for dates</b></b>: the closer to YYYY-MM-DD you are the easier it will be to convert to a proper date
+</p>
+
+</section>
+<section id="slide-orgc57ad52">
+<h4 id="orgc57ad52">this horrible code</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >mutate(cut_date = paste(tail(strsplit(date, "–")[[1]], n=1), " 2018")) %&gt;%
+mutate(clean_date = as.Date(cut_date, format="%d %b %Y"))
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="R" >foo = "2-7 Feb"
+strsplit(foo, "-")[[1]]   -&gt; list: ["2", "7 Feb"]
+tail(the_above), n=1)     -&gt; "7 Feb"
+paste(the_above, " 2018") -&gt; "7 Feb 2018"
+as.Date(the_above, format="%d %b %Y")  is a win!
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orga7a40a5">
+<h4 id="orga7a40a5">melting our data into tidy format</h4>
+<p>
+this is what we have:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">date</td>
+<td class="org-left">firm</td>
+<td class="org-right">party one</td>
+<td class="org-right">party two</td>
+<td class="org-right">party three</td>
+<td class="org-left">etc</td>
+</tr>
+
+<tr>
+<td class="org-right">2017-01-01</td>
+<td class="org-left">ipso</td>
+<td class="org-right">24</td>
+<td class="org-right">32</td>
+<td class="org-right">10</td>
+<td class="org-left">n</td>
+</tr>
+
+<tr>
+<td class="org-right">2017-01-02</td>
+<td class="org-left">ipso</td>
+<td class="org-right">22</td>
+<td class="org-right">31</td>
+<td class="org-right">9</td>
+<td class="org-left">n</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org6219680">
+<h4 id="org6219680">melting our data into tidy format</h4>
+<p>
+this is what we want:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">date</td>
+<td class="org-left">party</td>
+<td class="org-right">value</td>
+</tr>
+
+<tr>
+<td class="org-right">2017-01-01</td>
+<td class="org-left">one</td>
+<td class="org-right">24</td>
+</tr>
+
+<tr>
+<td class="org-right">2017-01-01</td>
+<td class="org-left">two</td>
+<td class="org-right">32</td>
+</tr>
+
+<tr>
+<td class="org-right">2017-01-01</td>
+<td class="org-left">three</td>
+<td class="org-right">10</td>
+</tr>
+
+<tr>
+<td class="org-right">2017-01-02</td>
+<td class="org-left">one</td>
+<td class="org-right">22</td>
+</tr>
+
+<tr>
+<td class="org-right">2017-01-02</td>
+<td class="org-left">two</td>
+<td class="org-right">31</td>
+</tr>
+
+<tr>
+<td class="org-right">2017-01-02</td>
+<td class="org-left">three</td>
+<td class="org-right">9</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org18d2aab">
+<h4 id="org18d2aab">the solution: melt()</h4>
+<p>
+<a href="http://seananderson.ca/2013/10/19/reshape.html">melt()</a>
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgcf303d4">
+<h3 id="orgcf303d4">visualising our data</h3>
+<p>
+`ggplot` is awesome.
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" ># install.packages('ggplot2')
+library(ggplot2)
+
+ggplot(data, aes( x = a_column, y = another_column )) +
+  geom_point() +
+  geom_bar()
+</code></pre>
+</div>
+
+<p>
+dataset + aesthetics (which bit of the data goes where) + coordinate system + geometries
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgbf3209b">
+<h3 id="orgbf3209b">adding value to our data to answer a question</h3>
+<blockquote nil>
+<p>
+How well do we think these parties are doing, from these very different polls, and over time?
+</p>
+</blockquote>
+
+<p class="fragment (appear)">
+sounds like a job for avering things out.
+</p>
+
+</section>
+<section id="slide-org7282006">
+<h4 id="org7282006">merging data</h4>
+<p>
+our two datasets having been prepared in the same way, with the same column names&#x2026; the merge is super easy:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >merge(dataframe_1, dataframe_2)
+</code></pre>
+</div>
+
+<p>
+normally, you'd do:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >merge(dataframe_1, dataframe_2, by="id")
+</code></pre>
+</div>
+
+<p>
+where "id" is a column the two datasets share (remember how we merged on the constituency names for the MPs, in Python&#x2026;)
+</p>
+
+</section>
+<section id="slide-org3130766">
+<h4 id="org3130766">averaging</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >rollapply(value, width = 20,
+   fill = NA, partial = TRUE, 
+   FUN=function(x) mean(x, na.rm=TRUE),
+   align = "right")
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org429ffb7">
+<h3 id="org429ffb7">more</h3>
+<ul>
+<li><a href="http://genomicsclass.github.io/book/pages/dplyr_tutorial.html">dplyr tutorial</a></li>
+<li><a href="https://tidyverse-intro.github.io/index.html">everything you could want to know about the tidyverse in a handy tutorial</a></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>

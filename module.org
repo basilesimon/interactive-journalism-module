@@ -24,7 +24,7 @@
 
   The mysterious creature that is the DOM, what a webpage actually is, and using the DevTools.  
 
-  We'll have a look at the very basics of working with the web. Having done the pre-course work (Codecademy Javascript tutorial), we hopefully won't lost much time. No set-up involved, just simple practical exercises in a web browser
+  We'll have a look at the very basics of working with the web. Having done the pre-course work (Codecademy Javascript tutorial), we hopefully won't lost much time. No set-up involved, j5ust simple practical exercises in a web browser
 
 *** Session 1: practical exercises
 *** Session 2: more exercises
@@ -1198,6 +1198,7 @@
   
 * 4.2: R in the newsroom: scrapin' and cleanin'
   :LOGBOOK:
+  CLOCK: [2018-02-15 Thu 23:00]--[2018-02-15 Thu 23:32] =>  0:32
   CLOCK: [2018-02-15 Thu 19:28]--[2018-02-15 Thu 20:05] =>  0:37
   CLOCK: [2018-02-15 Thu 18:18]--[2018-02-15 Thu 19:27] =>  1:09
   CLOCK: [2018-02-11 Sun 17:45]--[2018-02-11 Sun 18:08] =>  0:23
@@ -1208,6 +1209,7 @@
   #+BEGIN_QUOTE
   We need a poll of polls for the Italian election. By yesterday, please, chop chop.
   #+END_QUOTE
+  an editor who realises we're two weeks away from an election
 
 ** the output
 
@@ -1261,7 +1263,7 @@
    - our columns are all messed up!
    - oh, also our numbers look like strings?!
 
-** TODO cleaning our data
+** cleaning our data
 
    #+ATTR_REVEAL: :frag (appear)
    - our dates aren't going to be practical to work with
@@ -1286,8 +1288,29 @@
   as.Date(the_above, format="%d %b %Y")  is a win!
   #+END_SRC
 
+*** melting our data into tidy format
 
-*** TODO melting
+    this is what we have:
+
+    |       date | firm | party one | party two | party three | etc |
+    | 2017-01-01 | ipso |        24 |        32 |          10 | n   |
+    | 2017-01-02 | ipso |        22 |        31 |           9 | n   |
+
+*** melting our data into tidy format
+    
+    this is what we want:
+
+    |       date | party | value |
+    | 2017-01-01 | one   |    24 |
+    | 2017-01-01 | two   |    32 |
+    | 2017-01-01 | three |    10 |
+    | 2017-01-02 | one   |    22 |
+    | 2017-01-02 | two   |    31 |
+    | 2017-01-02 | three |     9 |
+
+*** the solution: melt()
+
+    [[http://seananderson.ca/2013/10/19/reshape.html][melt()]]
 
 ** visualising our data
 
@@ -1304,7 +1327,7 @@
 
    dataset + aesthetics (which bit of the data goes where) + coordinate system + geometries
 
-** TODO adding value to our data to answer a question
+** adding value to our data to answer a question
 
    #+BEGIN_QUOTE
    How well do we think these parties are doing, from these very different polls, and over time?
@@ -1313,10 +1336,25 @@
    #+ATTR_REVEAL: :frag (appear)
    sounds like a job for avering things out.
 
-*** TODO merging data
+*** merging data
+
+    our two datasets having been prepared in the same way, with the same column names... the merge is super easy:
+
+    #+BEGIN_SRC R
+    merge(dataframe_1, dataframe_2)
+    #+END_SRC
+
+    normally, you'd do:
+
+    #+BEGIN_SRC R
+    merge(dataframe_1, dataframe_2, by="id")
+    #+END_SRC
+
+    where "id" is a column the two datasets share (remember how we merged on the constituency names for the MPs, in Python...)
+
 *** averaging
 
-    #+BEGIN_SRC 
+    #+BEGIN_SRC R
     rollapply(value, width = 20,
        fill = NA, partial = TRUE, 
        FUN=function(x) mean(x, na.rm=TRUE),
@@ -1327,6 +1365,7 @@
 
   - [[http://genomicsclass.github.io/book/pages/dplyr_tutorial.html][dplyr tutorial]]
   - [[https://tidyverse-intro.github.io/index.html][everything you could want to know about the tidyverse in a handy tutorial]]
+ 
 
 * 5.1: R in the newsroom: ggplot
   from session: https://github.com/basilesimon/interactive-journalism-module/blob/archive/2016-2017/week6/week6.md
