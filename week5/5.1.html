@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="../presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-org487731b">
+<h2 id="org487731b">5.1: R in the newsroom: ggplot</h2>
+</section>
+</section>
+<section>
+<section id="slide-org9c438ad">
+<h3 id="org9c438ad">what is ggplot?</h3>
+<p>
+<a href="http://ggplot2.org/resources/2007-vanderbilt.pdf">the founding paper (pdf)</a>
+</p>
+
+<blockquote nil>
+<ol>
+<li>dataset +</li>
+<li>geometries +</li>
+<li>coordinate system</li>
+
+</ol>
+<p>
+== all you need to make a chart!
+</p>
+</blockquote>
+
+</section>
+</section>
+<section>
+<section id="slide-org769aaf7">
+<h3 id="org769aaf7">loading some data</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >library(readr)
+library(dplyr)
+library(ggplot2)
+
+data &lt;- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/exercise/data.csv")
+data %&gt;% View()
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org1e15366">
+<h3 id="org1e15366">what is that dataset?</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">SIC07</td>
+<td class="org-left">description</td>
+<td class="org-left">number</td>
+<td class="org-left">degrees</td>
+<td class="org-left">mean</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">work description</td>
+<td class="org-left">number of people employed</td>
+<td class="org-left">percentage of secondary education degrees</td>
+<td class="org-left">mean income</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+</section>
+<section>
+<section id="slide-orge64bfe4">
+<h3 id="orge64bfe4">Basic plot</h3>
+<p>
+We pass our dataset data and define the aesthetics: an x and y axis:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees)) +
+    geom_point()
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-2-1.png" alt="unnamed-chunk-2-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org8b7d4f8">
+<h4 id="org8b7d4f8">Make the bubble size represent the number of people in this field</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees, size = Number)) +
+    geom_point()
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-3-1.png" alt="unnamed-chunk-3-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org631dbc8">
+<h4 id="org631dbc8">Make the bubbles bigger by setting a maximum</h4>
+<p>
+We can reuse the previous chart we built, simply adding a layer with the plus (+) sign:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees, size = Number)) +
+    geom_point() +
+    scale_size_area(max_size = 15)
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-4-1.png" alt="unnamed-chunk-4-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgbb8f8b5">
+<h4 id="orgbb8f8b5">Add a progressive colour scale depending on the number of people</h4>
+<p>
+That's a new property called `fill`. It will assign default colours for you.
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+    scale_size_area(max_size = 15) +
+    geom_point(shape=21)
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-5-1.png" alt="unnamed-chunk-5-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orga95f159">
+<h4 id="orga95f159">Make our axis prettier and more sensible</h4>
+<p>
+Again, re-using our previous chart, we set two additional layers that apply to the axis:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(scales)
+ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+    scale_size_area(max_size = 15) +
+    geom_point(shape=21) +
+    scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+    scale_y_continuous(labels = scales::percent)
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-6-1.png" alt="unnamed-chunk-6-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org821fdfd">
+<h4 id="org821fdfd">A logarithmic y-axis, maybe?</h4>
+<p>
+Useful for visualising extreme value differences: <a href="https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/">https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/</a>
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(scales)
+ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+    scale_size_area(max_size = 15) +
+    geom_point(shape=21) +
+    scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+    scale_y_continuous(labels = scales::percent, trans=log2_trans())
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-7-1.png" alt="unnamed-chunk-7-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgf664cd9">
+<h4 id="orgf664cd9">Add labels so we can see clearer&#x2026; or not</h4>
+<p>
+Note both the label property in the aesthetics and the geom<sub>text</sub>() layer.
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number, label=Description)) +
+    geom_point(shape=21) +
+    scale_size_area(max_size = 15) +
+    #scale_y_continuous(trans=log2_trans()) +
+    geom_text(size = 2)
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-8-1.png" alt="unnamed-chunk-8-1.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org11e4e62">
+<h3 id="org11e4e62">Let's load some annotated data</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >data_annotated &lt;- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/exercise/data_annotated.csv")
+df &lt;- data_annotated
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgd118555">
+<h4 id="orgd118555">Colour the privileged gigs depending on annotation</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
+    geom_point(shape=21) +
+    scale_size_area(max_size = 15) +
+    scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+    scale_y_continuous(labels = scales::percent, trans=log2_trans())
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-10-1.png" alt="unnamed-chunk-10-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orge6954ca">
+<h4 id="orge6954ca">Add some text annotation to the plot</h4>
+<p>
+We add two annotation layers with annotate(), with some x/y coordinates and which text to render.
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >colors &lt;- ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
+    geom_point(shape=21) +
+    scale_size_area(max_size = 15) +
+    scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+    scale_y_continuous(labels = scales::percent, trans=log2_trans())
+    annotate("text", x = 40000, y = .55, label = "Privileged gigs") +
+    annotate("text", x = 20000, y = .2, label = "Precarious gigs")
+colors
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-11-1.png" alt="unnamed-chunk-11-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgf4cacf6">
+<h4 id="orgf4cacf6">"Annotation are the core of what we do" - Amanda Cox</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >finalPlot &lt;- colors +
+   annotate("text", x = 31500, y = .05, label = "Construction and building") +
+   annotate("text", x = 12000, y = .52, label = "Education") +
+   annotate("text", x = 43500, y = .85, label = "Health sector") +
+   annotate("text", x = 10000, y = .15, label = "Hairdressers") +
+   annotate("text", x = 12000, y = .39, label = "Sports and recreation") +
+   annotate("text", x = 21000, y = .7, label = "Arts") +
+   annotate("text", x = 40000, y = .35, label = "Real estate") +
+   annotate("text", x = 14000, y = .08, label = "Taxis") +
+   annotate("text", x = 36000, y = .7, label = "IT and programming") +
+   annotate("text", x = 48000, y = .59, label = "Consultancies") +
+   annotate("text", x = 18000, y = .24, label = "Retail") +
+   annotate("text", x = 58000, y = .85, label = "Legal and accounting")
+finalPlot
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-12-1.png" alt="unnamed-chunk-12-1.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org0563091">
+<h3 id="org0563091">Fun with themes</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >library(ggthemes)
+finalPlot + theme_minimal()
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="R" >finalPlot + theme_economist() + scale_colour_economist()
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="R" >finalPlot + theme_solarized() +
+scale_colour_solarized("blue")
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org78131bb">
+<h3 id="org78131bb">Facetting</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >finalPlot + facet_grid(. ~ Category)
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-17-1.png" alt="unnamed-chunk-17-1.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org1bfe1d6">
+<h3 id="org1bfe1d6">Reading and homework</h3>
+<p>
+<a href="https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen">https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen</a>
+</p>
+
+<p>
+<a href="http://datadrivenjournalism.net/resources/when_should_i_use_logarithmic_scales_in_my_charts_and_graphs">http://datadrivenjournalism.net/resources/when_should_i_use_logarithmic_scales_in_my_charts_and_graphs</a>
+</p>
+
+<p>
+<a href="https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y">https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y</a>
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>
