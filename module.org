@@ -1368,9 +1368,25 @@
  
 * 5.1: R in the newsroom: ggplot
   :LOGBOOK:
+<<<<<<< HEAD
   CLOCK: [2018-02-17 Sat 15:30]--[2018-02-17 Sat 16:12] =>  0:42
   :END:
 
+=======
+  CLOCK: [2018-02-20 Tue 18:35]--[2018-02-20 Tue 18:55] =>  0:20
+  CLOCK: [2018-02-17 Sat 15:30]--[2018-02-17 Sat 16:12] =>  0:42
+  :END:
+
+** presentations
+
+   Remember the rules:
+
+   #+ATTR_REVEAL: :frag (appear)
+   - 3-minute presentation
+   - slides/presentation optional but recommended
+   - question(s) at the end
+   - 500-word brief submitted yesterday by 5pm
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
 ** what is ggplot?
 
@@ -1399,9 +1415,15 @@
    | SIC07 | description      | number                    | degrees                                   | mean        |
    |       | work description | number of people employed | percentage of secondary education degrees | mean income |
 
+<<<<<<< HEAD
 ** Basic plot
 
    We pass our dataset data and define the aesthetics: an x and y axis:
+=======
+** basic plot
+
+   we pass our dataset data and define the aesthetics: an x and y axis:
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
    #+BEGIN_SRC R
    ggplot(data, aes(x = Mean, y = Degrees)) +
@@ -1421,7 +1443,11 @@
 
 *** Make the bubbles bigger by setting a maximum
 
+<<<<<<< HEAD
    We can reuse the previous chart we built, simply adding a layer with the plus (+) sign:
+=======
+   we can reuse the previous chart we built, simply adding a layer with the plus (+) sign:
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
    #+BEGIN_SRC R
    ggplot(data, aes(x = Mean, y = Degrees, size = Number)) +
@@ -1433,7 +1459,11 @@
 
 *** Add a progressive colour scale depending on the number of people
 
+<<<<<<< HEAD
    That's a new property called `fill`. It will assign default colours for you.
+=======
+   that's a new property called `fill`. It will assign default colours for you.
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
    #+BEGIN_SRC R
    ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
@@ -1445,7 +1475,11 @@
 
 *** Make our axis prettier and more sensible
 
+<<<<<<< HEAD
    Again, re-using our previous chart, we set two additional layers that apply to the axis:
+=======
+   again, re-using our previous chart, we set two additional layers that apply to the axis:
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
    #+BEGIN_SRC R
    library(scales)
@@ -1460,7 +1494,11 @@
 
 *** A logarithmic y-axis, maybe?
 
+<<<<<<< HEAD
    Useful for visualising extreme value differences: https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/
+=======
+   useful for visualising extreme value differences: https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
    #+BEGIN_SRC R
    library(scales)
@@ -1475,7 +1513,11 @@
 
 *** Add labels so we can see clearer... or not
 
+<<<<<<< HEAD
    Note both the label property in the aesthetics and the geom_text() layer.
+=======
+   note both the label property in the aesthetics and the geom_text() layer.
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
    #+BEGIN_SRC R
    ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number, label=Description)) +
@@ -1487,7 +1529,11 @@
 
    [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-8-1.png]]
 
+<<<<<<< HEAD
 ** Let's load some annotated data
+=======
+** let's load some annotated data
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
    #+BEGIN_SRC R
    data_annotated <- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/exercise/data_annotated.csv")
@@ -1508,7 +1554,11 @@
 
 *** Add some text annotation to the plot
 
+<<<<<<< HEAD
    We add two annotation layers with annotate(), with some x/y coordinates and which text to render.
+=======
+   we add two annotation layers with annotate(), with some x/y coordinates and which text to render.
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
    #+BEGIN_SRC R
    colors <- ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
@@ -1544,7 +1594,11 @@
 
    [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-12-1.png]]
 
+<<<<<<< HEAD
 ** Fun with themes
+=======
+** fun with themes
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
   #+BEGIN_SRC R
   library(ggthemes)
@@ -1560,7 +1614,11 @@
   scale_colour_solarized("blue")
   #+END_SRC
 
+<<<<<<< HEAD
 ** Facetting
+=======
+** facetting
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
    #+BEGIN_SRC R
    finalPlot + facet_grid(. ~ Category)
@@ -1568,7 +1626,11 @@
 
    [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-17-1.png]]
 
+<<<<<<< HEAD
 ** Reading and homework
+=======
+** reading and homework
+>>>>>>> 37b134b5be41d37f4e4235b425e26e149ff9fdfd
 
    https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen
    
@@ -1577,6 +1639,7 @@
    https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y
 
 
-
 * 5.2: Some stats in R
-  https://www.nzz.ch/international/wie-einkommen-arbeitslosigkeit-und-migration-das-wahlverhalten-mitbestimmen-ld.1318290
+  :LOGBOOK:
+  CLOCK: [2018-02-20 Tue 18:35]--[2018-02-20 Tue 20:28] =>  1:53
+  :END:
