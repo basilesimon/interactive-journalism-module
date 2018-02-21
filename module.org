@@ -1587,9 +1587,20 @@
 
    https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y
 
-
 * 5.2: Some stats in R
   :LOGBOOK:
+  CLOCK: [2018-02-21 Wed 16:40]--[2018-02-21 Wed 18:26] =>  1:46
+  CLOCK: [2018-02-21 Wed 10:40]--[2018-02-21 Wed 12:40] =>  2:00
   CLOCK: [2018-02-20 Tue 22:27]--[2018-02-21 Wed 00:57] =>  2:30
   CLOCK: [2018-02-20 Tue 18:35]--[2018-02-20 Tue 20:28] =>  1:53
   :END:
+
+** presentations
+
+   Remember the rules:
+
+   #+ATTR_REVEAL: :frag (appear)
+   - 3-minute presentation
+   - slides/presentation optional but recommended
+   - question(s) at the end
+   - 500-word brief submitted yesterday by 5pm
