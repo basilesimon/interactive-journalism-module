@@ -29,13 +29,30 @@
 <div class="reveal">
 <div class="slides">
 <section>
-<section id="slide-org487731b">
-<h2 id="org487731b">5.1: R in the newsroom: ggplot</h2>
+<section id="slide-org2b23bc8">
+<h2 id="org2b23bc8">5.1: R in the newsroom: ggplot</h2>
 </section>
 </section>
 <section>
-<section id="slide-org9c438ad">
-<h3 id="org9c438ad">what is ggplot?</h3>
+<section id="slide-orgb6903b2">
+<h3 id="orgb6903b2">presentations</h3>
+<p>
+Remember the rules:
+</p>
+
+<ul>
+<li class="fragment appear">3-minute presentation</li>
+<li class="fragment appear">slides/presentation optional but recommended</li>
+<li class="fragment appear">question(s) at the end</li>
+<li class="fragment appear">500-word brief submitted yesterday by 5pm</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org0aaba0f">
+<h3 id="org0aaba0f">what is ggplot?</h3>
 <p>
 <a href="http://ggplot2.org/resources/2007-vanderbilt.pdf">the founding paper (pdf)</a>
 </p>
@@ -55,8 +72,8 @@
 </section>
 </section>
 <section>
-<section id="slide-org769aaf7">
-<h3 id="org769aaf7">loading some data</h3>
+<section id="slide-org3dc290a">
+<h3 id="org3dc290a">loading some data</h3>
 <div class="org-src-container">
 
 <pre><code class="R" >library(readr)
@@ -71,8 +88,8 @@ data %&gt;% View()
 </section>
 </section>
 <section>
-<section id="slide-org1e15366">
-<h3 id="org1e15366">what is that dataset?</h3>
+<section id="slide-org2e8369f">
+<h3 id="org2e8369f">what is that dataset?</h3>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -109,10 +126,10 @@ data %&gt;% View()
 </section>
 </section>
 <section>
-<section id="slide-orge64bfe4">
-<h3 id="orge64bfe4">Basic plot</h3>
+<section id="slide-org515f406">
+<h3 id="org515f406">basic plot</h3>
 <p>
-We pass our dataset data and define the aesthetics: an x and y axis:
+we pass our dataset data and define the aesthetics: an x and y axis:
 </p>
 
 <div class="org-src-container">
@@ -129,8 +146,8 @@ We pass our dataset data and define the aesthetics: an x and y axis:
 </div>
 
 </section>
-<section id="slide-org8b7d4f8">
-<h4 id="org8b7d4f8">Make the bubble size represent the number of people in this field</h4>
+<section id="slide-org6cb96b8">
+<h4 id="org6cb96b8">Make the bubble size represent the number of people in this field</h4>
 <div class="org-src-container">
 
 <pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees, size = Number)) +
@@ -145,10 +162,10 @@ We pass our dataset data and define the aesthetics: an x and y axis:
 </div>
 
 </section>
-<section id="slide-org631dbc8">
-<h4 id="org631dbc8">Make the bubbles bigger by setting a maximum</h4>
+<section id="slide-orga5a7954">
+<h4 id="orga5a7954">Make the bubbles bigger by setting a maximum</h4>
 <p>
-We can reuse the previous chart we built, simply adding a layer with the plus (+) sign:
+we can reuse the previous chart we built, simply adding a layer with the plus (+) sign:
 </p>
 
 <div class="org-src-container">
@@ -166,10 +183,10 @@ We can reuse the previous chart we built, simply adding a layer with the plus (+
 </div>
 
 </section>
-<section id="slide-orgbb8f8b5">
-<h4 id="orgbb8f8b5">Add a progressive colour scale depending on the number of people</h4>
+<section id="slide-org2bc72c9">
+<h4 id="org2bc72c9">Add a progressive colour scale depending on the number of people</h4>
 <p>
-That's a new property called `fill`. It will assign default colours for you.
+that's a new property called `fill`. It will assign default colours for you.
 </p>
 
 <div class="org-src-container">
@@ -187,10 +204,10 @@ That's a new property called `fill`. It will assign default colours for you.
 </div>
 
 </section>
-<section id="slide-orga95f159">
-<h4 id="orga95f159">Make our axis prettier and more sensible</h4>
+<section id="slide-org52f3e5e">
+<h4 id="org52f3e5e">Make our axis prettier and more sensible</h4>
 <p>
-Again, re-using our previous chart, we set two additional layers that apply to the axis:
+again, re-using our previous chart, we set two additional layers that apply to the axis:
 </p>
 
 <div class="org-src-container">
@@ -211,10 +228,10 @@ ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
 </div>
 
 </section>
-<section id="slide-org821fdfd">
-<h4 id="org821fdfd">A logarithmic y-axis, maybe?</h4>
+<section id="slide-org3d6da98">
+<h4 id="org3d6da98">A logarithmic y-axis, maybe?</h4>
 <p>
-Useful for visualising extreme value differences: <a href="https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/">https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/</a>
+useful for visualising extreme value differences: <a href="https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/">https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/</a>
 </p>
 
 <div class="org-src-container">
@@ -235,10 +252,10 @@ ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
 </div>
 
 </section>
-<section id="slide-orgf664cd9">
-<h4 id="orgf664cd9">Add labels so we can see clearer&#x2026; or not</h4>
+<section id="slide-org0f42c78">
+<h4 id="org0f42c78">Add labels so we can see clearer&#x2026; or not</h4>
 <p>
-Note both the label property in the aesthetics and the geom<sub>text</sub>() layer.
+note both the label property in the aesthetics and the geom<sub>text</sub>() layer.
 </p>
 
 <div class="org-src-container">
@@ -260,8 +277,8 @@ Note both the label property in the aesthetics and the geom<sub>text</sub>() lay
 </section>
 </section>
 <section>
-<section id="slide-org11e4e62">
-<h3 id="org11e4e62">Let's load some annotated data</h3>
+<section id="slide-org322e5ea">
+<h3 id="org322e5ea">let's load some annotated data</h3>
 <div class="org-src-container">
 
 <pre><code class="R" >data_annotated &lt;- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/exercise/data_annotated.csv")
@@ -270,8 +287,8 @@ df &lt;- data_annotated
 </div>
 
 </section>
-<section id="slide-orgd118555">
-<h4 id="orgd118555">Colour the privileged gigs depending on annotation</h4>
+<section id="slide-org4e0ac2e">
+<h4 id="org4e0ac2e">Colour the privileged gigs depending on annotation</h4>
 <div class="org-src-container">
 
 <pre><code class="R" >ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
@@ -289,10 +306,10 @@ df &lt;- data_annotated
 </div>
 
 </section>
-<section id="slide-orge6954ca">
-<h4 id="orge6954ca">Add some text annotation to the plot</h4>
+<section id="slide-org7f1c998">
+<h4 id="org7f1c998">Add some text annotation to the plot</h4>
 <p>
-We add two annotation layers with annotate(), with some x/y coordinates and which text to render.
+we add two annotation layers with annotate(), with some x/y coordinates and which text to render.
 </p>
 
 <div class="org-src-container">
@@ -315,8 +332,8 @@ colors
 </div>
 
 </section>
-<section id="slide-orgf4cacf6">
-<h4 id="orgf4cacf6">"Annotation are the core of what we do" - Amanda Cox</h4>
+<section id="slide-org2e28f31">
+<h4 id="org2e28f31">"Annotation are the core of what we do" - Amanda Cox</h4>
 <div class="org-src-container">
 
 <pre><code class="R" >finalPlot &lt;- colors +
@@ -345,8 +362,8 @@ finalPlot
 </section>
 </section>
 <section>
-<section id="slide-org0563091">
-<h3 id="org0563091">Fun with themes</h3>
+<section id="slide-org0caff76">
+<h3 id="org0caff76">fun with themes</h3>
 <div class="org-src-container">
 
 <pre><code class="R" >library(ggthemes)
@@ -370,8 +387,8 @@ scale_colour_solarized("blue")
 </section>
 </section>
 <section>
-<section id="slide-org78131bb">
-<h3 id="org78131bb">Facetting</h3>
+<section id="slide-org24abbc0">
+<h3 id="org24abbc0">facetting</h3>
 <div class="org-src-container">
 
 <pre><code class="R" >finalPlot + facet_grid(. ~ Category)
@@ -387,8 +404,8 @@ scale_colour_solarized("blue")
 </section>
 </section>
 <section>
-<section id="slide-org1bfe1d6">
-<h3 id="org1bfe1d6">Reading and homework</h3>
+<section id="slide-org848ad25">
+<h3 id="org848ad25">reading and homework</h3>
 <p>
 <a href="https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen">https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen</a>
 </p>
