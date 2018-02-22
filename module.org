@@ -1587,9 +1587,223 @@
 
    https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y
 
-
 * 5.2: Some stats in R
   :LOGBOOK:
+  CLOCK: [2018-02-22 Thu 22:13]--[2018-02-22 Thu 22:45] =>  0:32
+  CLOCK: [2018-02-21 Wed 16:40]--[2018-02-21 Wed 18:26] =>  1:46
+  CLOCK: [2018-02-21 Wed 10:40]--[2018-02-21 Wed 12:40] =>  2:00
   CLOCK: [2018-02-20 Tue 22:27]--[2018-02-21 Wed 00:57] =>  2:30
   CLOCK: [2018-02-20 Tue 18:35]--[2018-02-20 Tue 20:28] =>  1:53
   :END:
+
+** presentations
+
+   Remember the rules:
+
+   #+ATTR_REVEAL: :frag (appear)
+   - 3-minute presentation
+   - slides/presentation optional but recommended
+   - question(s) at the end
+   - 500-word brief submitted yesterday by 5pm
+** loading some data
+
+  #+BEGIN_SRC R
+  library(readr)
+  library(dplyr)
+  library(ggplot2)
+  
+  data <- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/exercise/data.csv")
+  data %>% View()
+  #+END_SRC
+
+** what is that dataset?
+
+   | SIC07 | description      | number                    | degrees                                   | mean        |
+   |       | work description | number of people employed | percentage of secondary education degrees | mean income |
+
+** basic plot
+
+   we pass our dataset data and define the aesthetics: an x and y axis:
+
+   #+BEGIN_SRC R
+   ggplot(data, aes(x = Mean, y = Degrees)) +
+       geom_point()
+   #+END_SRC
+
+   [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-2-1.png]]
+
+*** Make the bubble size represent the number of people in this field
+
+   #+BEGIN_SRC R
+   ggplot(data, aes(x = Mean, y = Degrees, size = Number)) +
+       geom_point()
+   #+END_SRC
+
+   [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-3-1.png]]
+
+*** Make the bubbles bigger by setting a maximum
+
+   we can reuse the previous chart we built, simply adding a layer with the plus (+) sign:
+
+   #+BEGIN_SRC R
+   ggplot(data, aes(x = Mean, y = Degrees, size = Number)) +
+       geom_point() +
+       scale_size_area(max_size = 15)
+   #+END_SRC
+
+   [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-4-1.png]]
+
+*** Add a progressive colour scale depending on the number of people
+
+   that's a new property called `fill`. It will assign default colours for you.
+
+   #+BEGIN_SRC R
+   ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+       scale_size_area(max_size = 15) +
+       geom_point(shape=21)
+   #+END_SRC
+
+   [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-5-1.png]]
+
+*** Make our axis prettier and more sensible
+
+   again, re-using our previous chart, we set two additional layers that apply to the axis:
+
+   #+BEGIN_SRC R
+   library(scales)
+   ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+       scale_size_area(max_size = 15) +
+       geom_point(shape=21) +
+       scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+       scale_y_continuous(labels = scales::percent)
+   #+END_SRC
+
+   [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-6-1.png]]
+
+*** A logarithmic y-axis, maybe?
+
+   useful for visualising extreme value differences: https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/
+
+   #+BEGIN_SRC R
+   library(scales)
+   ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+       scale_size_area(max_size = 15) +
+       geom_point(shape=21) +
+       scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+       scale_y_continuous(labels = scales::percent, trans=log2_trans())
+   #+END_SRC
+
+   [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-7-1.png]]
+
+*** Add labels so we can see clearer... or not
+
+   note both the label property in the aesthetics and the geom_text() layer.
+
+   #+BEGIN_SRC R
+   ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number, label=Description)) +
+       geom_point(shape=21) +
+       scale_size_area(max_size = 15) +
+       #scale_y_continuous(trans=log2_trans()) +
+       geom_text(size = 2)
+   #+END_SRC
+
+   [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-8-1.png]]
+
+** let's load some annotated data
+
+   #+BEGIN_SRC R
+   data_annotated <- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/exercise/data_annotated.csv")
+   df <- data_annotated
+   #+END_SRC
+
+*** Colour the privileged gigs depending on annotation
+
+  #+BEGIN_SRC R
+  ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
+      geom_point(shape=21) +
+      scale_size_area(max_size = 15) +
+      scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+      scale_y_continuous(labels = scales::percent, trans=log2_trans())
+  #+END_SRC
+
+  [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-10-1.png]]
+
+*** Add some text annotation to the plot
+
+   we add two annotation layers with annotate(), with some x/y coordinates and which text to render.
+
+   #+BEGIN_SRC R
+   colors <- ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
+       geom_point(shape=21) +
+       scale_size_area(max_size = 15) +
+       scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+       scale_y_continuous(labels = scales::percent, trans=log2_trans())
+       annotate("text", x = 40000, y = .55, label = "Privileged gigs") +
+       annotate("text", x = 20000, y = .2, label = "Precarious gigs")
+   colors
+   #+END_SRC
+
+   [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-11-1.png]]
+
+*** "Annotation are the core of what we do" - Amanda Cox
+
+   #+BEGIN_SRC R
+   finalPlot <- colors +
+      annotate("text", x = 31500, y = .05, label = "Construction and building") +
+      annotate("text", x = 12000, y = .52, label = "Education") +
+      annotate("text", x = 43500, y = .85, label = "Health sector") +
+      annotate("text", x = 10000, y = .15, label = "Hairdressers") +
+      annotate("text", x = 12000, y = .39, label = "Sports and recreation") +
+      annotate("text", x = 21000, y = .7, label = "Arts") +
+      annotate("text", x = 40000, y = .35, label = "Real estate") +
+      annotate("text", x = 14000, y = .08, label = "Taxis") +
+      annotate("text", x = 36000, y = .7, label = "IT and programming") +
+      annotate("text", x = 48000, y = .59, label = "Consultancies") +
+      annotate("text", x = 18000, y = .24, label = "Retail") +
+      annotate("text", x = 58000, y = .85, label = "Legal and accounting")
+   finalPlot
+   #+END_SRC
+
+   [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-12-1.png]]
+
+** fun with themes
+
+  #+BEGIN_SRC R
+  library(ggthemes)
+  finalPlot + theme_minimal()
+  #+END_SRC
+
+  #+BEGIN_SRC R
+  finalPlot + theme_economist() + scale_colour_economist()
+  #+END_SRC
+
+  #+BEGIN_SRC R
+  finalPlot + theme_solarized() +
+  scale_colour_solarized("blue")
+  #+END_SRC
+
+** facetting
+
+   #+BEGIN_SRC R
+   finalPlot + facet_grid(. ~ Category)
+   #+END_SRC
+
+   [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-17-1.png]]
+
+** fun with the Italian election of 2013
+
+   We're going to plot the results in each of the 101 districts against some indicators:
+
+   - levels of migration
+   - number of patents per 10,000 inhabitants
+   - and Purchasing Power Standard
+
+** reading and homework
+
+   https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen
+   
+   http://datadrivenjournalism.net/resources/when_should_i_use_logarithmic_scales_in_my_charts_and_graphs
+
+   https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y
+
+
