@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="../presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-orga745d2d">
+<h2 id="orga745d2d">6.1: Some stats in R</h2>
+</section>
+</section>
+<section>
+<section id="slide-org3646609">
+<h3 id="org3646609">loading some data</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >library(readr)
+library(dplyr)
+library(ggplot2)
+
+data <- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/exercise/data.csv")
+data %>% View()
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org5db2a62">
+<h3 id="org5db2a62">what is that dataset?</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">SIC07</td>
+<td class="org-left">description</td>
+<td class="org-left">number</td>
+<td class="org-left">degrees</td>
+<td class="org-left">mean</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">work description</td>
+<td class="org-left">number of people employed</td>
+<td class="org-left">percentage of secondary education degrees</td>
+<td class="org-left">mean income</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+</section>
+<section>
+<section id="slide-org3c3b1c6">
+<h3 id="org3c3b1c6">basic plot</h3>
+<p>
+we pass our dataset data and define the aesthetics: an x and y axis:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees)) +
+    geom_point()
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-2-1.png" alt="unnamed-chunk-2-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgceea0c1">
+<h4 id="orgceea0c1">Make the bubble size represent the number of people in this field</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees, size = Number)) +
+    geom_point()
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-3-1.png" alt="unnamed-chunk-3-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org8035d7e">
+<h4 id="org8035d7e">Make the bubbles bigger by setting a maximum</h4>
+<p>
+we can reuse the previous chart we built, simply adding a layer with the plus (+) sign:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees, size = Number)) +
+    geom_point() +
+    scale_size_area(max_size = 15)
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-4-1.png" alt="unnamed-chunk-4-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org8403fc6">
+<h4 id="org8403fc6">Add a progressive colour scale depending on the number of people</h4>
+<p>
+that's a new property called `fill`. It will assign default colours for you.
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+    scale_size_area(max_size = 15) +
+    geom_point(shape=21)
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-5-1.png" alt="unnamed-chunk-5-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgedaac98">
+<h4 id="orgedaac98">Make our axis prettier and more sensible</h4>
+<p>
+again, re-using our previous chart, we set two additional layers that apply to the axis:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(scales)
+ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+    scale_size_area(max_size = 15) +
+    geom_point(shape=21) +
+    scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+    scale_y_continuous(labels = scales::percent)
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-6-1.png" alt="unnamed-chunk-6-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org574e85a">
+<h4 id="org574e85a">A logarithmic y-axis, maybe?</h4>
+<p>
+useful for visualising extreme value differences: <a href="https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/">https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/</a>
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(scales)
+ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+    scale_size_area(max_size = 15) +
+    geom_point(shape=21) +
+    scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+    scale_y_continuous(labels = scales::percent, trans=log2_trans())
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-7-1.png" alt="unnamed-chunk-7-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org3170090">
+<h4 id="org3170090">Add labels so we can see clearer&#x2026; or not</h4>
+<p>
+note both the label property in the aesthetics and the geom<sub>text</sub>() layer.
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number, label=Description)) +
+    geom_point(shape=21) +
+    scale_size_area(max_size = 15) +
+    #scale_y_continuous(trans=log2_trans()) +
+    geom_text(size = 2)
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-8-1.png" alt="unnamed-chunk-8-1.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org66d4f9a">
+<h3 id="org66d4f9a">let's load some annotated data</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >data_annotated <- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/exercise/data_annotated.csv")
+df <- data_annotated
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org8e03b4d">
+<h4 id="org8e03b4d">Colour the privileged gigs depending on annotation</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
+    geom_point(shape=21) +
+    scale_size_area(max_size = 15) +
+    scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+    scale_y_continuous(labels = scales::percent, trans=log2_trans())
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-10-1.png" alt="unnamed-chunk-10-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org804b29a">
+<h4 id="org804b29a">Add some text annotation to the plot</h4>
+<p>
+we add two annotation layers with annotate(), with some x/y coordinates and which text to render.
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >colors <- ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
+    geom_point(shape=21) +
+    scale_size_area(max_size = 15) +
+    scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+    scale_y_continuous(labels = scales::percent, trans=log2_trans())
+    annotate("text", x = 40000, y = .55, label = "Privileged gigs") +
+    annotate("text", x = 20000, y = .2, label = "Precarious gigs")
+colors
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-11-1.png" alt="unnamed-chunk-11-1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org9afcc26">
+<h4 id="org9afcc26">"Annotation are the core of what we do" - Amanda Cox</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >finalPlot <- colors +
+   annotate("text", x = 31500, y = .05, label = "Construction and building") +
+   annotate("text", x = 12000, y = .52, label = "Education") +
+   annotate("text", x = 43500, y = .85, label = "Health sector") +
+   annotate("text", x = 10000, y = .15, label = "Hairdressers") +
+   annotate("text", x = 12000, y = .39, label = "Sports and recreation") +
+   annotate("text", x = 21000, y = .7, label = "Arts") +
+   annotate("text", x = 40000, y = .35, label = "Real estate") +
+   annotate("text", x = 14000, y = .08, label = "Taxis") +
+   annotate("text", x = 36000, y = .7, label = "IT and programming") +
+   annotate("text", x = 48000, y = .59, label = "Consultancies") +
+   annotate("text", x = 18000, y = .24, label = "Retail") +
+   annotate("text", x = 58000, y = .85, label = "Legal and accounting")
+finalPlot
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-12-1.png" alt="unnamed-chunk-12-1.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgef2f32e">
+<h3 id="orgef2f32e">fun with themes</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >library(ggthemes)
+finalPlot + theme_minimal()
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="R" >finalPlot + theme_economist() + scale_colour_economist()
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="R" >finalPlot + theme_solarized() +
+scale_colour_solarized("blue")
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org114ca7d">
+<h3 id="org114ca7d">facetting</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >finalPlot + facet_grid(. ~ Category)
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-17-1.png" alt="unnamed-chunk-17-1.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org0b8abc2">
+<h3 id="org0b8abc2">fun with the 2013 Italian election</h3>
+<p>
+We're going to plot the results in each of the 101 districts against some indicators:
+</p>
+
+<ul>
+<li>levels of migration</li>
+<li>number of patents per 10,000 inhabitants</li>
+<li>and Purchasing Power Standard</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orga797246">
+<h3 id="orga797246">the linear regression</h3>
+<blockquote nil>
+<p>
+The linear regression is a linear approach for <b>modelling the relationship</b> between a scalar <b>dependent variable y</b> and one or more <b>explanatory variables</b> (or independent variables) denoted X.
+</p>
+</blockquote>
+
+<p>
+ie how accurately does a variable help explain an observation?
+</p>
+
+
+<div class="figure">
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Linear_regression.svg/220px-Linear_regression.svg.png" alt="220px-Linear_regression.svg.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org17ced95">
+<h4 id="org17ced95">linear models in R</h4>
+<p>
+to fit a linear model onto a dataframe, we store the result of `lm(x ~ y)` into a variable:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >model <- lm(observation_column ~ variable_column,
+            data=df)
+</code></pre>
+</div>
+
+<p>
+in `ggplot`, `geom<sub>smooth</sub>(method="lm")` will draw a line onto our plot:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ggplot(df, aes(x=x, y=y)) +
+  geom_smooth(method="lm")
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org863b852">
+<h4 id="org863b852">but how good is my model?</h4>
+<p>
+R-squared is the metric you don't want to miss.
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >> summary(model)
+Adjusted R-squared: somewhere between 0 and 1
+</code></pre>
+</div>
+
+<p>
+the closer to 1 the better!
+</p>
+
+</section>
+<section id="slide-org6c21f6b">
+<h4 id="org6c21f6b">correlation != causation</h4>
+<p>
+<a href="https://www.ft.com/content/94e3acec-a767-11e7-ab55-27219df83c97">https://www.ft.com/content/94e3acec-a767-11e7-ab55-27219df83c97</a>
+</p>
+
+<p>
+r-squared indicates the strength of the relationship&#x2026; you can't infer causation from this.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgb79e07c">
+<h3 id="orgb79e07c">reading and homework</h3>
+<p>
+<a href="https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen">https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen</a>
+</p>
+
+<p>
+<a href="http://datadrivenjournalism.net/resources/when_should_i_use_logarithmic_scales_in_my_charts_and_graphs">http://datadrivenjournalism.net/resources/when_should_i_use_logarithmic_scales_in_my_charts_and_graphs</a>
+</p>
+
+<p>
+<a href="https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y">https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y</a>
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>
