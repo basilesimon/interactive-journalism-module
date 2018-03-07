@@ -2330,6 +2330,13 @@ Source: d3js.org
    
    https://quartz.github.io/Chartbuilder/
 
+** other readings
+
+[[https://www.nytimes.com/2018/03/05/insider/election-night-data.html][Why data nerds embrace election night jitters]]
+
+[[http://www.thecrosstab.com/datascience/r-1/][A tutorial on how to do a poll of polls in R]]
+
+[[https://simonrogers.net/2018/01/10/can-data-journalism-be-taught/][The struggle: can data journalism be taught?]]
 
 * 7.2: More Highcharts?
 
