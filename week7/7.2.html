@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="../presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-org20edac2">
+<h2 id="org20edac2">7.2: More Highcharts?</h2>
+</section>
+</section>
+<section>
+<section id="slide-orgf241de0">
+<h3 id="orgf241de0">housekeeping</h3>
+<p>
+Week 5 assessment marks are (should be?) on your Moodle!
+</p>
+
+<p>
+And now for some fun and accountability with the marks&#x2026;
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org75a9cbe">
+<h3 id="org75a9cbe">how to write code on your computer</h3>
+<p>
+inside a folder, open a set of file with a text editor such as <b>Sublime Text</b> or <b>Notepad</b> (or whatever is one the university computers)
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org7d00ad3">
+<h3 id="org7d00ad3">highcharts viz from your computer</h3>
+<ul>
+<li class="fragment appear">copy the website-template directory I created for you</li>
+<li class="fragment appear">delete everything inside the container</li>
+<li class="fragment appear">create js/script.js and css/style.css</li>
+<li class="fragment appear">link to the files in your HTML</li>
+<li class="fragment appear">load the JS libraries</li>
+<li class="fragment appear">write code in the right place!</li>
+
+</ul>
+
+</section>
+<section id="slide-org50ddfdc">
+<h4 id="org50ddfdc">linking a stylesheet</h4>
+<p>
+inside index.html:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="html" ><link rel="stylesheet" href="css/style.css">
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org97a57a9">
+<h4 id="org97a57a9">linking a JS script</h4>
+<p>
+Inside your HTML:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="html" ><script src="./js/script.js"></script>
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgd70b24c">
+<h4 id="orgd70b24c">loading the libraries</h4>
+<p>
+Inside your HTML, but <b>above</b> loading your script!
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="html" ><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.7/highcharts.js"></script>
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org883df40">
+<h4 id="org883df40">create your container div</h4>
+<div class="org-src-container">
+
+<pre><code class="html" ><div id="container" style="height: 300px"></div>
+</code></pre>
+</div>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org85442b8">
+<h3 id="org85442b8">"but I need the website to be online for the final project!"</h3>
+<p>
+Whatever track you choose for your final project (blog or website from scratch), <b>you will need to have a working version of a website online until July.</b>
+</p>
+
+<ul>
+<li>If you choose to do a blog, more on that later.</li>
+<li>If you choose to build a website, several options are available&#x2026;</li>
+
+</ul>
+
+</section>
+<section id="slide-org22dfb9e">
+<h4 id="org22dfb9e">get a domain, some hosting, use FTP</h4>
+<p>
+You need to register a domain (for example at <a href="https://uk.godaddy.com/?src=ac&amp;plan=cpanel_o365_tier1_036mo">GoDaddy</a>), buy space on their servers to host your code and pictures, and it's all a bit fiddly.
+</p>
+
+<p>
+Let's not do that.
+</p>
+
+</section>
+<section id="slide-orgf3e257e">
+<h4 id="orgf3e257e">use GitHub pages!</h4>
+<p>
+GitHub gives you free hosting and a URL resembling <a href="https://your-username.github.io">https://your-username.github.io</a>
+</p>
+
+<p>
+Here is a very good guide to host your website there: <a href="http://jmcglone.com/guides/github-pages/">http://jmcglone.com/guides/github-pages/</a>
+</p>
+
+<p>
+In short:
+</p>
+
+<ul>
+<li>create an account</li>
+<li>create a repository</li>
+<li>paste or upload your code</li>
+<li>et voila !</li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>

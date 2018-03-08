@@ -2339,5 +2339,85 @@ Source: d3js.org
 [[https://simonrogers.net/2018/01/10/can-data-journalism-be-taught/][The struggle: can data journalism be taught?]]
 
 * 7.2: More Highcharts?
+  :LOGBOOK:
+  CLOCK: [2018-03-08 Thu 20:23]--[2018-03-08 Thu 23:40] =>  3:17
+  CLOCK: [2018-03-08 Thu 19:42]--[2018-03-08 Thu 19:46] =>  0:04
+  :END:
+** housekeeping
 
+   Week 5 assessment marks are (should be?) on your Moodle!
 
+   And now for some fun and accountability with the marks...
+
+** how to write code on your computer
+
+   inside a folder, open a set of file with a text editor such as *Sublime Text* or *Notepad* (or whatever is one the university computers)
+
+** highcharts viz from your computer
+
+   #+ATTR_REVEAL: :frag (appear)
+   - copy the website-template directory I created for you
+   - delete everything inside the container
+   - create js/script.js and css/style.css
+   - link to the files in your HTML
+   - load the JS libraries
+   - write code in the right place!
+
+***  linking a stylesheet
+
+    inside index.html:
+
+    #+BEGIN_SRC html
+    <link rel="stylesheet" href="css/style.css">
+    #+END_SRC
+
+*** linking a JS script
+
+    Inside your HTML:
+
+    #+BEGIN_SRC html
+    <script src="./js/script.js"></script>
+    #+END_SRC
+
+*** loading the libraries
+
+    Inside your HTML, but *above* loading your script!
+
+    #+BEGIN_SRC html
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.7/highcharts.js"></script>
+    #+END_SRC
+
+*** create your container div
+
+    #+BEGIN_SRC html
+    <div id="container" style="height: 300px"></div>
+    #+END_SRC
+
+   
+** "but I need the website to be online for the final project!"
+
+   Whatever track you choose for your final project (blog or website from scratch), *you will need to have a working version of a website online until July.*
+
+   - If you choose to do a blog, more on that later.
+   - If you choose to build a website, several options are available...
+
+*** get a domain, some hosting, use FTP
+
+    You need to register a domain (for example at [[https://uk.godaddy.com/?src=ac&plan=cpanel_o365_tier1_036mo][GoDaddy]]), buy space on their servers to host your code and pictures, and it's all a bit fiddly.
+
+    Let's not do that.
+
+*** use GitHub pages!
+
+    GitHub gives you free hosting and a URL resembling https://your-username.github.io
+
+    Here is a very good guide to host your website there: [[http://jmcglone.com/guides/github-pages/]]
+
+    In short:
+    
+    - create an account
+    - create a repository
+    - paste or upload your code
+    - et voila !
