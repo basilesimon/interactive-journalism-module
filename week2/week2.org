@@ -416,7 +416,7 @@ df <- read_csv("data/airpollutioneuston.csv")
 df %>% filter(!is.na(Value)) %>%
     mutate(Date = as.Date(ReadingDateTime,
                           format = "%d/%m/%Y"),
-           mean = rollmean(Value, (7*24), fill = NA)) %>%
+           mean = rollmean(Value, 30, fill = NA)) %>%
     select(Date, Value, mean) %>%
     ggplot() +
     geom_hline(yintercept = 40) +
