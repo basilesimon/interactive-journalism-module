@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-org97711e2">
+<h2 id="org97711e2">week 4: map of LGBTI index</h2>
+</section>
+</section>
+<section>
+<section id="slide-org705c5de">
+<h3 id="org705c5de">Getting data</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >library(readr)
+library(tidyverse)
+rainbow_index &lt;- read_csv("data/exportmap.csv") %&gt;%
+  select(Country, Score)
+
+  Country    Score
+  &lt;chr&gt;      &lt;dbl&gt;
+1 Albania       33
+2 Andorra       35
+3 Armenia        7
+4 Austria       56
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orga7df0f6">
+<h3 id="orga7df0f6">What does our data look like?</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >rainbow_index %&gt;% summary()
+
+   Country              Score      
+ Length:53          Min.   : 5.00  
+ Class :character   1st Qu.:21.00  
+ Mode  :character   Median :34.00  
+		    Mean   :39.29  
+		    3rd Qu.:56.75  
+		    Max.   :91.00  
+		    NA's   :5     
+
+rainbow_index %&gt;% ggplot(aes(Score)) +
+  geom_histogram(binwidth = 3)
+</code></pre>
+</div>
+
+<p>
+[Rplot.png]]
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org0dd8494">
+<h3 id="org0dd8494">A simple map of the world</h3>
+<div class="outline-text-3" id="text-org0dd8494">
+</div>
+</section>
+<section id="slide-org78dbcc8">
+<h4 id="org78dbcc8">getMap</h4>
+<p>
+Very simple solution to download and map country borders
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(rworldmap)
+plot(getMap())
+</code></pre>
+</div>
+
+<p>
+[Rplot02.png]]
+</p>
+
+</section>
+<section id="slide-orga68174f">
+<h4 id="orga68174f">getMap and ggplot</h4>
+<p>
+<code>getMap</code> give us loads of informations about countries: their names, abbreviations, the continent they're on, their population and GDP estimates, etc.
+</p>
+
+<p>
+We use <code>ggplot</code> here to be able to compose our layers: <code>getMap</code> is our base map
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(sf)
+worldMap &lt;- getMap(resolution = "low")
+worldMap &lt;- st_as_sf(worldMap)
+
+ggplot(worldMap) + geom_sf()
+</code></pre>
+</div>
+
+<p>
+[Rplot01.png]]
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgbddf08f">
+<h3 id="orgbddf08f">Merging our index score and the map data</h3>
+<p>
+Our task is to find a way to merge our two datasets. We remember this helpful cheatsheet:
+</p>
+
+<p>
+<a href="https://camo.githubusercontent.com/c8c1f1bda76407340ae37fa210c38cac480016bb/68747470733a2f2f6d696b6f6f6e747a2e6769746875622e696f2f646174612d63617270656e7472792d7765656b2f696d672f64706c79722d6a6f696e732e706e67">https://camo.githubusercontent.com/c8c1f1bda76407340ae37fa210c38cac480016bb/68747470733a2f2f6d696b6f6f6e747a2e6769746875622e696f2f646174612d63617270656e7472792d7765656b2f696d672f64706c79722d6a6f696e732e706e67</a>
+</p>
+
+</section>
+<section id="slide-orgaa543b1">
+<h4 id="orgaa543b1">Finding the common property</h4>
+<p>
+And it seems that the <code>SOVEREIGNT</code> column of our map contains full country names:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(sf)
+worldMap &lt;- getMap(resolution = "high")
+worldMap$SOVEREIGNT %&gt;% head()
+
+[1] Netherlands    Afghanistan    Angola         United Kingdom Albania        Finland       
+204 Levels: Afghanistan Albania Algeria Andorra Angola Antarctica ... Zimbabwe
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org26177c8">
+<h4 id="org26177c8">Final merge</h4>
+<p>
+We can merge with our <code>rainbow_index$Country</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >worldMap@data &lt;- left_join(worldMap@data, rainbow_index, 
+		    by = c("SOVEREIGNT" = "Country"))
+worldMap &lt;- st_as_sf(worldMap)
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org6eec89f">
+<h3 id="org6eec89f">Basics of mapping</h3>
+<div class="outline-text-3" id="text-org6eec89f">
+</div>
+</section>
+<section id="slide-org5468e4f">
+<h4 id="org5468e4f">Simple map</h4>
+<p>
+Technically, this is a map of our data&#x2026;
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >worldMap %&gt;%
+  ggplot() +
+  geom_sf(aes(fill = Score))
+</code></pre>
+</div>
+
+<p>
+[Rplot03.png]]
+</p>
+
+</section>
+<section id="slide-org05656f1">
+<h4 id="org05656f1">Let's zoom in</h4>
+<p>
+We zoom in by specifying latitude and longitude minimum and maximums to <code>coord_sf</code>
+</p>
+
+
+<div class="figure">
+<p><img src="http://www.isobudgets.com/wp-content/uploads/2014/03/latitude-longitude.jpg" alt="latitude-longitude.jpg" />
+</p>
+</div>
+
+</section>
+<section id="slide-org3c31e26">
+<h4 id="org3c31e26">Let's zoom in</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >worldMap %&gt;%
+  ggplot() +
+  geom_sf(aes(fill = Score)) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE)
+</code></pre>
+</div>
+
+<p>
+[Rplot04.png]]
+</p>
+
+</section>
+<section id="slide-org56df6ab">
+<h4 id="org56df6ab">Filter missing data</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >worldMap %&gt;% filter(!is.na(Score)) %&gt;%
+  ggplot() + 
+  geom_sf(aes(fill = Score)) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE)
+</code></pre>
+</div>
+
+<p>
+[Rplot05.png]]
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgaf41952">
+<h3 id="orgaf41952">Better colours</h3>
+<p>
+<a href="https://blog.datawrapper.de/colorguide/">Excellent Datawrapper guide on colours</a>
+</p>
+
+<p>
+One important tool among other is <a href="http://colorbrewer2.org/">ColorBrewer</a>.
+</p>
+
+<p>
+From there we can grab colours we like and feed them like so:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >scale_fill_gradient(low, high)
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org6bb2e83">
+<h4 id="org6bb2e83">In action</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >library(RColorBrewer)
+worldMap %&gt;% filter(!is.na(Score)) %&gt;%
+  ggplot() + 
+  geom_sf(aes(fill = Score,
+    colour = I("gray80")), size = 1/100) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE) +
+  scale_fill_gradient(low = I("#d7191c"), high = I("#1a9641")) + 
+  theme_minimal()
+</code></pre>
+</div>
+
+<p>
+[Rplot06.png]]
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org0daf3f3">
+<h3 id="org0daf3f3">Er, actual better colours</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >theme_opts&lt;-list(theme(panel.grid.minor = element_blank(),
+			 panel.grid.major = element_line(colour = "transparent"),
+			 panel.background = element_blank(),
+			 plot.background = element_blank(),
+			 axis.line = element_blank(),
+			 axis.text.x = element_blank(),
+			 axis.text.y = element_blank(),
+			 axis.ticks = element_blank(),
+			 axis.title.x = element_blank(),
+			 axis.title.y = element_blank(),
+			 plot.title = element_blank(),
+			 legend.position = "right"))
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgced8875">
+<h3 id="orgced8875">Bis</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >worldMap %&gt;% filter(!is.na(Score)) %&gt;%
+    ggplot() + 
+    geom_sf(aes(fill = Score, colour = I("gray80")), size = 1/100) +
+    coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE) +
+    scale_fill_distiller(type = "div", palette = "RdYlGn", direction = 1) +
+  theme_minimal() + theme_opts
+</code></pre>
+</div>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>

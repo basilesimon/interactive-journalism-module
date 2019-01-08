@@ -1,0 +1,190 @@
+** week 7: Italy poll of polls
+   :LOGBOOK:
+   CLOCK: [2018-12-14 Fri 12:22]--[2018-12-14 Fri 13:09] =>  0:47
+   CLOCK: [2018-12-14 Fri 11:07]--[2018-12-14 Fri 11:11] =>  0:04
+   CLOCK: [2018-12-14 Fri 10:54]--[2018-12-14 Fri 11:06] =>  0:12
+   CLOCK: [2018-12-14 Fri 10:15]--[2018-12-14 Fri 10:54] =>  0:39
+   :END:
+*** install and load some packages
+#+BEGIN_SRC R
+# install a package
+install.packages('name of the package')
+
+# load a package
+library('name of the package')
+#+END_SRC
+
+#+BEGIN_SRC R
+# install.packages('rvest')
+# install.packages('tidyverse')
+# install.packages('tidyquant')
+# install.packages('ggthemes')
+library('rvest')
+library('dplyr')
+library('ggplot2')
+library('reshape2')
+library('tidyquant')
+library('ggthemes')
+#+END_SRC
+
+*** scrape data from wikipedia table
+#+BEGIN_SRC R
+# we store our URL in a variable
+url <- 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_Italian_general_election,_2018'
+
+# column names
+column_names <- c('date', 'firm', 'sample', 'pd', 'e', 'i', 'cp', 'fi', 'ln', 'fdl', 'ncl', 'm5s', 
+                  'leu', 'pap', 'cpi', 'others', 'lead')
+
+# decompose line by line:
+# request to the server, parsing, finding the right element,
+# filling blank cells, adding column titles, removing extra bits
+table_2018 <- url %>%
+  read_html() %>%
+  html_node(xpath='/html/body/div[3]/div[3]/div[4]/div/table[3]') %>%
+  html_table(fill = TRUE) %>%
+  setNames(column_names) %>%
+  tail(-2)
+#+END_SRC
+
+*** just a quick thing...
+#+BEGIN_SRC R
+# I said no for loops - sorry.
+# we just need to convert all of these columns into numbers!
+for(i in c(4:ncol(table_2018))) {
+  table_2018[,i] <- as.numeric(as.character(table_2018[,i]))
+}
+#+END_SRC
+
+*** string operations to clean our dates
+#+BEGIN_SRC R
+# string operations
+str <- "30 Jan - 2 Feb"
+strsplit(str, "-")[[1]]
+tail(strsplit(str, "-")[[1]], n="1")
+paste(str, " 2018")
+#+END_SRC
+
+*** let's make a function!
+#+BEGIN_SRC R
+clean_date_function <- function(date, year) {
+  date_split <- paste(
+    tail(
+      strsplit(date, "–")[[1]], 
+      n=1), 
+    year)
+  clean_date <- as.Date(date_split, format = "%d %b %Y")
+  return(clean_date)
+}
+#+END_SRC
+
+*** let's apply our function
+#+BEGIN_SRC R
+# line by line...
+data_2018 <- table_2018 %>%
+  group_by(date) %>%
+  mutate(clean_date = clean_date_function(date, " 2018")) %>%
+  ungroup() %>%
+  select(-date, -firm, -sample, -lead) %>%
+  melt(id="clean_date")
+#+END_SRC
+
+*** result
+#+BEGIN_SRC R
+ggplot(data = data_2018, aes(clean_date, value, color=variable)) + 
+  geom_point() + 
+  geom_ma(ma_fun = SMA, n = 10)
+#+END_SRC
+
+*** we do the same for 2017
+#+BEGIN_SRC R
+## same for 2017 data
+one_year <- url %>%
+  read_html() %>%
+  html_node(xpath='/html/body/div[3]/div[3]/div[4]/div/table[4]') %>%
+  html_table(fill = TRUE) %>%
+  setNames(column_names) %>%
+  tail(-2)
+
+for(i in c(3:ncol(one_year))) {
+  one_year[,i] <- as.numeric(as.character(one_year[,i]))
+}
+#+END_SRC
+
+#+BEGIN_SRC R
+data_2017 <- one_year %>% group_by(date) %>%
+  mutate(clean_date = clean_date_function(date, " 2017")) %>%
+  ungroup() %>%
+  select(-date, -firm, -lead) %>%
+  melt(id="clean_date")
+#+END_SRC
+
+*** result from 2017
+#+BEGIN_SRC R
+ggplot(data = data_2017, aes(clean_date, value, color=variable)) + 
+  geom_point(aes(shape="21",alpha=1/100)) + 
+  geom_ma(ma_fun = SMA, n = 10)
+#+END_SRC
+
+*** merge 2017 and 2018
+#+BEGIN_SRC R
+# merge data together now
+data <- merge(data_2018, data_2017, all=TRUE)
+#+END_SRC
+
+*** calculate moving average
+#+BEGIN_SRC R
+data <- data %>%
+  rename(date = clean_date, party = variable) %>%
+  group_by(party) %>%
+  mutate(mean20_missing = rollapply(value, width = 20,
+                                    fill = NA, partial = TRUE, 
+                                    FUN=function(x) mean(x, na.rm=TRUE),
+                                    align = "right"))
+#+END_SRC
+
+*** final plot
+#+BEGIN_SRC R
+# visualise
+ggplot(data, 
+       aes(date, color=party)) + 
+  geom_point(aes(y=value, shape="21", alpha=1/100)) + 
+  geom_line(aes(y=mean20_missing, color=party)) +
+  theme_minimal()
+#+END_SRC
+
+
+*** more things
+#+BEGIN_SRC R
+# visualise
+unique(data$party)
+colors <- c('firebrick', 'grey', 'steelblue', 'cadetblue1', 'dodgerblue4',
+            'gold', 'brown4', 'grey', 'grey', 'grey', 'grey', 'grey', 
+            'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey')
+names(colors) <- unique(data$party)
+
+annot <- read.table(text=
+                    "year|wait|just|text|pcolor
+                    2018-01-01|0.22|0|Democratic party|firebrick
+                    2018-01-01|0.3|0|Five Star|gold
+                    2018-01-01|0.17|0|Forza|steelblue
+                    2018-01-01|0.12|0|League|cadetblue1
+                    2018-01-01|0.08|0|Free and Equal|brown4
+                    2018-01-01|0.03|0|Brothers of Italy|dodgerblue4",
+                    sep="|", header=TRUE, stringsAsFactors=FALSE)
+#annot$text <- gsub("", "\n", annot$text)
+annot$year <- as.Date(annot$year)
+
+ggplot(data %>% filter(party %in% c('pd', 'fi', 'ln', 'fdl', 'm5s', 'leu')), 
+       aes(date, color = party)) + 
+  geom_point(aes(y=value/100, shape="21", alpha=0.001)) +
+  geom_line(aes(y=mean20_missing/100)) +
+  theme_minimal() + scale_color_manual(values = colors) +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("Italian party polling") +
+  xlab("Date") + ylab("Poll") + geom_label(data=annot, aes(x=year, y=wait, label=text),
+                                           lineheight=0.95,
+                                           size=4, label.size=0, color=annot$pcolor)+ 
+  theme(legend.position = "none")
+
+#+END_SRC

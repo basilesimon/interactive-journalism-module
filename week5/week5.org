@@ -1,0 +1,130 @@
+** week 5: storms in the Pacific basin
+   :LOGBOOK:
+   CLOCK: [2018-12-15 Sat 14:10]--[2018-12-15 Sat 14:35] =>  0:25
+   :END:
+*** getting our data
+[[ftp://eclipse.ncdc.noaa.gov/pub/ibtracs/v03r10/all/csv/basin][csv release]]
+*** loading packages
+#+BEGIN_SRC R
+library(ggplot2)
+library(dplyr)
+#+END_SRC
+*** preparing our data
+#+BEGIN_SRC R
+# data source
+basin <- read.csv('Basin.WP.ibtracs_all.v03r10.csv',
+                  skip = 1, stringsAsFactors = FALSE)
+basin <- basin[-1, ] # first column is garbled, disegard
+
+# cleaner columns
+basin$Season <- as.numeric(basin$Season)
+basin$Latitude <- as.numeric(gsub("^ ", "", basin$Latitude))
+basin$Longitude <- as.numeric(gsub("^ ", "", basin$Longitude))
+basin$Wind.WMO. <- as.numeric(gsub("^ ", "", basin$Wind.WMO.))
+basin$Name <- as.factor(basin$Name)
+#+END_SRC
+*** filter 2000 to 2017
+#+BEGIN_SRC R
+# extract 2000 to 2017 data
+# also remove some weird datapoints
+substorms <- basin %>%
+  filter(Season %in% 2000:2017) %>%
+  filter(!Name == "NOT NAMED") %>%
+  filter(!Latitude == -999) %>%
+  filter(!Longitude == -999)
+
+substorms$ID <- as.factor(paste(substorms$Name, substorms$Season, 
+                                sep <- "."))
+#+END_SRC
+*** a map of the world
+#+BEGIN_SRC R
+# world map
+ggplot() +
+  geom_polygon(data = map_data("world"),
+  aes(x = long, y = lat, group = group)
+#+END_SRC
+*** what's in our data
+#+BEGIN_SRC R
+substorms %>%
+  group_by(ID) %>%
+  summarise(average_winds = mean(Wind.WMO.)) %>% 
+  arrange(desc(average_winds))
+
+A tibble: 401 x 2
+   ID               average_winds
+   <fct>                    <dbl>
+ 1 JELAWAT 2012 .            71.4
+ 2 HAIYAN 2013 .             70.5
+ 3 CHOI-WAN 2009 .           69.2
+ 4 FENGSHEN 2002 .           68.8
+ 5 MEGI 2010 .               68.7
+#+END_SRC
+*** map
+#+BEGIN_SRC R
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
+  geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group)) +
+  geom_path(data = substorms, aes(group = ID))
+#+END_SRC
+*** themes in ggplot
+#+BEGIN_SRC R
+theme_opts<-list(theme(panel.grid.minor = element_blank(),
+                       panel.grid.major = element_blank(),
+                       panel.background = element_blank(),
+                       plot.background = element_blank(),
+                       axis.line = element_blank(),
+                       axis.text.x = element_blank(),
+                       axis.text.y = element_blank(),
+                       axis.ticks = element_blank(),
+                       axis.title.x = element_blank(),
+                       axis.title.y = element_blank(),
+                       plot.title = element_blank()))
+#+END_SRC
+*** map issue to fix
+#+BEGIN_SRC R
+wm <- map_data("world")
+
+library("PBSmapping")
+data.table::setnames(wm, c("X","Y","PID","POS","region","subregion"))
+worldmap = clipPolys(wm,
+    xlim=c(60,180),
+    ylim=c(-20, 60),
+    keepExtra=TRUE)
+#+END_SRC
+*** map with themes
+#+BEGIN_SRC R
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
+  geom_polygon(data = worldmap, aes(x = X, y = Y, group = PID), 
+               fill = "whitesmoke", colour = "gray10", size = 0.2) +
+  geom_path(data = substorms, aes(group = ID), 
+            alpha = substorms$Wind.WMO./500, size = 0.8,
+            color = "red") + 
+  coord_map(xlim = c(60,180), ylim = c(-20, 60)) +
+  labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts
+#+END_SRC
+*** extract month and year
+#+BEGIN_SRC R
+# extract month and year for facetting later
+library(lubridate)
+substorms <- substorms %>%
+  mutate(Month = month(as.Date(ISO_time))) %>%
+  mutate(Year = year(as.Date(ISO_time)))
+#+END_SRC
+*** facetted map
+#+BEGIN_SRC R
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
+  geom_polygon(data = worldmap, aes(x = X, y = Y, group = PID), 
+               fill = "whitesmoke", colour = "gray10", size = 0.2) +
+  geom_path(data = substorms, aes(group = ID), 
+            alpha = substorms$Wind.WMO./500, size = 0.8,
+            color = "red") + 
+  coord_map(xlim = c(60,180), ylim = c(-20, 60)) +
+  labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts
+#+END_SRC
+
+#+BEGIN_SRC R
+  + facet_wrap(~Year)
+#+END_SRC
+
+#+BEGIN_SRC R
+  + facet_wrap(~Month)
+#+END_SRC
