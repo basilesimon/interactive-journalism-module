@@ -57,6 +57,17 @@ for(i in c(4:ncol(table_2018))) {
 #+END_SRC
 
 *** string operations to clean our dates
+Our dates currently look like this:
+
+#+BEGIN_SRC R
+table_2018$date %>% head()
+[1] "4 March 2018" "12–16 Feb"    "14–15 Feb"    "14 Feb"       "13–14 Feb"    "12–14 Feb"
+#+END_SRC
+
+This isn't quite ready to be read as dates by the code...
+
+**** Basics of date operations
+
 #+BEGIN_SRC R
 # string operations
 str <- "30 Jan - 2 Feb"
@@ -65,7 +76,23 @@ tail(strsplit(str, "-")[[1]], n="1")
 paste(str, " 2018")
 #+END_SRC
 
-*** let's make a function!
+*** Let's make a function!
+A function has this syntax:
+
+#+BEGIN_SRC R
+myFunction <- function(parameter1, parameter2) {
+  # do things with parameters
+  # return a result
+}
+#+END_SRC
+
+The returned result can be accessed like this:
+
+#+BEGIN_SRC R
+myResult <- myFunction(parameter)
+#+END_SRC
+
+**** Our date-cleaning function
 #+BEGIN_SRC R
 clean_date_function <- function(date, year) {
   date_split <- paste(
@@ -78,7 +105,7 @@ clean_date_function <- function(date, year) {
 }
 #+END_SRC
 
-*** let's apply our function
+*** Let's apply our function
 #+BEGIN_SRC R
 # line by line...
 data_2018 <- table_2018 %>%
@@ -89,21 +116,39 @@ data_2018 <- table_2018 %>%
   melt(id="clean_date")
 #+END_SRC
 
-*** result
+#+BEGIN_SRC R
+> data_2018 %>% head()
+  clean_date variable value
+1 2018-03-04       pd  18.8
+2 2018-02-16       pd  21.3
+3 2018-02-15       pd  22.5
+4 2018-02-14       pd  22.1
+5 2018-02-14       pd  24.5
+6 2018-02-14       pd  21.9
+#+END_SRC
+
+One line for each observation!
+
+*** Result on a chart
 #+BEGIN_SRC R
 ggplot(data = data_2018, aes(clean_date, value, color=variable)) + 
   geom_point() + 
   geom_ma(ma_fun = SMA, n = 10)
 #+END_SRC
 
-*** we do the same for 2017
+[[fig/Rplot.png]]
+
+*** We do the same for 2017
+Check column names, get table, clean numbers...
 #+BEGIN_SRC R
 ## same for 2017 data
+column_names2017 <- c('date', 'firm', 'pd', 'e', 'i', 'cp', 'fi', 'ln', 'fdl', 'ncl', 'm5s', 
+                  'leu', 'pap', 'cpi', 'others', 'lead')
 one_year <- url %>%
   read_html() %>%
   html_node(xpath='/html/body/div[3]/div[3]/div[4]/div/table[4]') %>%
   html_table(fill = TRUE) %>%
-  setNames(column_names) %>%
+  setNames(column_names2017) %>%
   tail(-2)
 
 for(i in c(3:ncol(one_year))) {
@@ -111,6 +156,7 @@ for(i in c(3:ncol(one_year))) {
 }
 #+END_SRC
 
+**** Tidy representation
 #+BEGIN_SRC R
 data_2017 <- one_year %>% group_by(date) %>%
   mutate(clean_date = clean_date_function(date, " 2017")) %>%
@@ -119,20 +165,62 @@ data_2017 <- one_year %>% group_by(date) %>%
   melt(id="clean_date")
 #+END_SRC
 
-*** result from 2017
+[[fig/Rplot01.png]]
+
+*** Results from 2017
 #+BEGIN_SRC R
 ggplot(data = data_2017, aes(clean_date, value, color=variable)) + 
   geom_point(aes(shape="21",alpha=1/100)) + 
   geom_ma(ma_fun = SMA, n = 10)
 #+END_SRC
 
-*** merge 2017 and 2018
+[[fig/Rplot01.png]]
+
+*** Merging 2017 and 2018
+
+Here we don't need ~left_join~ things, because our data is tidy: only three identical columns in both datasets
+
 #+BEGIN_SRC R
-# merge data together now
 data <- merge(data_2018, data_2017, all=TRUE)
 #+END_SRC
 
-*** calculate moving average
+**** Let's quickly check what we've done
+
+#+BEGIN_SRC R
+> data_2017 %>% summary()
+   clean_date          
+ Min.   :2017-01-09    
+ 1st Qu.:2017-03-24    
+ Median :2017-06-08    
+ Mean   :2017-06-26    
+ 3rd Qu.:2017-10-08    
+ Max.   :2017-12-28    
+
+data_2018 %>% summary()
+   clean_date       
+ Min.   :2018-01-07 
+ 1st Qu.:2018-01-19 
+ Median :2018-02-01 
+ Mean   :2018-01-29 
+ 3rd Qu.:2018-02-11 
+ Max.   :2018-03-04 
+                    
+> data %>% summary()
+      date           
+ Min.   :2017-01-09  
+ 1st Qu.:2017-04-07  
+ Median :2017-07-19  
+ Mean   :2017-08-03  
+ 3rd Qu.:2017-11-29  
+ Max.   :2018-03-04  
+#+END_SRC
+
+*** Calculate moving average
+
+What we've got so far is a bunch of polls. A poll of polls is some kind of aggregate calculation.
+
+In this instance we will calculate a rolling average over 20 observations:
+
 #+BEGIN_SRC R
 data <- data %>%
   rename(date = clean_date, party = variable) %>%
@@ -141,11 +229,22 @@ data <- data %>%
                                     fill = NA, partial = TRUE, 
                                     FUN=function(x) mean(x, na.rm=TRUE),
                                     align = "right"))
+				    
+> data %>% tail()
+# A tibble: 6 x 4
+# Groups:   party [6]
+  date       party  value mean20_missing
+  <date>     <fct>  <dbl>          <dbl>
+1 2018-03-04 ncl      1.3          2.23 
+2 2018-03-04 m5s     32.7         27.9  
+3 2018-03-04 leu      3.4          5.54 
+4 2018-03-04 pap      1.1          1.41 
+5 2018-03-04 cpi      0.9          0.855
+6 2018-03-04 others   2.4          2.21
 #+END_SRC
 
-*** final plot
+*** Final plot
 #+BEGIN_SRC R
-# visualise
 ggplot(data, 
        aes(date, color=party)) + 
   geom_point(aes(y=value, shape="21", alpha=1/100)) + 
@@ -153,16 +252,48 @@ ggplot(data,
   theme_minimal()
 #+END_SRC
 
+[[fig/Rplot02.png]]
 
-*** more things
+*** More things
+**** Colours for parties
 #+BEGIN_SRC R
 # visualise
 unique(data$party)
 colors <- c('firebrick', 'grey', 'steelblue', 'cadetblue1', 'dodgerblue4',
-            'gold', 'brown4', 'grey', 'grey', 'grey', 'grey', 'grey', 
+            'brown4', 'gold', 'grey', 'grey', 'grey', 'grey', 'grey', 
             'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey')
 names(colors) <- unique(data$party)
 
+> colors %>% head()
+   pd          i        cp           fi           ln             fdl 
+  "firebrick"  "grey"   "steelblue"  "cadetblue1" "dodgerblue4"  "brown4" 
+
+ggplot(data, 
+       aes(date, color=party)) + 
+  geom_point(aes(y=value, shape="21", alpha=1/100)) + 
+  geom_line(aes(y=mean20_missing, color=party)) +
+  scale_color_manual(values = colors) +
+  theme_minimal()
+#+END_SRC
+
+[[fig/Rplot03.png]]
+
+**** Filtering parties
+
+#+BEGIN_SRC R
+data %>% filter(party %in% c('pd', 'fi', 'ln', 'fdl', 'm5s', 'leu')) %>%
+ggplot(aes(date, color=party)) + 
+  geom_point(aes(y=value, shape="21", alpha=1/100)) + 
+  geom_line(aes(y=mean20_missing, color=party)) +
+  scale_color_manual(values = colors)
+  theme_minimal()
+#+END_SRC
+
+[[fig/Rplot04.png]]
+
+**** Annotations
+
+#+BEGIN_SRC R
 annot <- read.table(text=
                     "year|wait|just|text|pcolor
                     2018-01-01|0.22|0|Democratic party|firebrick
@@ -175,8 +306,8 @@ annot <- read.table(text=
 #annot$text <- gsub("", "\n", annot$text)
 annot$year <- as.Date(annot$year)
 
-ggplot(data %>% filter(party %in% c('pd', 'fi', 'ln', 'fdl', 'm5s', 'leu')), 
-       aes(date, color = party)) + 
+data %>% filter(party %in% c('pd', 'fi', 'ln', 'fdl', 'm5s', 'leu')) %>%
+ggplot(aes(date, color=party)) + 
   geom_point(aes(y=value/100, shape="21", alpha=0.001)) +
   geom_line(aes(y=mean20_missing/100)) +
   theme_minimal() + scale_color_manual(values = colors) +
@@ -188,3 +319,5 @@ ggplot(data %>% filter(party %in% c('pd', 'fi', 'ln', 'fdl', 'm5s', 'leu')),
   theme(legend.position = "none")
 
 #+END_SRC
+
+[[fig/Rplot05.png]]
