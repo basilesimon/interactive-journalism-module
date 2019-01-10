@@ -73,11 +73,11 @@ I want you to engage in the community of data-journalists, news hackers and tink
 
 ** Final projects
 
-<https://katetobar.github.io/>
-<https://michaelgoodier.github.io/sex_for_rent/>
-<https://ellawilksharper.github.io/a-day-in-the-life-of-mps/>
-<https://nellmooney.github.io/thecasting/>
-<https://alexandrama.github.io/trump-frequent-mentions/>
+- <https://katetobar.github.io/>
+- <https://michaelgoodier.github.io/sex_for_rent/>
+- <https://ellawilksharper.github.io/a-day-in-the-life-of-mps/>
+- <https://nellmooney.github.io/thecasting/>
+- <https://alexandrama.github.io/trump-frequent-mentions/>
 
 ** Elements of syntax
 *** What's a variable?
