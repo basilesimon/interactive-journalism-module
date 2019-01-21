@@ -28,19 +28,38 @@
 <body>
 <div class="reveal">
 <div class="slides">
+<section id="sec-title-slide"><h1 class="title">JOM299</h1><h2 class="author">Basile Simon</h2><p class="date">Created: 2019-01-21 Mon 21:31</p>
+</section>
+
 <section>
-<section id="slide-org713a23d">
-<h2 id="org713a23d">week 2: air pollution in Euston road</h2>
+<section id="slide-orge3ffbec">
+<h2 id="orge3ffbec">week 2: air pollution in Euston road</h2>
+<div class="outline-text-2" id="text-orge3ffbec">
+</div>
 </section>
 </section>
 <section>
-<section id="slide-orgadb23a5">
-<h3 id="orgadb23a5">Introduction to ggplot</h3>
+<section id="slide-org3243b48">
+<h3 id="org3243b48">Introduction to ggplot</h3>
+<p>
+<code>ggplot</code> is going to be our best friend for this module
+</p>
+
+<p>
+Great link to bookmark: <a href="https://ggplot2.tidyverse.org/">ggplot cheatsheet</a>
+</p>
+
+
+<div class="figure">
+<p><img src="https://blog.gtwang.org/wp-content/uploads/2016/07/ggplot-grammar-of-graphics-stack-1.png" alt="ggplot-grammar-of-graphics-stack-1.png" />
+</p>
+</div>
+
 </section>
 </section>
 <section>
-<section id="slide-org47435ab">
-<h3 id="org47435ab">Loading some data</h3>
+<section id="slide-org71735c6">
+<h3 id="org71735c6">Loading some data</h3>
 <div class="org-src-container">
 
 <pre><code class="R" > library(readr)
@@ -59,7 +78,7 @@ df &lt;- data_annotated
 </section>
 <section>
 <section id="slide-basic-plot">
-<h3 id="basic-plot"><a id="org920c858"></a>Basic plot</h3>
+<h3 id="basic-plot"><a id="orgceee085"></a>Basic plot</h3>
 <p>
 We pass our dataset data and define the aesthetics: an x and y axis:
 </p>
@@ -75,12 +94,12 @@ We pass our dataset data and define the aesthetics: an x and y axis:
 <div class="figure">
 <p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-2-1.png" alt="unnamed-chunk-2-1.png" />
 </p>
-<p><span class="figure-number">Figure 1: </span>img</p>
+<p><span class="figure-number">Figure 2: </span>img</p>
 </div>
 
 </section>
 <section id="slide-make-the-bubble-size-represent-the-number-of-people-in-this-field">
-<h4 id="make-the-bubble-size-represent-the-number-of-people-in-this-field"><a id="org2be49cc"></a>Make the bubble size represent the number of people in this field</h4>
+<h4 id="make-the-bubble-size-represent-the-number-of-people-in-this-field"><a id="org79da928"></a>Make the bubble size represent the number of people in this field</h4>
 <div class="org-src-container">
 
 <pre><code class="R" >ggplot(data, aes(x = Mean, y = Degrees, size = Number)) +
@@ -92,12 +111,12 @@ We pass our dataset data and define the aesthetics: an x and y axis:
 <div class="figure">
 <p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-3-1.png" alt="unnamed-chunk-3-1.png" />
 </p>
-<p><span class="figure-number">Figure 2: </span>img</p>
+<p><span class="figure-number">Figure 3: </span>img</p>
 </div>
 
 </section>
 <section id="slide-make-the-bubbles-bigger-by-setting-a-maximum">
-<h4 id="make-the-bubbles-bigger-by-setting-a-maximum"><a id="org9afc5ee"></a>Make the bubbles bigger by setting a maximum</h4>
+<h4 id="make-the-bubbles-bigger-by-setting-a-maximum"><a id="org7565930"></a>Make the bubbles bigger by setting a maximum</h4>
 <p>
 we can reuse the previous chart we built, simply adding a layer with the
 plus (+) sign:
@@ -115,12 +134,12 @@ plus (+) sign:
 <div class="figure">
 <p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-4-1.png" alt="unnamed-chunk-4-1.png" />
 </p>
-<p><span class="figure-number">Figure 3: </span>img</p>
+<p><span class="figure-number">Figure 4: </span>img</p>
 </div>
 
 </section>
 <section id="slide-add-a-progressive-colour-scale-depending-on-the-number-of-people">
-<h4 id="add-a-progressive-colour-scale-depending-on-the-number-of-people"><a id="org64dde35"></a>Add a progressive colour scale depending on the number of people</h4>
+<h4 id="add-a-progressive-colour-scale-depending-on-the-number-of-people"><a id="org8b0b0fc"></a>Add a progressive colour scale depending on the number of people</h4>
 <p>
 that's a new property called `fill`. It will assign default colours for
 you.
@@ -138,12 +157,12 @@ you.
 <div class="figure">
 <p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-5-1.png" alt="unnamed-chunk-5-1.png" />
 </p>
-<p><span class="figure-number">Figure 4: </span>img</p>
+<p><span class="figure-number">Figure 5: </span>img</p>
 </div>
 
 </section>
 <section id="slide-make-our-axis-prettier-and-more-sensible">
-<h4 id="make-our-axis-prettier-and-more-sensible"><a id="orge70accc"></a>Make our axis prettier and more sensible</h4>
+<h4 id="make-our-axis-prettier-and-more-sensible"><a id="org8013841"></a>Make our axis prettier and more sensible</h4>
 <p>
 again, re-using our previous chart, we set two additional layers that
 apply to the axis:
@@ -164,12 +183,12 @@ ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
 <div class="figure">
 <p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-6-1.png" alt="unnamed-chunk-6-1.png" />
 </p>
-<p><span class="figure-number">Figure 5: </span>img</p>
+<p><span class="figure-number">Figure 6: </span>img</p>
 </div>
 
 </section>
 <section id="slide-a-logarithmic-y-axis-maybe">
-<h4 id="a-logarithmic-y-axis-maybe"><a id="orgf17b409"></a>A logarithmic y-axis, maybe?</h4>
+<h4 id="a-logarithmic-y-axis-maybe"><a id="org477a86d"></a>A logarithmic y-axis, maybe?</h4>
 <p>
 useful for visualising extreme value differences:
 <a href="https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/">https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/</a>
@@ -190,12 +209,12 @@ ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
 <div class="figure">
 <p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-7-1.png" alt="unnamed-chunk-7-1.png" />
 </p>
-<p><span class="figure-number">Figure 6: </span>img</p>
+<p><span class="figure-number">Figure 7: </span>img</p>
 </div>
 
 </section>
 <section id="slide-add-labels-so-we-can-see-clearer-or-not">
-<h4 id="add-labels-so-we-can-see-clearer-or-not"><a id="org690d1e1"></a>Add labels so we can see clearer&#x2026; or not</h4>
+<h4 id="add-labels-so-we-can-see-clearer-or-not"><a id="orgfe25f5a"></a>Add labels so we can see clearer&#x2026; or not</h4>
 <p>
 note both the label property in the aesthetics and the geomtext() layer.
 </p>
@@ -214,12 +233,12 @@ note both the label property in the aesthetics and the geomtext() layer.
 <div class="figure">
 <p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-8-1.png" alt="unnamed-chunk-8-1.png" />
 </p>
-<p><span class="figure-number">Figure 7: </span>img</p>
+<p><span class="figure-number">Figure 8: </span>img</p>
 </div>
 
 </section>
-<section id="slide-orgf063d72">
-<h4 id="orgf063d72">Colour the privileged gigs depending on annotation</h4>
+<section id="slide-org3306ab3">
+<h4 id="org3306ab3">Colour the privileged gigs depending on annotation</h4>
 <div class="org-src-container">
 
 <pre><code class="R" >ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
@@ -234,12 +253,12 @@ note both the label property in the aesthetics and the geomtext() layer.
 <div class="figure">
 <p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-10-1.png" alt="unnamed-chunk-10-1.png" />
 </p>
-<p><span class="figure-number">Figure 8: </span>img</p>
+<p><span class="figure-number">Figure 9: </span>img</p>
 </div>
 
 </section>
-<section id="slide-orga9b503e">
-<h4 id="orga9b503e">Add some text annotation to the plot</h4>
+<section id="slide-org7e9bc46">
+<h4 id="org7e9bc46">Add some text annotation to the plot</h4>
 <p>
 We add two annotation layers with annotate(), with some x/y coordinates
 and which text to render.
@@ -262,12 +281,12 @@ colors
 <div class="figure">
 <p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-11-1.png" alt="unnamed-chunk-11-1.png" />
 </p>
-<p><span class="figure-number">Figure 9: </span>img</p>
+<p><span class="figure-number">Figure 10: </span>img</p>
 </div>
 
 </section>
-<section id="slide-orgbab00d1">
-<h4 id="orgbab00d1">"Annotation are the core of what we do" - Amanda Cox</h4>
+<section id="slide-org90ec0a3">
+<h4 id="org90ec0a3">"Annotation are the core of what we do" - Amanda Cox</h4>
 <div class="org-src-container">
 
 <pre><code class="R" >finalPlot &lt;- colors +
@@ -291,14 +310,14 @@ finalPlot
 <div class="figure">
 <p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-12-1.png" alt="unnamed-chunk-12-1.png" />
 </p>
-<p><span class="figure-number">Figure 10: </span>img</p>
+<p><span class="figure-number">Figure 11: </span>img</p>
 </div>
 
 </section>
 </section>
 <section>
-<section id="slide-orgd02b28b">
-<h3 id="orgd02b28b">Fun with themes</h3>
+<section id="slide-org9b7323d">
+<h3 id="org9b7323d">Fun with themes</h3>
 <div class="org-src-container">
 
 <pre><code class="R" >library(ggthemes)
@@ -314,8 +333,8 @@ finalPlot + theme_solarized() +
 </section>
 </section>
 <section>
-<section id="slide-org59806b4">
-<h3 id="org59806b4">Facetting</h3>
+<section id="slide-org5790fba">
+<h3 id="org5790fba">Facetting</h3>
 <div class="org-src-container">
 
 <pre><code class="R" >finalPlot + facet_grid(. ~ Category)
@@ -326,30 +345,33 @@ finalPlot + theme_solarized() +
 <div class="figure">
 <p><img src="https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-17-1.png" alt="unnamed-chunk-17-1.png" />
 </p>
-<p><span class="figure-number">Figure 11: </span>img</p>
+<p><span class="figure-number">Figure 12: </span>img</p>
 </div>
 
 
 </section>
 </section>
 <section>
-<section id="slide-org0b401e9">
-<h3 id="org0b401e9">Air pollution</h3>
+<section id="slide-orgc2bead9">
+<h3 id="orgc2bead9">Air pollution</h3>
 </section>
 </section>
 <section>
-<section id="slide-orgdc96ee6">
-<h3 id="orgdc96ee6">Where is our data?</h3>
+<section id="slide-org0853ed5">
+<h3 id="org0853ed5">Where is our data?</h3>
 <p>
 <a href="http://www.londonair.org.uk/london/asp/datasite.asp?CBXSpecies2=NO2m&amp;day1=1&amp;month1=jan&amp;year1=2018&amp;day2=1&amp;month2=jun&amp;year2=2018&amp;period=hourly&amp;ratidate=&amp;site=CD9&amp;res=6&amp;Submit=Replot+graph">- london air</a>
+</p>
+
+<p>
 <a href="https://opendata.camden.gov.uk/stories/s/Camden-Air-Quality-Monitoring/bmrm-k7pv/">- camden open data</a>
 </p>
 
 </section>
 </section>
 <section>
-<section id="slide-org6a110a3">
-<h3 id="org6a110a3">Import data</h3>
+<section id="slide-org43a1331">
+<h3 id="org43a1331">Import data</h3>
 <p>
 We start by loading in the CSV file containing our data:
 </p>
@@ -364,8 +386,8 @@ View(df)
 </div>
 
 </section>
-<section id="slide-orgb44a295">
-<h4 id="orgb44a295">CSV files</h4>
+<section id="slide-org5633fbb">
+<h4 id="org5633fbb">CSV files</h4>
 <p>
 Our preferred data format. CSV is like an Excel spreadsheet, but just plain text:
 </p>
@@ -379,17 +401,54 @@ theresa,may,prime minister
 </code></pre>
 </div>
 
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">name</td>
+<td class="org-left">surname</td>
+<td class="org-left">occupation</td>
+</tr>
+
+<tr>
+<td class="org-left">basile</td>
+<td class="org-left">simon</td>
+<td class="org-left">journalist</td>
+</tr>
+
+<tr>
+<td class="org-left">mick</td>
+<td class="org-left">jagger</td>
+<td class="org-left">musician</td>
+</tr>
+
+<tr>
+<td class="org-left">theresa</td>
+<td class="org-left">may</td>
+<td class="org-left">prime minister</td>
+</tr>
+</tbody>
+</table>
+
 </section>
 </section>
 <section>
-<section id="slide-orgc54a830">
-<h3 id="orgc54a830">WHO guideline: 40ug/m3 annual mean</h3>
+<section id="slide-orgf98a8dc">
+<h3 id="orgf98a8dc">WHO guideline: 40ug/m3 annual mean</h3>
 <p>
 The WHO guideline for NO2 pollution is to stay under 40ug/m3 annually.
 </p>
 
 <p>
-Did this happen on Euston Road? We load `dplyr` to get some basic stats back from our dataset very quickly:
+Did this happen on Euston Road? We load <code>dplyr</code> to get some basic stats back from our dataset very quickly:
 </p>
 
 <div class="org-src-container">
@@ -402,8 +461,8 @@ df %&gt;% summary()
 </div>
 
 </section>
-<section id="slide-org16c9ab9">
-<h4 id="org16c9ab9">Calculating a mean</h4>
+<section id="slide-org0f6e248">
+<h4 id="org0f6e248">Calculating a mean</h4>
 <p>
 We could also calculate our mean manually with <code>summarise</code> - <a href="https://www.rdocumentation.org/packages/dplyr/versions/0.7.8/topics/summarise">many handy functions we can use, actually</a>
 </p>
@@ -412,16 +471,24 @@ We could also calculate our mean manually with <code>summarise</code> - <a href=
 
 <pre><code class="R" >df %&gt;% summarise(annual_mean = mean(Value))
 
+  annual_mean
+	&lt;dbl&gt;
+1        82.8
+
 # how many observations do we have?
 df %&gt;% summarise(observations = n())
+
+  observations
+	 &lt;int&gt;
+1          365
 </code></pre>
 </div>
 
 </section>
 </section>
 <section>
-<section id="slide-org87818fe">
-<h3 id="org87818fe">Clean data a bit</h3>
+<section id="slide-org22129a8">
+<h3 id="org22129a8">Clean data a bit</h3>
 <p>
 One issue with our dataset: <code>ReadingDateTime</code> column comes out as a string (see <code>df %&gt;% summary()</code> showing <code>character</code> value).
 </p>
@@ -431,8 +498,8 @@ We will need to parse that as a date!
 </p>
 
 </section>
-<section id="slide-orgda5dcfd">
-<h4 id="orgda5dcfd">Dates in programming</h4>
+<section id="slide-orgc41f441">
+<h4 id="orgc41f441">Dates in programming</h4>
 <p>
 Dates as odd creatures. We <span class="underline">parse</span> strings and convert them into dates, but how does the computer know the format of the date?
 </p>
@@ -447,8 +514,8 @@ These dates could be identical or different depending on how we parse them.
 </p>
 
 </section>
-<section id="slide-org678f586">
-<h4 id="org678f586">Date formats to the rescue</h4>
+<section id="slide-orgf383948">
+<h4 id="orgf383948">Date formats to the rescue</h4>
 <p>
 <a href="https://www.statmethods.net/input/dates.html">Date format specifiers</a>
 </p>
@@ -459,8 +526,8 @@ These dates could be identical or different depending on how we parse them.
 </pre>
 
 </section>
-<section id="slide-org6f73f7b">
-<h4 id="org6f73f7b">Cleaning our air pollution data</h4>
+<section id="slide-orgd3eae5d">
+<h4 id="orgd3eae5d">Cleaning our air pollution data</h4>
 <p>
 We'll use British standards in this case:
 </p>
@@ -470,14 +537,21 @@ We'll use British standards in this case:
 <pre><code class="R" >df &lt;- df %&gt;% mutate(Date = as.Date(ReadingDateTime,
 				   format = "%d/%m/%Y")) %&gt;%
   select(Date, Value)
+
+  Date       Value
+  &lt;date&gt;     &lt;dbl&gt;
+1 2017-01-01  69.9
+2 2017-01-02  57.5
+3 2017-01-03  91.9
+4 2017-01-04  67.9
 </code></pre>
 </div>
 
 </section>
 </section>
 <section>
-<section id="slide-org5d6308c">
-<h3 id="org5d6308c">Basic plot in ggplot</h3>
+<section id="slide-org8cac7c9">
+<h3 id="org8cac7c9">Basic plot in ggplot</h3>
 <div class="org-src-container">
 
 <pre><code class="R" ># install.packages("ggplot2")
@@ -488,9 +562,15 @@ ggplot(df, aes(x = Date, y = Value)) +
 </code></pre>
 </div>
 
+
+<div class="figure">
+<p><img src="./fig/Rplot.png" alt="Rplot.png" />
+</p>
+</div>
+
 </section>
-<section id="slide-org61f2407">
-<h4 id="org61f2407">What just happened?</h4>
+<section id="slide-org0a6a137">
+<h4 id="org0a6a137">What just happened?</h4>
 <p>
 We just used <a href="http://ggplot2.org/resources/2007-vanderbilt.pdf">ggplot</a>, the leading R visualisation package, to create a scatterplot. Ggplot is a grammar, ie a chart is composed of several bricks:
 </p>
@@ -505,8 +585,8 @@ We just used <a href="http://ggplot2.org/resources/2007-vanderbilt.pdf">ggplot</
 </section>
 </section>
 <section>
-<section id="slide-org9928bca">
-<h3 id="org9928bca">Colours, opacity, scales</h3>
+<section id="slide-org04fb697">
+<h3 id="org04fb697">Colours, opacity, scales</h3>
 <ul>
 <li><code>alpha</code> is opacity</li>
 <li>colours are written in hex codes - <a href="https://academy.datawrapper.de/article/140-what-to-consider-when-choosing-colors-for-data-visualization">What to consider when choosing colours</a></li>
@@ -525,9 +605,15 @@ ggplot(df, aes(Date, Value), color='#254251') +
 </code></pre>
 </div>
 
+
+<div class="figure">
+<p><img src="./fig/Rplot01.png" alt="Rplot01.png" />
+</p>
+</div>
+
 </section>
-<section id="slide-org2de5544">
-<h4 id="org2de5544">Gratuitous styles</h4>
+<section id="slide-orgfcbce71">
+<h4 id="orgfcbce71">Gratuitous styles</h4>
 <div class="org-src-container">
 
 <pre><code class="R" >library(scales)
@@ -542,11 +628,17 @@ ggplot(df, aes(Date, Value), color='#254251') +
 </code></pre>
 </div>
 
+
+<div class="figure">
+<p><img src="./fig/Rplot02.png" alt="Rplot02.png" />
+</p>
+</div>
+
 </section>
 </section>
 <section>
-<section id="slide-orgc02c421">
-<h3 id="orgc02c421">Averages</h3>
+<section id="slide-org33c1456">
+<h3 id="org33c1456">Averages</h3>
 <p>
 We want to calculate a 30-day rolling average. This is super wasy in R: we need <code>rollmean</code>, from the <code>zoo</code> package.
 </p>
@@ -578,11 +670,17 @@ ggplot(df_mean, aes(Date, Value), color='#254251') +
 </code></pre>
 </div>
 
+
+<div class="figure">
+<p><img src="./fig/Rplot03.png" alt="Rplot03.png" />
+</p>
+</div>
+
 </section>
 </section>
 <section>
-<section id="slide-org8ab2efc">
-<h3 id="org8ab2efc">All together</h3>
+<section id="slide-orgdb4b90c">
+<h3 id="orgdb4b90c">All together</h3>
 <p>
 We can also use pipes to avoid mutating our dataset as we go along, like so:
 </p>
@@ -601,10 +699,11 @@ We can also use pipes to avoid mutating our dataset as we go along, like so:
 
 <div class="org-src-container">
 
-<pre><code class="R" >df %&gt;% filter(!is.na(Value)) %&gt;%
+<pre><code class="R" >df &lt;- read_csv("data/airpollutioneuston.csv")
+df %&gt;% filter(!is.na(Value)) %&gt;%
     mutate(Date = as.Date(ReadingDateTime,
 			  format = "%d/%m/%Y"),
-	   mean = rollmean(Value, (7*24), fill = NA)) %&gt;%
+	   mean = rollmean(Value, 30, fill = NA)) %&gt;%
     select(Date, Value, mean) %&gt;%
     ggplot() +
     geom_hline(yintercept = 40) +
@@ -617,11 +716,17 @@ We can also use pipes to avoid mutating our dataset as we go along, like so:
 </code></pre>
 </div>
 
+
+<div class="figure">
+<p><img src="./fig/Rplot04.png" alt="Rplot04.png" />
+</p>
+</div>
+
 </section>
 </section>
 <section>
-<section id="slide-org35c2782">
-<h3 id="org35c2782">Reading list</h3>
+<section id="slide-orgb755e98">
+<h3 id="orgb755e98">Reading list</h3>
 <p>
 <a href="https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen">https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen</a>
 </p>
@@ -631,7 +736,8 @@ We can also use pipes to avoid mutating our dataset as we go along, like so:
 </p>
 
 <p>
-<a href="https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y">https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y</a></p>
+<a href="https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y">https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y</a>
+</p>
 </section>
 </section>
 </div>

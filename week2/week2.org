@@ -1,10 +1,31 @@
+#+Title: JOM299
+#+Author: Basile Simon
+#+Email: @basilesimon
+
+#+OPTIONS: toc:nil num:nil
+#+OPTIONS: reveal_width:1200
+#+OPTIONS: reveal_height:800
+#+REVEAL_MARGIN: 0.1
+#+REVEAL_MIN_SCALE: 0.5
+#+REVEAL_MAX_SCALE: 2.5
+#+OPTIONS: reveal_center:nil 
+#+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t 
+#+REVEAL_TRANS: linear
+#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Title">
+#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
+#+REVEAL_EXTRA_CSS: presentation/mozilla-devrel-light.css
+#+REVEAL_PLUGINS: (highlight)
+#+REVEAL_HLEVEL: 2
+
 * week 2: air pollution in Euston road
-  :LOGBOOK:
-  CLOCK: [2018-12-29 Sat 12:30]--[2018-12-29 Sat 14:14] =>  1:44
-  CLOCK: [2018-12-27 Thu 15:30]--[2018-12-27 Thu 15:40] =>  0:10
-  CLOCK: [2018-12-10 Mon 14:35]--[2018-12-10 Mon 15:45] =>  1:10
-  :END:
 ** Introduction to ggplot
+   
+~ggplot~ is going to be our best friend for this module
+
+Great link to bookmark: [[https://ggplot2.tidyverse.org/][ggplot cheatsheet]]
+
+[[https://blog.gtwang.org/wp-content/uploads/2016/07/ggplot-grammar-of-graphics-stack-1.png]]
+
 ** Loading some data
 
  #+BEGIN_SRC R
@@ -217,7 +238,9 @@ finalPlot + facet_grid(. ~ Category)
 
 ** Air pollution
 ** Where is our data?
+
 [[http://www.londonair.org.uk/london/asp/datasite.asp?CBXSpecies2=NO2m&day1=1&month1=jan&year1=2018&day2=1&month2=jun&year2=2018&period=hourly&ratidate=&site=CD9&res=6&Submit=Replot+graph][- london air]]
+
 [[https://opendata.camden.gov.uk/stories/s/Camden-Air-Quality-Monitoring/bmrm-k7pv/][- camden open data]]
 
 ** Import data
@@ -242,11 +265,16 @@ mick,jagger,musician
 theresa,may,prime minister
 #+END_SRC
 
+| name    | surname | occupation     |
+| basile  | simon   | journalist     |
+| mick    | jagger  | musician       |
+| theresa | may     | prime minister |
+
 ** WHO guideline: 40ug/m3 annual mean
     
 The WHO guideline for NO2 pollution is to stay under 40ug/m3 annually.
 
-Did this happen on Euston Road? We load `dplyr` to get some basic stats back from our dataset very quickly:
+Did this happen on Euston Road? We load ~dplyr~ to get some basic stats back from our dataset very quickly:
 
 #+BEGIN_SRC R
 library(dplyr)
@@ -327,7 +355,7 @@ ggplot(df, aes(x = Date, y = Value)) +
   geom_point()
 #+END_SRC
 
-[[fig/Rplot.png]]
+[[./fig/Rplot.png]]
 
 *** What just happened?
 
@@ -352,7 +380,7 @@ ggplot(df, aes(Date, Value), color='#254251') +
                      labels = c(40, 100, 150, 200, 250))
 #+END_SRC
 
-[[fig/Rplot01.png]]
+[[./fig/Rplot01.png]]
 
 *** Gratuitous styles
 
@@ -368,7 +396,7 @@ ggplot(df, aes(Date, Value), color='#254251') +
                      labels = c(40, 100, 150, 200, 250))
 #+END_SRC
 
-[[fig/Rplot02.png]]
+[[./fig/Rplot02.png]]
 
 ** Averages
 
@@ -395,7 +423,7 @@ ggplot(df_mean, aes(Date, Value), color='#254251') +
                      labels = c(40, 100, 150, 200, 250))
 #+END_SRC
 
-[[fig/Rplot03.png]]
+[[./fig/Rplot03.png]]
 
 ** All together
 
@@ -428,7 +456,7 @@ df %>% filter(!is.na(Value)) %>%
     xlab("Date") + ylab("NO2 concentration") + theme(legend.position="none")
 #+END_SRC
 
-[[fig/Rplot04.png]]
+[[./fig/Rplot04.png]]
 
 ** Reading list
 [[https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen]]
