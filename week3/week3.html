@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JOM299</title>
+<meta name="author" content="(Basile Simon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="presentation/mozilla-devrel-light.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<meta name="description" content="Title">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<section id="slide-org48cdc40">
+<h2 id="org48cdc40">week 3: deal v Leave vote</h2>
+</section>
+</section>
+<section>
+<section id="slide-org13758b1">
+<h3 id="org13758b1">Getting data</h3>
+<p>
+<a href="http://www.electoralcommission.org.uk/__data/assets/file/0014/212135/EU-referendum-result-data.csv">electoral commission CSV link</a>
+</p>
+</section>
+</section>
+<section>
+<section id="slide-org428c65e">
+<h3 id="org428c65e">Load packages</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >library(readr)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+</code></pre>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org60aff58">
+<h3 id="org60aff58">Load data</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >ref &lt;- read_csv("data/EU-referendum-result-data.csv")
+</code></pre>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgc21a769">
+<h3 id="orgc21a769">Distribution of the leave vote</h3>
+<blockquote nil>
+<p>
+Visualise the distribution of a single continuous variable by dividing the x axis into bins and counting the number of observations in each bin. 
+</p>
+</blockquote>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ref %&gt;% select(Pct_Leave) %&gt;% summary()
+
+   Pct_Leave    
+ Min.   : 4.09  
+ 1st Qu.:47.14  
+ Median :54.27  
+ Mean   :52.99  
+ 3rd Qu.:60.34  
+ Max.   :75.56  
+
+ref %&gt;%
+  ggplot(aes(Pct_Leave)) + geom_histogram()
+
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgaa2db16">
+<h3 id="orgaa2db16">Distribution of the remain vote</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >ref %&gt;% select(Pct_Remain) %&gt;% summary()
+
+   Pct_Remain   
+ Min.   :24.44  
+ 1st Qu.:39.66  
+ Median :45.73  
+ Mean   :47.01  
+ 3rd Qu.:52.86  
+ Max.   :95.91
+
+ref %&gt;%
+  ggplot(aes(Pct_Remain)) + geom_histogram()
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgfb4b29d">
+<h3 id="orgfb4b29d">Let's see the two together</h3>
+<p>
+We can create a <code>win</code> column with the name of whichever winning camp:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ifelse(condition, value if true, value if false)
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ref %&gt;%
+  mutate(win = ifelse(Pct_Leave &gt; Pct_Remain,
+		      "Leave", 
+		      "Remain")) %&gt;%
+  ggplot(aes(Pct_Leave)) +
+     geom_histogram() +
+     facet_wrap(win ~ .)
+</code></pre>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org9b15046">
+<h3 id="org9b15046">Obscure viz number one</h3>
+<p>
+Since you can compose about anything you want with <code>ggplot</code> (provided you can translate your mad ideas into chunks of geometries and coordinates), let's have a go:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >ref %&gt;%
+  mutate(win = ifelse(Pct_Leave &gt; Pct_Remain, "Leave", "Remain"),
+	 Pct_won = ifelse(Pct_Leave &gt; Pct_Remain, Pct_Leave, Pct_Remain)) %&gt;%
+  ggplot(aes(Pct_Leave, Pct_Remain, color = win)) +
+  geom_point(aes(shape = "21")) +
+  xlim(0,100) + ylim(0,100) +
+  facet_wrap(. ~ Region)
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org344eaa1">
+<h3 id="org344eaa1">Loading population data</h3>
+<p>
+<code>readxl</code> is a package we use to load and parse Excel spreadsheets
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(readxl)
+popchange &lt;- read_excel("ukmye2015/MYE3_population_change_for_local_authorities_UK_2015.xls",
+			sheet = 3,
+			range = "A3:N443")
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org4fb51f4">
+<h3 id="org4fb51f4">Merging voting and population by ONS codes</h3>
+<p>
+Merging data means combining datasets together.
+</p>
+
+<p>
+In our example, <code>popchange</code> contains 440 geographical units; while <code>ref</code> only contains 382 (there were 382 voting areas at the EU referendum).
+</p>
+
+<p>
+So, &#x2026;?
+</p>
+
+</section>
+<section id="slide-orgaa21f17">
+<h4 id="orgaa21f17">Understanding joins</h4>
+
+<div class="figure">
+<p><img src="https://mikoontz.github.io/data-carpentry-week/img/dplyr-joins.png" alt="dplyr-joins.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgd786cbc">
+<h4 id="orgd786cbc">Joining our data</h4>
+<p>
+<code>ref$Area_Code</code> and <code>popchange$Region_Code</code> are the columns that contain the ONS codes (we like them because they are unique, thus avoiding us the risk of duplicates during the merge)
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %&gt;% View()
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgdbcadf2">
+<h3 id="orgdbcadf2">Leave vote v migration</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %&gt;% 
+    mutate(win = ifelse(Pct_Leave &gt; Pct_Remain, "Leave", "Remain"),
+	   migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %&gt;%
+    ggplot(aes(migrationrate, Pct_Leave)) +
+      geom_point(aes(shape = "21", color = win))
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgef57c4a">
+<h3 id="orgef57c4a">Log scale</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %&gt;% # %&gt;% View()
+    mutate(win = ifelse(Pct_Leave &gt; Pct_Remain, "Leave", "Remain"),
+	   migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %&gt;%
+    ggplot(aes(migrationrate, Pct_Leave, color = win)) +
+      geom_point(aes(shape = "21")) +
+      scale_x_log10(labels = scales::percent)
+</code></pre>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org8d8dc7d">
+<h3 id="org8d8dc7d">Facet by region</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %&gt;% # %&gt;% View()
+    mutate(win = ifelse(Pct_Leave &gt; Pct_Remain, "Leave", "Remain"),
+	   migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %&gt;%
+    ggplot(aes(migrationrate, Pct_Leave, color = win)) +
+      geom_point(aes(shape = "21")) +
+      scale_x_log10(labels = scales::percent) +
+      geom_smooth(method = "lm") +
+      facet_wrap("Region")
+</code></pre>
+</div>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>

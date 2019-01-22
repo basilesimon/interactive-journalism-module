@@ -1,0 +1,166 @@
+* week 3: deal v Leave vote
+  :LOGBOOK:
+  CLOCK: [2018-12-29 Sat 16:39]--[2018-12-29 Sat 18:54] =>  2:15
+  CLOCK: [2018-12-29 Sat 14:35]--[2018-12-29 Sat 15:22] =>  0:47
+  CLOCK: [2018-12-19 Wed 09:59]--[2018-12-19 Wed 10:46] =>  0:47
+  CLOCK: [2018-12-15 Sat 16:48]--[2018-12-15 Sat 17:06] =>  0:18
+  :END:
+** Getting data
+[[http://www.electoralcommission.org.uk/__data/assets/file/0014/212135/EU-referendum-result-data.csv][electoral commission CSV link]]
+** Load packages
+#+BEGIN_SRC R
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+#+END_SRC
+** Load data
+#+BEGIN_SRC R
+ref <- read_csv("data/EU-referendum-result-data.csv")
+#+END_SRC
+** Distribution of the leave vote
+#+BEGIN_QUOTE
+Visualise the distribution of a single continuous variable by dividing the x axis into bins and counting the number of observations in each bin. 
+#+END_QUOTE
+
+#+BEGIN_SRC R
+ref %>% select(Pct_Leave) %>% summary()
+
+   Pct_Leave    
+ Min.   : 4.09  
+ 1st Qu.:47.14  
+ Median :54.27  
+ Mean   :52.99  
+ 3rd Qu.:60.34  
+ Max.   :75.56  
+
+ref %>%
+  ggplot(aes(Pct_Leave)) + geom_histogram()
+
+#+END_SRC
+
+[[fig/Rplot.png]]
+
+** Distribution of the remain vote
+#+BEGIN_SRC R
+ref %>% select(Pct_Remain) %>% summary()
+
+   Pct_Remain   
+ Min.   :24.44  
+ 1st Qu.:39.66  
+ Median :45.73  
+ Mean   :47.01  
+ 3rd Qu.:52.86  
+ Max.   :95.91
+
+ref %>%
+  ggplot(aes(Pct_Remain)) + geom_histogram()
+#+END_SRC
+
+[[fig/Rplot01.png]]
+
+** Let's see the two together
+
+We can create a ~win~ column with the name of whichever winning camp:
+
+#+BEGIN_SRC R
+ifelse(condition, value if true, value if false)
+#+END_SRC
+
+#+BEGIN_SRC R
+ref %>%
+  mutate(win = ifelse(Pct_Leave > Pct_Remain,
+                      "Leave", 
+                      "Remain")) %>%
+  ggplot(aes(Pct_Leave)) +
+     geom_histogram() +
+     facet_wrap(win ~ .)
+#+END_SRC
+
+[[fig/Rplot02.png]]
+
+** Obscure viz number one
+    
+Since you can compose about anything you want with ~ggplot~ (provided you can translate your mad ideas into chunks of geometries and coordinates), let's have a go:
+
+#+BEGIN_SRC R
+ref %>%
+  mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
+         Pct_won = ifelse(Pct_Leave > Pct_Remain, Pct_Leave, Pct_Remain)) %>%
+  ggplot(aes(Pct_Leave, Pct_Remain, color = win)) +
+  geom_point(aes(shape = "21")) +
+  xlim(0,100) + ylim(0,100) +
+  facet_wrap(. ~ Region)
+#+END_SRC
+
+[[fig/Rplot03.png]]
+
+** Loading population data
+
+~readxl~ is a package we use to load and parse Excel spreadsheets
+
+#+BEGIN_SRC R
+library(readxl)
+popchange <- read_excel("data/ukmye2015/MYE3_population_change_for_local_authorities_UK_2015.xls",
+                        sheet = 3,
+                        range = "A3:N443")
+#+END_SRC
+
+** Merging voting and population by ONS codes
+
+Merging data means combining datasets together.
+
+In our example, ~popchange~ contains 440 geographical units; while ~ref~ only contains 382 (there were 382 voting areas at the EU referendum).
+
+So, ...?
+
+*** Understanding joins    
+
+[[https://mikoontz.github.io/data-carpentry-week/img/dplyr-joins.png]]
+
+*** Joining our data 
+
+~ref$Area_Code~ and ~popchange$Region_Code~ are the columns that contain the ONS codes (we like them because they are unique, thus avoiding us the risk of duplicates during the merge)
+
+#+BEGIN_SRC R
+left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% View()
+#+END_SRC
+
+** Leave vote v migration
+
+#+BEGIN_SRC R
+left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% 
+    mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
+           migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %>%
+    ggplot(aes(migrationrate, Pct_Leave)) +
+      geom_point(aes(shape = "21", color = win))
+#+END_SRC
+
+[[fig/Rplot04.png]]
+
+** Log scale
+#+BEGIN_SRC R
+left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% # %>% View()
+    mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
+           migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %>%
+    ggplot(aes(migrationrate, Pct_Leave, color = win)) +
+      geom_point(aes(shape = "21")) +
+      scale_x_log10(labels = scales::percent)
+#+END_SRC
+
+[[fig/Rplot05.png]]
+
+** Facet by region
+#+BEGIN_SRC R
+left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% # %>% View()
+    mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
+           migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %>%
+    ggplot(aes(migrationrate, Pct_Leave, color = win)) +
+      geom_point(aes(shape = "21")) +
+      scale_x_log10(labels = scales::percent) +
+      geom_smooth(method = "lm") +
+      facet_wrap("Region")
+#+END_SRC
+
+[[fig/Rplot06.png]]
+

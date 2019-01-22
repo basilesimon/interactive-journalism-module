@@ -1,0 +1,367 @@
+#+Title: JOM299
+#+Author: Basile Simon
+#+Email: @basilesimon
+
+#+OPTIONS: toc:nil num:nil
+#+OPTIONS: reveal_width:1200
+#+OPTIONS: reveal_height:800
+#+REVEAL_MARGIN: 0.1
+#+REVEAL_MIN_SCALE: 0.5
+#+REVEAL_MAX_SCALE: 2.5
+#+OPTIONS: reveal_center:nil 
+#+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t 
+#+REVEAL_TRANS: linear
+#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Title">
+#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
+#+REVEAL_EXTRA_CSS: presentation/mozilla-devrel-light.css
+#+REVEAL_PLUGINS: (highlight)
+#+REVEAL_HLEVEL: 2
+
+* week 1: intro to the module (and to programming)
+** Module information
+
+Module code: JOM299
+Title: Advanced Data and Coding
+
+-   Module and assessment outline
+-   The self-learner attitude
+-   Useful resources
+-   Intro to the DevTools, the DOM, and debugging your things
+
+** Topics covered in this module
+
+- Introduction to programming and to R
+- Basic web and API scraping
+- Exploratory analysis and day-to-day work
+- Elements of data visualisation and mapping
+- Introduction to the Web and to Javascript
+
+** Module outline and goals according to the spec
+
+-   Develop a *complex skillset*
+-   Gain an *understanding of data* and of modern digital journalism
+-   Develop a *problem-solving philosophy*
+-   Acquire *self-direction in learning*
+
+** And I add to this:
+
+*Have a crucial advantage over others in the industry*
+
+** Assessment: mark split between...
+
+- 25% presentation and brief (will take place on *week 5*)
+- 75% final project (mid-April?)
+  
+More information about these assessments as we go along.
+
+** Assessment two: final project
+
+#+BEGIN_QUOTE
+Your project should identify and solve a journalistic problem, using data and coding work. Typically this will focus on a story; either a complete story or an interactive feature forming part of a story. It could also be something for use in a newsroom (eg a tool helpful to journalists). 
+#+END_QUOTE
+
+That's from the course specs
+
+** More about the final project
+
+Your project must be relevant to journalism (see above), operate at a functional level (at least as a working prototype), and involve all of the following:
+
+-   data techniques, involving scraping, cleaning, analysis and/or presentation, as needed/appropriate to your project
+-   adding value through user interactivity
+-   use and modification of HTML, CSS, Javascript, Python, R, d3
+-   and/or other code (not simply plug-and-play elements)
+-   use of free and/or low-cost tools
+-   problem-solving.
+
+(that's also from the spec)
+
+** The final project in practice
+
+You will either:
+
+- Create a website from a template, but through coding in HTML, CSS and Javascript, hosting your story and data work;
+- OR publish a blog on the platform of your choice (Medium, Interhacktive, personal blog)
+  
+Since these two options demonstrate different skillsets, they will be assessed slightly differently at my discretion.
+
+** The self-learner attitude - what is that?
+
+I want you to engage in the community of data-journalists, news hackers and tinkerers
+
+-   [[https://news.ycombinator.com/item?id=13148319][Tips for self-learning (Hacker News)]]
+-   [[https://www.reddit.com/r/dataisbeautiful/][/r/dataisbeautiful community]]
+-   [[http://newsnerdery.org/][News Nerdery (Slack)]]
+-   RSS feeds, Twitter
+
+** Useful links
+
+-   [[https://www.thetimes.co.uk/article/digital-news-work-experience-qmg8f9585][The Times and Sunday Times work experience]]
+-   [[https://www.theguardian.com/gnmeducationcentre/journalism-work-experience-opportunities-young-people][The Guardian work experience]]
+
+** Final projects from the past
+
+- https://katetobar.github.io/
+- https://michaelgoodier.github.io/sex_for_rent/
+- https://ellawilksharper.github.io/a-day-in-the-life-of-mps/
+- https://nellmooney.github.io/thecasting/
+- https://alexandrama.github.io/trump-frequent-mentions/
+
+** Elements of syntax
+*** What's a variable?
+
+A variable is a store, in which you can put different data:
+
+-   your age (a number)
+-   your name (a string)
+-   the result of a logical operation (true/false)
+
+#+BEGIN_SRC R
+myAge <- 26
+myName <- "Basile"
+do_i_teach_at_city <- TRUE
+#+END_SRC
+
+*** What are the different data types?
+
+-   **string**: takes quotation marks around it. example:
+
+#+BEGIN_SRC R
+name <- "basile"
+age <- "27"
+#+END_SRC
+
+-   **number**: no quotation marks. example:
+
+#+BEGIN_SRC R
+number <- 10
+budget <- 1245.5
+#+END_SRC
+
+-   **boolean**: logical operators:
+
+#+BEGIN_SRC R
+basileIsHere <- TRUE
+basileHasShaved <- FALSE
+#+END_SRC
+
+-   **array/list** (more later)
+-   **null/undefined**
+
+*** Data types: lists/arrays
+
+#+BEGIN_SRC R
+thisIsAList <- c(1,2,3,'basile')
+#+END_SRC
+
+contAined between brackets, they store items in them. we can access these items like so:
+
+#+BEGIN_SRC R
+thisIsAList[1] // 1
+thisIsAList[4] // 'basile'
+#+END_SRC
+
+*** What we use data types for
+
+diffErent data have different use cases.
+
+-   Text is obviously a ~string~
+-   If you try to plot numbers on a chart or do maths, you better use ~numbers~, not strings
+-   ~booleans~ will be useful to do logical checks, e.g. "show me all MPs whose age is over 60"
+
+*** What we use data types for (repeat)
+
+diffErent data have different use cases.
+
+-   ~lists~ can be _iterated over_, i.e. "for each element in this list, do that"
+    
+    Think of an Excel column with a formula that you drag down to apply it to all cells
+    
+*** The for loop
+
+very useful pattern: ~for~ iterates over list items.
+
+#+BEGIN_SRC R
+thisIsAList <- c(1,2,3,'basile')
+for (item in thisIsAList) {
+    Print(item)
+}
+[1] "1"
+[1] "2"
+[1] "3"
+[1] "basile"
+#+END_SRC
+
+*** do things with for loops
+-   For each item  in my array,
+-   Log the said item plus one.
+  
+#+BEGIN_SRC R
+ myLIst <- c("city", "dataviz", "basile")
+ for (word in myList) {
+    Print(paste(word, "is awesome", separator = " "))
+}
+[1] "city is awesome"
+[1] "dataviz is awesome"
+[1] "basile is awesome"
+#+END_SRC
+
+#+BEGIN_SRC R
+myLiSt <- c(1, 30, 45.5)
+for (number in myList) {
+    Print(number + 10)
+}
+[1] 11
+[1] 40
+[1] 55.5
+#+END_SRC
+
+*** The function
+
+functions are used to break down your code into separate, simple tasks
+
+#+BEGIN_SRC R
+sayHello <- function(name) {
+    print(paste("hello", name, separator = " "))
+}
+
+sayHello("Basile")
+[1] "hello Basile  "
+
+sayHello("my name is Basile")
+[1] "hello my name is Basile  "
+#+END_SRC
+** Overview of programming languages
+
+- Architecture v scripting languages
+- Enterprise v the rest
+- Mobile v not mobile
+- Back end v front end
+- All-rounder v specialist languages
+- Databases v the rest
+
+*** Why choosing R?
+
+- Intellectual elegance of data manipulation
+- Comes built-in with loads of statistical tools
+- Layered, step-by-step approach to tasks
+- Grammar of Graphics
+
+We will learn simple, concise, repeatable tools in R that do not require much generic code around them to yield results.
+
+** The tidyverse
+there are several ways to write R. an important one follows Hadley Wickham's philosophy and work at RStudio.
+
+it is called *[[https://www.tidyverse.org/packages/][the tidyverse]]*
+
+[[https://hackyhour.github.io/Goettingen/slides/tidy_slides.html#/][principles of tidy data]], a presentation (built in RStudio!) from Wickham's paper [[http://vita.had.co.nz/papers/tidy-data.pdf]["Tidy Data"]]
+
+*** A set of tools
+
+example: the pipe: ~%>%~
+
+#+BEGIN_SRC R
+for (item in foo) {
+    if (item > 2) {
+        print(item)
+    }
+}
+[1] 10
+}
+#+END_SRC
+
+#+BEGIN_SRC R
+foo <- c(1,2,10)
+foo %>%
+  filter( > 2)
+#+END_SRC
+
+*** More on the pipe
+
+#+BEGIN_QUOTE
+The operators pipe their left-hand side values forward into expressions that appear on the right-hand side, i.e. one can replace f(x) with x %>% f(), where %>% is the (main) pipe-operator. 
+#+END_QUOTE
+
+#+BEGIN_SRC R
+    the_data <-
+      read.csv('/path/to/data/file.csv') %>%
+      subset(variable_a > x) %>%
+      transform(variable_c = variable_a/variable_b) %>%
+      head(100)
+#+END_SRC
+
+*** Excellent dplyr tutorial
+
+<http://genomicsclass.github.io/book/pages/dplyr_tutorial.html>
+
+-   `select()`
+-   `filter()`
+-   `%>%`
+-   `mutate()`
+-   `group_by()`
+  
+*** Tidyverse into practice
+**** Importing data
+#+BEGIN_SRC R
+# install.packages('dplyr')
+# install.packages('readr')
+library(readr)
+library(dplyr)
+civcas <- read_csv("data/civcas.csv")
+#+END_SRC
+
+**** Civcas by country
+#+BEGIN_SRC R
+civcas %>%
+  group_by(country) %>%
+  summarise(count = sum(deads)) %>%
+  arrange(desc(count))
+  
+  country count
+  <chr>   <dbl>
+1 Iraq     9143
+2 Syria    6041
+#+END_SRC
+
+*** Tidyverse into practice 2
+**** Civcas in each Mosul neighbourhood
+#+BEGIN_SRC R
+civcas %>%
+  group_by(country, location) %>%
+  filter(grepl("Mosul", location))%>%
+  summarise(count = sum(deads)) %>%
+  arrange(desc(count))
+
+   country location                     count
+   <chr>   <chr>                        <dbl>
+ 1 Iraq    Mosul                          560
+ 2 Iraq    Mosul: Old City                555
+ 3 Iraq    Mosul: West / Right side       410
+#+END_SRC
+
+**** Data summary
+#+BEGIN_SRC R
+civcas %>%
+  group_by(country) %>%
+  summarise(min = min(deads),
+            max = max(deads),
+	    total = sum(deads))
+	   
+  country   min   max total
+  <chr>   <dbl> <dbl> <dbl>
+1 Iraq        0   560  9143
+2 Syria       0   853  6041
+#+END_SRC
+
+**** Your turn
+
+- how many total events in Iraq, and in Syria?
+- average civcas per event in Iraq and in Syria?
+
+** Reading list
+- [[http://genomicsclass.github.io/book/pages/dplyr_tutorial.html][dplyr tutorial]]
+- [[https://rpubs.com/aelhabr/tidyverse-basics][super helpful tidyversecheatsheets]]
+- [[https://tidyverse-intro.github.io/index.html][everything you could want to know about the tidyverse in a handy tutorial]]
+- [[https://pandas.pydata.org/pandas-docs/stable/comparison_with_r.html][for Pythonistas: pandas v the tidyverse syntax]]
+- [[https://www.datacamp.com/courses/introduction-to-the-tidyverse][Datacamp tidyverse course]]
+- [[http://r4ds.had.co.nz/exploratory-data-analysis.html][exploratory data analysis]]
+

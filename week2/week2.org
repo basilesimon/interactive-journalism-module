@@ -1,0 +1,466 @@
+#+Title: JOM299
+#+Author: Basile Simon
+#+Email: @basilesimon
+
+#+OPTIONS: toc:nil num:nil
+#+OPTIONS: reveal_width:1200
+#+OPTIONS: reveal_height:800
+#+REVEAL_MARGIN: 0.1
+#+REVEAL_MIN_SCALE: 0.5
+#+REVEAL_MAX_SCALE: 2.5
+#+OPTIONS: reveal_center:nil 
+#+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t 
+#+REVEAL_TRANS: linear
+#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Title">
+#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
+#+REVEAL_EXTRA_CSS: presentation/mozilla-devrel-light.css
+#+REVEAL_PLUGINS: (highlight)
+#+REVEAL_HLEVEL: 2
+
+* week 2: air pollution in Euston road
+** Introduction to ggplot
+   
+~ggplot~ is going to be our best friend for this module
+
+Great link to bookmark: [[https://ggplot2.tidyverse.org/][ggplot cheatsheet]]
+
+[[https://blog.gtwang.org/wp-content/uploads/2016/07/ggplot-grammar-of-graphics-stack-1.png]]
+
+** Loading some data
+
+ #+BEGIN_SRC R
+ library(readr)
+ library(dplyr)
+ library(ggplot2)
+
+ data <- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/exercise/data.csv")
+ data %>% View()
+
+data_annotated <- read_csv("https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/exercise/data_annotated.csv")
+df <- data_annotated
+ #+END_SRC
+
+** Basic plot
+   :PROPERTIES:
+   :CUSTOM_ID: basic-plot
+   :END:
+
+We pass our dataset data and define the aesthetics: an x and y axis:
+
+ #+BEGIN_SRC R
+ ggplot(data, aes(x = Mean, y = Degrees)) +
+   geom_point()
+ #+END_SRC
+
+ #+CAPTION: img
+ [[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-2-1.png]]
+
+*** Make the bubble size represent the number of people in this field
+    :PROPERTIES:
+    :CUSTOM_ID: make-the-bubble-size-represent-the-number-of-people-in-this-field
+    :END:
+
+#+BEGIN_SRC R
+    ggplot(data, aes(x = Mean, y = Degrees, size = Number)) +
+        geom_point()
+#+END_SRC
+
+#+CAPTION: img
+[[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-3-1.png]]
+
+*** Make the bubbles bigger by setting a maximum
+    :PROPERTIES:
+    :CUSTOM_ID: make-the-bubbles-bigger-by-setting-a-maximum
+    :END:
+
+we can reuse the previous chart we built, simply adding a layer with the
+plus (+) sign:
+
+#+BEGIN_SRC R
+    ggplot(data, aes(x = Mean, y = Degrees, size = Number)) +
+        geom_point() +
+        scale_size_area(max_size = 15)
+#+END_SRC
+
+#+CAPTION: img
+[[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-4-1.png]]
+
+*** Add a progressive colour scale depending on the number of people
+    :PROPERTIES:
+    :CUSTOM_ID: add-a-progressive-colour-scale-depending-on-the-number-of-people
+    :END:
+
+that's a new property called `fill`. It will assign default colours for
+you.
+
+#+BEGIN_SRC R
+    ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+        scale_size_area(max_size = 15) +
+        geom_point(shape=21)
+#+END_SRC
+
+#+CAPTION: img
+[[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-5-1.png]]
+
+*** Make our axis prettier and more sensible
+    :PROPERTIES:
+    :CUSTOM_ID: make-our-axis-prettier-and-more-sensible
+    :END:
+
+again, re-using our previous chart, we set two additional layers that
+apply to the axis:
+
+#+BEGIN_SRC R
+    library(scales)
+    ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+        scale_size_area(max_size = 15) +
+        geom_point(shape=21) +
+        scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+        scale_y_continuous(labels = scales::percent)
+#+END_SRC
+
+#+CAPTION: img
+[[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-6-1.png]]
+
+*** A logarithmic y-axis, maybe?
+    :PROPERTIES:
+    :CUSTOM_ID: a-logarithmic-y-axis-maybe
+    :END:
+
+useful for visualising extreme value differences:
+[[https://datavizblog.com/2013/03/26/how-to-visualize-data-with-extreme-value-differences/]]
+
+#+BEGIN_SRC R
+    library(scales)
+    ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number)) +
+        scale_size_area(max_size = 15) +
+        geom_point(shape=21) +
+        scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+        scale_y_continuous(labels = scales::percent, trans=log2_trans())
+#+END_SRC
+
+#+CAPTION: img
+[[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-7-1.png]]
+
+*** Add labels so we can see clearer... or not
+    :PROPERTIES:
+    :CUSTOM_ID: add-labels-so-we-can-see-clearer-or-not
+    :END:
+
+note both the label property in the aesthetics and the geomtext() layer.
+
+#+BEGIN_SRC R
+    ggplot(data, aes(x = Mean, y = Degrees, size = Number, fill=Number, label=Description)) +
+        geom_point(shape=21) +
+        scale_size_area(max_size = 15) +
+        #scale_y_continuous(trans=log2_trans()) +
+        geom_text(size = 2)
+#+END_SRC
+
+#+CAPTION: img
+[[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-8-1.png]]
+
+*** Colour the privileged gigs depending on annotation
+
+#+BEGIN_SRC R
+ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
+  geom_point(shape=21) +
+  scale_size_area(max_size = 15) +
+  scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+  scale_y_continuous(labels = scales::percent, trans=log2_trans())
+#+END_SRC
+
+#+CAPTION: img
+[[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-10-1.png]]
+
+*** Add some text annotation to the plot
+
+We add two annotation layers with annotate(), with some x/y coordinates
+and which text to render.
+
+#+BEGIN_SRC R
+colors <- ggplot(df, aes(x = Mean, y = Degrees, size = Number, fill=Category)) +
+           geom_point(shape=21) +
+           scale_size_area(max_size = 15) +
+           scale_x_continuous(breaks = seq(0, 70000, 10000)) +
+           scale_y_continuous(labels = scales::percent, trans=log2_trans())
+           annotate("text", x = 40000, y = .55, label = "Privileged gigs") +
+           annotate("text", x = 20000, y = .2, label = "Precarious gigs")
+colors
+#+END_SRC
+
+#+CAPTION: img
+[[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-11-1.png]]
+
+*** "Annotation are the core of what we do" - Amanda Cox
+
+#+BEGIN_SRC R
+    finalPlot <- colors +
+       annotate("text", x = 31500, y = .05, label = "Construction and building") +
+       annotate("text", x = 12000, y = .52, label = "Education") +
+       annotate("text", x = 43500, y = .85, label = "Health sector") +
+       annotate("text", x = 10000, y = .15, label = "Hairdressers") +
+       annotate("text", x = 12000, y = .39, label = "Sports and recreation") +
+       annotate("text", x = 21000, y = .7, label = "Arts") +
+       annotate("text", x = 40000, y = .35, label = "Real estate") +
+       annotate("text", x = 14000, y = .08, label = "Taxis") +
+       annotate("text", x = 36000, y = .7, label = "IT and programming") +
+       annotate("text", x = 48000, y = .59, label = "Consultancies") +
+       annotate("text", x = 18000, y = .24, label = "Retail") +
+       annotate("text", x = 58000, y = .85, label = "Legal and accounting")
+    finalPlot
+#+END_SRC
+
+#+CAPTION: img
+[[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-12-1.png]]
+
+** Fun with themes
+
+#+BEGIN_SRC R
+library(ggthemes)
+finalPlot + theme_minimal()
+ 
+finalPlot + theme_economist() + scale_colour_economist()
+ 
+finalPlot + theme_solarized() +
+  scale_colour_solarized("blue")
+#+END_SRC
+
+** Facetting
+
+#+BEGIN_SRC R
+finalPlot + facet_grid(. ~ Category)
+#+END_SRC
+
+#+CAPTION: img
+[[https://raw.githubusercontent.com/basilesimon/interactive-journalism-module/archive/2016-2017/week6/week6-figure/unnamed-chunk-17-1.png]]
+
+
+** Air pollution
+** Where is our data?
+
+[[http://www.londonair.org.uk/london/asp/datasite.asp?CBXSpecies2=NO2m&day1=1&month1=jan&year1=2018&day2=1&month2=jun&year2=2018&period=hourly&ratidate=&site=CD9&res=6&Submit=Replot+graph][- london air]]
+
+[[https://opendata.camden.gov.uk/stories/s/Camden-Air-Quality-Monitoring/bmrm-k7pv/][- camden open data]]
+
+** Import data
+
+We start by loading in the CSV file containing our data:
+
+#+BEGIN_SRC R
+library(readr)
+
+df <- read_csv("data/airpollutioneuston.csv")
+View(df)
+#+END_SRC
+
+*** CSV files
+
+Our preferred data format. CSV is like an Excel spreadsheet, but just plain text:
+
+#+BEGIN_SRC R
+name,surname,occupation
+basile,simon,journalist
+mick,jagger,musician
+theresa,may,prime minister
+#+END_SRC
+
+| name    | surname | occupation     |
+| basile  | simon   | journalist     |
+| mick    | jagger  | musician       |
+| theresa | may     | prime minister |
+
+** WHO guideline: 40ug/m3 annual mean
+    
+The WHO guideline for NO2 pollution is to stay under 40ug/m3 annually.
+
+Did this happen on Euston Road? We load ~dplyr~ to get some basic stats back from our dataset very quickly:
+
+#+BEGIN_SRC R
+library(dplyr)
+
+df %>% summary()
+
+#+END_SRC
+
+*** Calculating a mean
+
+We could also calculate our mean manually with ~summarise~ - [[https://www.rdocumentation.org/packages/dplyr/versions/0.7.8/topics/summarise][many handy functions we can use, actually]]
+
+#+BEGIN_SRC R
+df %>% summarise(annual_mean = mean(Value))
+
+  annual_mean
+        <dbl>
+1        82.8
+
+# how many observations do we have?
+df %>% summarise(observations = n())
+
+  observations
+         <int>
+1          365
+#+END_SRC
+
+** Clean data a bit
+
+One issue with our dataset: ~ReadingDateTime~ column comes out as a string (see ~df %>% summary()~ showing ~character~ value).
+
+We will need to parse that as a date!
+
+*** Dates in programming
+
+Dates as odd creatures. We _parse_ strings and convert them into dates, but how does the computer know the format of the date?
+
+#+BEGIN_SRC 
+2018-01-02
+2018/02/01
+#+END_SRC
+
+These dates could be identical or different depending on how we parse them.
+
+*** Date formats to the rescue
+
+[[https://www.statmethods.net/input/dates.html][Date format specifiers]]
+
+#+BEGIN_SRC 
+2018-01-02 parsed with %Y-%m-%d becomes 2nd Jan 2018
+2018-01-02 parsed with %Y-%d-%m becomes 1st Feb 2018
+#+END_SRC
+
+*** Cleaning our air pollution data
+
+We'll use British standards in this case:
+
+#+BEGIN_SRC R
+df <- df %>% mutate(Date = as.Date(ReadingDateTime,
+                                   format = "%d/%m/%Y")) %>%
+  select(Date, Value)
+  
+  Date       Value
+  <date>     <dbl>
+1 2017-01-01  69.9
+2 2017-01-02  57.5
+3 2017-01-03  91.9
+4 2017-01-04  67.9
+#+END_SRC
+
+** Basic plot in ggplot
+
+#+BEGIN_SRC R
+# install.packages("ggplot2")
+library(ggplot2)
+
+ggplot(df, aes(x = Date, y = Value)) +
+  geom_point()
+#+END_SRC
+
+[[./fig/Rplot.png]]
+
+*** What just happened?
+
+We just used [[http://ggplot2.org/resources/2007-vanderbilt.pdf][ggplot]], the leading R visualisation package, to create a scatterplot. Ggplot is a grammar, ie a chart is composed of several bricks:
+
+- a dataset,
+- geometries,
+- a coordinate system 
+
+** Colours, opacity, scales
+
+- ~alpha~ is opacity
+- colours are written in hex codes - [[https://academy.datawrapper.de/article/140-what-to-consider-when-choosing-colors-for-data-visualization][What to consider when choosing colours]]
+- ~geom_hline~ is a new geometry! We can also use ~geom_vline~ for a vertical line
+
+#+BEGIN_SRC R
+
+ggplot(df, aes(Date, Value), color='#254251') +
+  geom_point(alpha = 0.5, color="#254251") +
+  geom_hline(yintercept=40) +
+  scale_y_continuous(breaks = c(40, 100, 150, 200, 250),
+                     labels = c(40, 100, 150, 200, 250))
+#+END_SRC
+
+[[./fig/Rplot01.png]]
+
+*** Gratuitous styles
+
+#+BEGIN_SRC R
+library(scales)
+
+df$alpha <- rescale(df$Value, to=c(0,1))
+
+ggplot(df, aes(Date, Value), color='#254251') +
+  geom_point(alpha = df$alpha, color="#254251") +
+  geom_hline(yintercept=40) +
+  scale_y_continuous(breaks = c(40, 100, 150, 200, 250),
+                     labels = c(40, 100, 150, 200, 250))
+#+END_SRC
+
+[[./fig/Rplot02.png]]
+
+** Averages
+
+We want to calculate a 30-day rolling average. This is super wasy in R: we need ~rollmean~, from the ~zoo~ package.
+
+Syntax: 
+
+#+BEGIN_SRC R
+rollmean(data$column, period)
+#+END_SRC
+
+#+BEGIN_SRC R
+#install.packages("zoo")
+library(zoo)
+
+df_mean <- df %>%
+  mutate(mean = rollmean(Value, 30, fill = NA))
+
+ggplot(df_mean, aes(Date, Value), color='#254251') +
+  geom_hline(yintercept=40) +
+  geom_point(alpha = df$alpha, color="#254251") +
+  geom_line(aes(x = Date, y = mean)) +
+  scale_y_continuous(breaks = c(40, 100, 150, 200, 250),
+                     labels = c(40, 100, 150, 200, 250))
+#+END_SRC
+
+[[./fig/Rplot03.png]]
+
+** All together
+
+We can also use pipes to avoid mutating our dataset as we go along, like so:
+
+#+BEGIN_SRC R
+dataframe %>%
+  do something on it %>%
+  like filtering, adding columns, etc %>%
+  then send it to ggplot like so %>%
+  ggplot() +
+    add geometries, etc
+#+END_SRC
+
+
+#+BEGIN_SRC R
+df <- read_csv("data/airpollutioneuston.csv")
+df %>% filter(!is.na(Value)) %>%
+    mutate(Date = as.Date(ReadingDateTime,
+                          format = "%d/%m/%Y"),
+           mean = rollmean(Value, 30, fill = NA)) %>%
+    select(Date, Value, mean) %>%
+    ggplot() +
+    geom_hline(yintercept = 40) +
+    geom_point(aes(x = Date, y = Value, alpha = 0.5, color = "steelblue")) +
+    geom_line(aes(x = Date, y = mean)) +
+    scale_y_continuous(breaks = c(40, 100, 150, 200, 250),
+                       labels = c(40, 100, 150, 200, 250)) +
+    ggtitle("Hourly NO2 concentration in Euston road") +
+    xlab("Date") + ylab("NO2 concentration") + theme(legend.position="none")
+#+END_SRC
+
+[[./fig/Rplot04.png]]
+
+** Reading list
+[[https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen]]
+
+[[http://datadrivenjournalism.net/resources/when_should_i_use_logarithmic_scales_in_my_charts_and_graphs]]
+
+[[https://www.datacamp.com/community/blog/the-easiest-way-to-learn-ggplot2#gs.QnUNY8Y]]

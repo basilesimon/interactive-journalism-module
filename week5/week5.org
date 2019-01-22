@@ -1,0 +1,206 @@
+** week 5: storms in the Pacific basin
+   :LOGBOOK:
+   CLOCK: [2019-01-08 Tue 14:55]
+   CLOCK: [2018-12-15 Sat 14:10]--[2018-12-15 Sat 14:35] =>  0:25
+   :END:
+*** Getting our data
+CSV release of our data on the NOAA website:
+
+#+BEGIN_SRC R
+ftp://eclipse.ncdc.noaa.gov/pub/ibtracs/v03r10/all/csv/basin
+#+END_SRC
+
+(the file is too big to re-distribute: do download and copy to ~data/~ directory please)
+
+*** Loading packages
+#+BEGIN_SRC R
+library(ggplot2)
+library(dplyr)
+#+END_SRC
+
+*** Preparing our data
+#+BEGIN_SRC R
+# data source
+basin <- read.csv("data/Basin.WP.ibtracs_all.v03r10.csv",
+                  skip = 1, stringsAsFactors = FALSE)
+basin <- basin[-1, ] # first column is garbled, disegard
+#+END_SRC
+
+**** Preparing our data further...
+#+BEGIN_SRC R
+# cleaner columns
+basin$Season <- as.numeric(basin$Season)
+basin$Name <- as.factor(basin$Name)
+
+# remove whitespace in numbers
+basin$Latitude <- as.numeric(gsub("^ ", "", basin$Latitude))
+basin$Longitude <- as.numeric(gsub("^ ", "", basin$Longitude))
+basin$Wind.WMO. <- as.numeric(gsub("^ ", "", basin$Wind.WMO.))
+#+END_SRC
+
+*** Filter 2000 to 2017
+For the purpose of this exercise we're only interested in the years 2000 to 2017
+
+#+BEGIN_SRC R
+substorms <- basin %>%
+  filter(Season %in% 2000:2017) %>%
+  filter(!Name == "NOT NAMED")
+
+substorms$ID <- as.factor(paste(substorms$Name, substorms$Season, 
+                                sep <- "."))
+#+END_SRC
+
+*** A map of the world
+    
+Last week we worked with ~getMap()~
+
+#+BEGIN_SRC R
+ggplot() +
+  geom_polygon(data = map_data("world"),
+  aes(x = long, y = lat, group = group)
+#+END_SRC
+
+*** What's in our data
+#+BEGIN_SRC R
+substorms %>%
+  group_by(ID) %>%
+  summarise(average_winds = mean(Wind.WMO.)) %>% 
+  arrange(desc(average_winds))
+
+# A tibble: 467 x 2
+   ID               average_winds
+   <fct>                    <dbl>
+ 1 FENGSHEN 2002 .           68.8
+ 2 FRANCISCO 2013 .          68.5
+ 3 SANBA 2012 .              65.9
+ 4 SHANSHAN 2006 .           65.6
+ 5 NANGKA 2015 .             64.9
+#+END_SRC
+
+*** First map
+#+BEGIN_SRC R
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
+  geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group)) +
+  geom_path(data = substorms, aes(group = ID))
+#+END_SRC
+
+[[fig/Rplot.png]]
+
+*** Where do all these crazy lines come from?
+#+BEGIN_SRC R
+substorms %>% summary()
+   Latitude        Longitude      
+ Min.   :-999.0   Min.   :-999.00  
+ 1st Qu.:  12.5   1st Qu.: 117.60  
+ Median :  19.7   Median : 130.20  
+ Mean   :-111.3   Mean   : -15.22 
+
+substorms <-  substorms %>%
+  filter(!Latitude == -999) %>%
+  filter(!Longitude == -999)
+#+END_SRC
+
+**** Let's map again
+#+BEGIN_SRC R
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
+  geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group)) +
+  geom_path(data = substorms, aes(group = ID))
+#+END_SRC
+
+[[fig/Rplot01.png]]
+
+*** Themes in ggplot
+#+BEGIN_SRC R
+theme_opts<-list(theme(panel.grid.minor = element_blank(),
+                       panel.grid.major = element_blank(),
+                       panel.background = element_blank(),
+                       plot.background = element_blank(),
+                       axis.line = element_blank(),
+                       axis.text.x = element_blank(),
+                       axis.text.y = element_blank(),
+                       axis.ticks = element_blank(),
+                       axis.title.x = element_blank(),
+                       axis.title.y = element_blank(),
+                       plot.title = element_blank()))
+#+END_SRC
+
+**** Map again
+#+BEGIN_SRC R
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
+  geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group)) +
+  geom_path(data = substorms, aes(group = ID)) + theme_opts
+#+END_SRC
+
+[[fig/Rplot02.png]]
+*** Let's zoom in
+
+#+BEGIN_SRC R
+wm <- map_data("world")
+
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
+  geom_polygon(data = wm, aes(x = long, y = lat, group = group),
+               fill = "whitesmoke", colour = "gray10", size = 0.2) +
+  geom_path(data = substorms, aes(group = ID),
+            alpha = substorms$Wind.WMO./500, size = 0.8,
+            color = "red") +
+  coord_map(xlim = c(60,180), ylim = c(-20, 60)) +
+  labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts
+#+END_SRC
+
+[[fig/Rplot03.png]]
+
+**** Map issue to fix
+#+BEGIN_SRC R
+wm <- map_data("world")
+
+library("PBSmapping")
+data.table::setnames(wm, c("X","Y","PID","POS","region","subregion"))
+worldmap = clipPolys(wm,
+    xlim=c(60,180),
+    ylim=c(-20, 60),
+    keepExtra=TRUE)
+#+END_SRC
+
+**** Try again...
+#+BEGIN_SRC R
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
+  geom_polygon(data = worldmap, aes(x = X, y = Y, group = PID), 
+               fill = "whitesmoke", colour = "gray10", size = 0.2) +
+  geom_path(data = substorms, aes(group = ID), 
+            alpha = substorms$Wind.WMO./500, size = 0.8,
+            color = "red") + 
+  coord_map(xlim = c(60,180), ylim = c(-20, 60)) +
+  labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts
+#+END_SRC
+
+[[fig/Rplot04.png]]
+
+*** Extract dates from the data
+
+#+BEGIN_SRC R
+# extract month and year for facetting later
+library(lubridate)
+substorms <- substorms %>%
+  mutate(Month = month(as.Date(ISO_time))) %>%
+  mutate(Year = year(as.Date(ISO_time)))
+#+END_SRC
+
+*** facetted map
+#+BEGIN_SRC R
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
+  geom_polygon(data = worldmap, aes(x = X, y = Y, group = PID), 
+               fill = "whitesmoke", colour = "gray10", size = 0.2) +
+  geom_path(data = substorms, aes(group = ID), 
+            alpha = substorms$Wind.WMO./500, size = 0.8,
+            color = "red") + 
+  coord_map(xlim = c(60,180), ylim = c(-20, 60)) +
+  labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts + 
+  facet_wrap(~Year)
+#+END_SRC
+
+[[fig/Rplot05.png]]
+
+*** facetted map
+#+BEGIN_SRC R
+  + facet_wrap(~Month)
+#+END_SRC
