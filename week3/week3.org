@@ -1,166 +1,194 @@
-* week 3: deal v Leave vote
-  :LOGBOOK:
-  CLOCK: [2018-12-29 Sat 16:39]--[2018-12-29 Sat 18:54] =>  2:15
-  CLOCK: [2018-12-29 Sat 14:35]--[2018-12-29 Sat 15:22] =>  0:47
-  CLOCK: [2018-12-19 Wed 09:59]--[2018-12-19 Wed 10:46] =>  0:47
-  CLOCK: [2018-12-15 Sat 16:48]--[2018-12-15 Sat 17:06] =>  0:18
-  :END:
-** Getting data
-[[http://www.electoralcommission.org.uk/__data/assets/file/0014/212135/EU-referendum-result-data.csv][electoral commission CSV link]]
-** Load packages
+** week 4: map of LGBTI index
+   :LOGBOOK:
+   CLOCK: [2019-01-04 Fri 18:51]--[2019-01-04 Fri 20:08] =>  1:17
+   CLOCK: [2018-12-26 Wed 16:47]--[2018-12-26 Wed 17:47] =>  1:00
+   :END:
+*** Getting data
 #+BEGIN_SRC R
 library(readr)
+library(tidyverse)
 library(dplyr)
+rainbow_index <- read_csv("data/exportmap.csv") %>%
+  select(Country, Score)
+  
+  Country    Score
+  <chr>      <dbl>
+1 Albania       33
+2 Andorra       35
+3 Armenia        7
+4 Austria       56
+#+END_SRC
+
+*** What does our data look like?
+#+BEGIN_SRC R
+rainbow_index %>% summary()
+
+   Country              Score      
+ Length:53          Min.   : 5.00  
+ Class :character   1st Qu.:21.00  
+ Mode  :character   Median :34.00  
+                    Mean   :39.29  
+                    3rd Qu.:56.75  
+                    Max.   :91.00  
+                    NA's   :5     
+
 library(ggplot2)
-library(ggthemes)
-#+END_SRC
-** Load data
-#+BEGIN_SRC R
-ref <- read_csv("data/EU-referendum-result-data.csv")
-#+END_SRC
-** Distribution of the leave vote
-#+BEGIN_QUOTE
-Visualise the distribution of a single continuous variable by dividing the x axis into bins and counting the number of observations in each bin. 
-#+END_QUOTE
-
-#+BEGIN_SRC R
-ref %>% select(Pct_Leave) %>% summary()
-
-   Pct_Leave    
- Min.   : 4.09  
- 1st Qu.:47.14  
- Median :54.27  
- Mean   :52.99  
- 3rd Qu.:60.34  
- Max.   :75.56  
-
-ref %>%
-  ggplot(aes(Pct_Leave)) + geom_histogram()
-
+rainbow_index %>% ggplot(aes(Score)) +
+  geom_histogram(binwidth = 3)
 #+END_SRC
 
 [[fig/Rplot.png]]
 
-** Distribution of the remain vote
-#+BEGIN_SRC R
-ref %>% select(Pct_Remain) %>% summary()
+*** A simple map of the world
+**** getMap
 
-   Pct_Remain   
- Min.   :24.44  
- 1st Qu.:39.66  
- Median :45.73  
- Mean   :47.01  
- 3rd Qu.:52.86  
- Max.   :95.91
-
-ref %>%
-  ggplot(aes(Pct_Remain)) + geom_histogram()
-#+END_SRC
-
-[[fig/Rplot01.png]]
-
-** Let's see the two together
-
-We can create a ~win~ column with the name of whichever winning camp:
+Very simple solution to download and map country borders
 
 #+BEGIN_SRC R
-ifelse(condition, value if true, value if false)
-#+END_SRC
-
-#+BEGIN_SRC R
-ref %>%
-  mutate(win = ifelse(Pct_Leave > Pct_Remain,
-                      "Leave", 
-                      "Remain")) %>%
-  ggplot(aes(Pct_Leave)) +
-     geom_histogram() +
-     facet_wrap(win ~ .)
+library(rworldmap)
+plot(getMap())
 #+END_SRC
 
 [[fig/Rplot02.png]]
 
-** Obscure viz number one
-    
-Since you can compose about anything you want with ~ggplot~ (provided you can translate your mad ideas into chunks of geometries and coordinates), let's have a go:
+**** getMap and ggplot
+
+~getMap~ give us loads of informations about countries: their names, abbreviations, the continent they're on, their population and GDP estimates, etc.
+
+We use ~ggplot~ here to be able to compose our layers: ~getMap~ is our base map
 
 #+BEGIN_SRC R
-ref %>%
-  mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
-         Pct_won = ifelse(Pct_Leave > Pct_Remain, Pct_Leave, Pct_Remain)) %>%
-  ggplot(aes(Pct_Leave, Pct_Remain, color = win)) +
-  geom_point(aes(shape = "21")) +
-  xlim(0,100) + ylim(0,100) +
-  facet_wrap(. ~ Region)
+library(sf)
+worldMap <- getMap(resolution = "low")
+worldMap <- st_as_sf(worldMap)
+
+ggplot(worldMap) + geom_sf()
+#+END_SRC
+
+[[fig/Rplot01.png]]
+
+*** Merging our index score and the map data
+    
+Our task is to find a way to merge our two datasets. We remember this helpful cheatsheet:
+
+[[https://camo.githubusercontent.com/c8c1f1bda76407340ae37fa210c38cac480016bb/68747470733a2f2f6d696b6f6f6e747a2e6769746875622e696f2f646174612d63617270656e7472792d7765656b2f696d672f64706c79722d6a6f696e732e706e67]]
+
+**** Finding the common property
+
+And it seems that the ~SOVEREIGNT~ column of our map contains full country names:
+
+#+BEGIN_SRC R
+library(sf)
+worldMap <- getMap(resolution = "high")
+worldMap$SOVEREIGNT %>% head()
+
+[1] Netherlands    Afghanistan    Angola         United Kingdom Albania        Finland       
+204 Levels: Afghanistan Albania Algeria Andorra Angola Antarctica ... Zimbabwe
+#+END_SRC
+
+**** Final merge
+
+We can merge with our ~rainbow_index$Country~.
+
+#+BEGIN_SRC R
+# get the map again!!!
+worldMap <- getMap(resolution = "low")
+worldMap@data <- left_join(worldMap@data, rainbow_index, 
+                    by = c("SOVEREIGNT" = "Country"))
+worldMap <- st_as_sf(worldMap)
+#+END_SRC
+
+*** Basics of mapping
+**** Simple map
+
+Technically, this is a map of our data...
+
+#+BEGIN_SRC R
+worldMap %>%
+  ggplot() +
+  geom_sf(aes(fill = Score))
 #+END_SRC
 
 [[fig/Rplot03.png]]
 
-** Loading population data
+**** Let's zoom in
 
-~readxl~ is a package we use to load and parse Excel spreadsheets
+We zoom in by specifying latitude and longitude minimum and maximums to ~coord_sf~
 
-#+BEGIN_SRC R
-library(readxl)
-popchange <- read_excel("data/ukmye2015/MYE3_population_change_for_local_authorities_UK_2015.xls",
-                        sheet = 3,
-                        range = "A3:N443")
-#+END_SRC
+[[http://www.isobudgets.com/wp-content/uploads/2014/03/latitude-longitude.jpg]]
 
-** Merging voting and population by ONS codes
-
-Merging data means combining datasets together.
-
-In our example, ~popchange~ contains 440 geographical units; while ~ref~ only contains 382 (there were 382 voting areas at the EU referendum).
-
-So, ...?
-
-*** Understanding joins    
-
-[[https://mikoontz.github.io/data-carpentry-week/img/dplyr-joins.png]]
-
-*** Joining our data 
-
-~ref$Area_Code~ and ~popchange$Region_Code~ are the columns that contain the ONS codes (we like them because they are unique, thus avoiding us the risk of duplicates during the merge)
+**** Let's zoom in
 
 #+BEGIN_SRC R
-left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% View()
-#+END_SRC
-
-** Leave vote v migration
-
-#+BEGIN_SRC R
-left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% 
-    mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
-           migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %>%
-    ggplot(aes(migrationrate, Pct_Leave)) +
-      geom_point(aes(shape = "21", color = win))
+worldMap %>%
+  ggplot() +
+  geom_sf(aes(fill = Score)) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE)
 #+END_SRC
 
 [[fig/Rplot04.png]]
 
-** Log scale
+**** Filter missing data
+
 #+BEGIN_SRC R
-left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% # %>% View()
-    mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
-           migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %>%
-    ggplot(aes(migrationrate, Pct_Leave, color = win)) +
-      geom_point(aes(shape = "21")) +
-      scale_x_log10(labels = scales::percent)
+worldMap %>% filter(!is.na(Score)) %>%
+  ggplot() + 
+  geom_sf(aes(fill = Score)) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE)
 #+END_SRC
 
 [[fig/Rplot05.png]]
 
-** Facet by region
+*** Better colours
+[[https://blog.datawrapper.de/colorguide/][Excellent Datawrapper guide on colours]]
+
+One important tool among other is [[http://colorbrewer2.org/][ColorBrewer]].
+
+From there we can grab colours we like and feed them like so:
+
 #+BEGIN_SRC R
-left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% # %>% View()
-    mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
-           migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %>%
-    ggplot(aes(migrationrate, Pct_Leave, color = win)) +
-      geom_point(aes(shape = "21")) +
-      scale_x_log10(labels = scales::percent) +
-      geom_smooth(method = "lm") +
-      facet_wrap("Region")
+scale_fill_gradient(low, high)
+#+END_SRC
+
+**** In action
+
+#+BEGIN_SRC R
+library(RColorBrewer)
+worldMap %>% filter(!is.na(Score)) %>%
+  ggplot() + 
+  geom_sf(aes(fill = Score,
+    colour = I("gray80")), size = 1/100) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE) +
+  scale_fill_gradient(low = I("#d7191c"), high = I("#1a9641")) + 
+  theme_minimal()
 #+END_SRC
 
 [[fig/Rplot06.png]]
 
+*** Er, actual better colours
+#+BEGIN_SRC R
+theme_opts<-list(theme(panel.grid.minor = element_blank(),
+                         panel.grid.major = element_line(colour = "transparent"),
+                         panel.background = element_blank(),
+                         plot.background = element_blank(),
+                         axis.line = element_blank(),
+                         axis.text.x = element_blank(),
+                         axis.text.y = element_blank(),
+                         axis.ticks = element_blank(),
+                         axis.title.x = element_blank(),
+                         axis.title.y = element_blank(),
+                         legend.position = "right"))
+#+END_SRC
+
+*** Bis
+#+BEGIN_SRC R
+worldMap %>% filter(!is.na(Score)) %>%
+    ggplot() + 
+    geom_sf(aes(fill = Score, colour = I("gray80")), size = 1/100) +
+    coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE) +
+    scale_fill_distiller(type = "div", palette = "RdYlGn", direction = 1) +
+    theme_minimal() + theme_opts +
+    ggtitle("LGBT rights in eastern and western Europe")
+#+END_SRC
+
+[[fig/Rplot07.png]]
