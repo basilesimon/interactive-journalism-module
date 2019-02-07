@@ -58,10 +58,10 @@ We will go round the room and take questions about final project. Come prepared 
 * 1.2: The basics
 * 2.1: Air pollution in London
 * 2.2: Air pollution in London
-* 3.1: EU referendum exploration
-* 3.2: EU referendum exploration
-* 4.1: LGBT rights in Europe map
-* 4.2: LGBT rights in Europe map
+* 3.1: LGBT rights in Europe map
+* 3.2: LGBT rights in Europe map
+* 4.1: EU referendum exploration
+* 4.2: EU referendum exploration
 * 5.1: Pacific storms maps
 * 5.2: Pacific storms maps
 * 6.1: Scraping Reddit and Twitter

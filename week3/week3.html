@@ -29,239 +29,301 @@
 <div class="reveal">
 <div class="slides">
 <section>
-<section id="slide-org48cdc40">
-<h2 id="org48cdc40">week 3: deal v Leave vote</h2>
+<section id="slide-org97711e2">
+<h2 id="org97711e2">week 4: map of LGBTI index</h2>
 </section>
 </section>
 <section>
-<section id="slide-org13758b1">
-<h3 id="org13758b1">Getting data</h3>
-<p>
-<a href="http://www.electoralcommission.org.uk/__data/assets/file/0014/212135/EU-referendum-result-data.csv">electoral commission CSV link</a>
-</p>
-</section>
-</section>
-<section>
-<section id="slide-org428c65e">
-<h3 id="org428c65e">Load packages</h3>
+<section id="slide-org705c5de">
+<h3 id="org705c5de">Getting data</h3>
 <div class="org-src-container">
 
 <pre><code class="R" >library(readr)
-library(dplyr)
-library(ggplot2)
-library(ggthemes)
-</code></pre>
-</div>
-</section>
-</section>
-<section>
-<section id="slide-org60aff58">
-<h3 id="org60aff58">Load data</h3>
-<div class="org-src-container">
+library(tidyverse)
+rainbow_index &lt;- read_csv("data/exportmap.csv") %&gt;%
+  select(Country, Score)
 
-<pre><code class="R" >ref &lt;- read_csv("data/EU-referendum-result-data.csv")
-</code></pre>
-</div>
-</section>
-</section>
-<section>
-<section id="slide-orgc21a769">
-<h3 id="orgc21a769">Distribution of the leave vote</h3>
-<blockquote nil>
-<p>
-Visualise the distribution of a single continuous variable by dividing the x axis into bins and counting the number of observations in each bin. 
-</p>
-</blockquote>
-
-<div class="org-src-container">
-
-<pre><code class="R" >ref %&gt;% select(Pct_Leave) %&gt;% summary()
-
-   Pct_Leave    
- Min.   : 4.09  
- 1st Qu.:47.14  
- Median :54.27  
- Mean   :52.99  
- 3rd Qu.:60.34  
- Max.   :75.56  
-
-ref %&gt;%
-  ggplot(aes(Pct_Leave)) + geom_histogram()
-
+  Country    Score
+  &lt;chr&gt;      &lt;dbl&gt;
+1 Albania       33
+2 Andorra       35
+3 Armenia        7
+4 Austria       56
 </code></pre>
 </div>
 
 </section>
 </section>
 <section>
-<section id="slide-orgaa2db16">
-<h3 id="orgaa2db16">Distribution of the remain vote</h3>
+<section id="slide-orga7df0f6">
+<h3 id="orga7df0f6">What does our data look like?</h3>
 <div class="org-src-container">
 
-<pre><code class="R" >ref %&gt;% select(Pct_Remain) %&gt;% summary()
+<pre><code class="R" >rainbow_index %&gt;% summary()
 
-   Pct_Remain   
- Min.   :24.44  
- 1st Qu.:39.66  
- Median :45.73  
- Mean   :47.01  
- 3rd Qu.:52.86  
- Max.   :95.91
+   Country              Score      
+ Length:53          Min.   : 5.00  
+ Class :character   1st Qu.:21.00  
+ Mode  :character   Median :34.00  
+		    Mean   :39.29  
+		    3rd Qu.:56.75  
+		    Max.   :91.00  
+		    NA's   :5     
 
-ref %&gt;%
-  ggplot(aes(Pct_Remain)) + geom_histogram()
+rainbow_index %&gt;% ggplot(aes(Score)) +
+  geom_histogram(binwidth = 3)
+</code></pre>
+</div>
+
+<p>
+[Rplot.png]]
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org0dd8494">
+<h3 id="org0dd8494">A simple map of the world</h3>
+<div class="outline-text-3" id="text-org0dd8494">
+</div>
+</section>
+<section id="slide-org78dbcc8">
+<h4 id="org78dbcc8">getMap</h4>
+<p>
+Very simple solution to download and map country borders
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(rworldmap)
+plot(getMap())
+</code></pre>
+</div>
+
+<p>
+[Rplot02.png]]
+</p>
+
+</section>
+<section id="slide-orga68174f">
+<h4 id="orga68174f">getMap and ggplot</h4>
+<p>
+<code>getMap</code> give us loads of informations about countries: their names, abbreviations, the continent they're on, their population and GDP estimates, etc.
+</p>
+
+<p>
+We use <code>ggplot</code> here to be able to compose our layers: <code>getMap</code> is our base map
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(sf)
+worldMap &lt;- getMap(resolution = "low")
+worldMap &lt;- st_as_sf(worldMap)
+
+ggplot(worldMap) + geom_sf()
+</code></pre>
+</div>
+
+<p>
+[Rplot01.png]]
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgbddf08f">
+<h3 id="orgbddf08f">Merging our index score and the map data</h3>
+<p>
+Our task is to find a way to merge our two datasets. We remember this helpful cheatsheet:
+</p>
+
+<p>
+<a href="https://camo.githubusercontent.com/c8c1f1bda76407340ae37fa210c38cac480016bb/68747470733a2f2f6d696b6f6f6e747a2e6769746875622e696f2f646174612d63617270656e7472792d7765656b2f696d672f64706c79722d6a6f696e732e706e67">https://camo.githubusercontent.com/c8c1f1bda76407340ae37fa210c38cac480016bb/68747470733a2f2f6d696b6f6f6e747a2e6769746875622e696f2f646174612d63617270656e7472792d7765656b2f696d672f64706c79722d6a6f696e732e706e67</a>
+</p>
+
+</section>
+<section id="slide-orgaa543b1">
+<h4 id="orgaa543b1">Finding the common property</h4>
+<p>
+And it seems that the <code>SOVEREIGNT</code> column of our map contains full country names:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(sf)
+worldMap &lt;- getMap(resolution = "high")
+worldMap$SOVEREIGNT %&gt;% head()
+
+[1] Netherlands    Afghanistan    Angola         United Kingdom Albania        Finland       
+204 Levels: Afghanistan Albania Algeria Andorra Angola Antarctica ... Zimbabwe
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org26177c8">
+<h4 id="org26177c8">Final merge</h4>
+<p>
+We can merge with our <code>rainbow_index$Country</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >worldMap@data &lt;- left_join(worldMap@data, rainbow_index, 
+		    by = c("SOVEREIGNT" = "Country"))
+worldMap &lt;- st_as_sf(worldMap)
 </code></pre>
 </div>
 
 </section>
 </section>
 <section>
-<section id="slide-orgfb4b29d">
-<h3 id="orgfb4b29d">Let's see the two together</h3>
+<section id="slide-org6eec89f">
+<h3 id="org6eec89f">Basics of mapping</h3>
+<div class="outline-text-3" id="text-org6eec89f">
+</div>
+</section>
+<section id="slide-org5468e4f">
+<h4 id="org5468e4f">Simple map</h4>
 <p>
-We can create a <code>win</code> column with the name of whichever winning camp:
+Technically, this is a map of our data&#x2026;
 </p>
 
 <div class="org-src-container">
 
-<pre><code class="R" >ifelse(condition, value if true, value if false)
+<pre><code class="R" >worldMap %&gt;%
+  ggplot() +
+  geom_sf(aes(fill = Score))
 </code></pre>
 </div>
 
-<div class="org-src-container">
-
-<pre><code class="R" >ref %&gt;%
-  mutate(win = ifelse(Pct_Leave &gt; Pct_Remain,
-		      "Leave", 
-		      "Remain")) %&gt;%
-  ggplot(aes(Pct_Leave)) +
-     geom_histogram() +
-     facet_wrap(win ~ .)
-</code></pre>
-</div>
-</section>
-</section>
-<section>
-<section id="slide-org9b15046">
-<h3 id="org9b15046">Obscure viz number one</h3>
 <p>
-Since you can compose about anything you want with <code>ggplot</code> (provided you can translate your mad ideas into chunks of geometries and coordinates), let's have a go:
-</p>
-
-<div class="org-src-container">
-
-<pre><code class="R" >ref %&gt;%
-  mutate(win = ifelse(Pct_Leave &gt; Pct_Remain, "Leave", "Remain"),
-	 Pct_won = ifelse(Pct_Leave &gt; Pct_Remain, Pct_Leave, Pct_Remain)) %&gt;%
-  ggplot(aes(Pct_Leave, Pct_Remain, color = win)) +
-  geom_point(aes(shape = "21")) +
-  xlim(0,100) + ylim(0,100) +
-  facet_wrap(. ~ Region)
-</code></pre>
-</div>
-
-</section>
-</section>
-<section>
-<section id="slide-org344eaa1">
-<h3 id="org344eaa1">Loading population data</h3>
-<p>
-<code>readxl</code> is a package we use to load and parse Excel spreadsheets
-</p>
-
-<div class="org-src-container">
-
-<pre><code class="R" >library(readxl)
-popchange &lt;- read_excel("ukmye2015/MYE3_population_change_for_local_authorities_UK_2015.xls",
-			sheet = 3,
-			range = "A3:N443")
-</code></pre>
-</div>
-
-</section>
-</section>
-<section>
-<section id="slide-org4fb51f4">
-<h3 id="org4fb51f4">Merging voting and population by ONS codes</h3>
-<p>
-Merging data means combining datasets together.
-</p>
-
-<p>
-In our example, <code>popchange</code> contains 440 geographical units; while <code>ref</code> only contains 382 (there were 382 voting areas at the EU referendum).
-</p>
-
-<p>
-So, &#x2026;?
+[Rplot03.png]]
 </p>
 
 </section>
-<section id="slide-orgaa21f17">
-<h4 id="orgaa21f17">Understanding joins</h4>
+<section id="slide-org05656f1">
+<h4 id="org05656f1">Let's zoom in</h4>
+<p>
+We zoom in by specifying latitude and longitude minimum and maximums to <code>coord_sf</code>
+</p>
+
 
 <div class="figure">
-<p><img src="https://mikoontz.github.io/data-carpentry-week/img/dplyr-joins.png" alt="dplyr-joins.png" />
+<p><img src="http://www.isobudgets.com/wp-content/uploads/2014/03/latitude-longitude.jpg" alt="latitude-longitude.jpg" />
 </p>
 </div>
 
 </section>
-<section id="slide-orgd786cbc">
-<h4 id="orgd786cbc">Joining our data</h4>
+<section id="slide-org3c31e26">
+<h4 id="org3c31e26">Let's zoom in</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >worldMap %&gt;%
+  ggplot() +
+  geom_sf(aes(fill = Score)) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE)
+</code></pre>
+</div>
+
 <p>
-<code>ref$Area_Code</code> and <code>popchange$Region_Code</code> are the columns that contain the ONS codes (we like them because they are unique, thus avoiding us the risk of duplicates during the merge)
+[Rplot04.png]]
+</p>
+
+</section>
+<section id="slide-org56df6ab">
+<h4 id="org56df6ab">Filter missing data</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >worldMap %&gt;% filter(!is.na(Score)) %&gt;%
+  ggplot() + 
+  geom_sf(aes(fill = Score)) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE)
+</code></pre>
+</div>
+
+<p>
+[Rplot05.png]]
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgaf41952">
+<h3 id="orgaf41952">Better colours</h3>
+<p>
+<a href="https://blog.datawrapper.de/colorguide/">Excellent Datawrapper guide on colours</a>
+</p>
+
+<p>
+One important tool among other is <a href="http://colorbrewer2.org/">ColorBrewer</a>.
+</p>
+
+<p>
+From there we can grab colours we like and feed them like so:
 </p>
 
 <div class="org-src-container">
 
-<pre><code class="R" >left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %&gt;% View()
+<pre><code class="R" >scale_fill_gradient(low, high)
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org6bb2e83">
+<h4 id="org6bb2e83">In action</h4>
+<div class="org-src-container">
+
+<pre><code class="R" >library(RColorBrewer)
+worldMap %&gt;% filter(!is.na(Score)) %&gt;%
+  ggplot() + 
+  geom_sf(aes(fill = Score,
+    colour = I("gray80")), size = 1/100) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE) +
+  scale_fill_gradient(low = I("#d7191c"), high = I("#1a9641")) + 
+  theme_minimal()
+</code></pre>
+</div>
+
+<p>
+[Rplot06.png]]
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org0daf3f3">
+<h3 id="org0daf3f3">Er, actual better colours</h3>
+<div class="org-src-container">
+
+<pre><code class="R" >theme_opts&lt;-list(theme(panel.grid.minor = element_blank(),
+			 panel.grid.major = element_line(colour = "transparent"),
+			 panel.background = element_blank(),
+			 plot.background = element_blank(),
+			 axis.line = element_blank(),
+			 axis.text.x = element_blank(),
+			 axis.text.y = element_blank(),
+			 axis.ticks = element_blank(),
+			 axis.title.x = element_blank(),
+			 axis.title.y = element_blank(),
+			 plot.title = element_blank(),
+			 legend.position = "right"))
 </code></pre>
 </div>
 
 </section>
 </section>
 <section>
-<section id="slide-orgdbcadf2">
-<h3 id="orgdbcadf2">Leave vote v migration</h3>
+<section id="slide-orgced8875">
+<h3 id="orgced8875">Bis</h3>
 <div class="org-src-container">
 
-<pre><code class="R" >left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %&gt;% 
-    mutate(win = ifelse(Pct_Leave &gt; Pct_Remain, "Leave", "Remain"),
-	   migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %&gt;%
-    ggplot(aes(migrationrate, Pct_Leave)) +
-      geom_point(aes(shape = "21", color = win))
-</code></pre>
-</div>
-
-</section>
-</section>
-<section>
-<section id="slide-orgef57c4a">
-<h3 id="orgef57c4a">Log scale</h3>
-<div class="org-src-container">
-
-<pre><code class="R" >left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %&gt;% # %&gt;% View()
-    mutate(win = ifelse(Pct_Leave &gt; Pct_Remain, "Leave", "Remain"),
-	   migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %&gt;%
-    ggplot(aes(migrationrate, Pct_Leave, color = win)) +
-      geom_point(aes(shape = "21")) +
-      scale_x_log10(labels = scales::percent)
-</code></pre>
-</div>
-</section>
-</section>
-<section>
-<section id="slide-org8d8dc7d">
-<h3 id="org8d8dc7d">Facet by region</h3>
-<div class="org-src-container">
-
-<pre><code class="R" >left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %&gt;% # %&gt;% View()
-    mutate(win = ifelse(Pct_Leave &gt; Pct_Remain, "Leave", "Remain"),
-	   migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %&gt;%
-    ggplot(aes(migrationrate, Pct_Leave, color = win)) +
-      geom_point(aes(shape = "21")) +
-      scale_x_log10(labels = scales::percent) +
-      geom_smooth(method = "lm") +
-      facet_wrap("Region")
+<pre><code class="R" >worldMap %&gt;% filter(!is.na(Score)) %&gt;%
+    ggplot() + 
+    geom_sf(aes(fill = Score, colour = I("gray80")), size = 1/100) +
+    coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE) +
+    scale_fill_distiller(type = "div", palette = "RdYlGn", direction = 1) +
+  theme_minimal() + theme_opts
 </code></pre>
 </div>
 </section>
