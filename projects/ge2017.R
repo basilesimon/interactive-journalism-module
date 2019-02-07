@@ -1,5 +1,5 @@
 library(rgdal)
-spaces <- readOGR(dsn="Downloads/uk_650_wpc_2017_full_res_v1.8/uk_650_wpc_2017_full_res_v1.8.shp")
+spaces <- readOGR(dsn="data/uk_650_wpc_2017_full_res_v1.8/uk_650_wpc_2017_full_res_v1.8.shp")
 plot(spaces)
 
 spaces.proj <- spTransform(spaces, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"))
@@ -24,7 +24,7 @@ ggplot() + geom_polygon(spaces.df.proj.data,
                                     fill = WINNER))
 
 library(readxl)
-bes <- read_excel("Downloads/BES-2017-General-Election-results-file-v1.0.xlsx")
+bes <- read_excel("data/BES-2017-General-Election-results-file-v1.0.xlsx")
 spaces.df.proj.data.2017 <- left_join(spaces.df.proj.data, bes, by = c("ONSID" = "ONSConstID"))
 
 anti_join(spaces.df.proj.data, bes, by = c("ONSID" = "ONSConstID")) %>% View()
@@ -55,7 +55,7 @@ ggplot() + geom_polygon(spaces.df.proj.data.2017,
                                "Scottish National Party" = I("#FFF685"),
                                "Speaker" = I("blue"),
                                "NA" = I("gray80"))) +
-  #facet_wrap(. ~ spaces.df.proj.data.2017$Region.y, scales = "free") +
+  # facet_wrap(. ~ spaces.df.proj.data.2017$Region.y, scales = "free") +
   coord_map(projection = "mercator") +
   theme_minimal() + theme_opts
 
