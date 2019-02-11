@@ -1,166 +1,162 @@
-* week 3: deal v Leave vote
-  :LOGBOOK:
-  CLOCK: [2018-12-29 Sat 16:39]--[2018-12-29 Sat 18:54] =>  2:15
-  CLOCK: [2018-12-29 Sat 14:35]--[2018-12-29 Sat 15:22] =>  0:47
-  CLOCK: [2018-12-19 Wed 09:59]--[2018-12-19 Wed 10:46] =>  0:47
-  CLOCK: [2018-12-15 Sat 16:48]--[2018-12-15 Sat 17:06] =>  0:18
-  :END:
-** Getting data
-[[http://www.electoralcommission.org.uk/__data/assets/file/0014/212135/EU-referendum-result-data.csv][electoral commission CSV link]]
-** Load packages
+* Week 4: picking up storms project and going beyond
+  
+
+*** Getting our data
+CSV release of our data on the NOAA website:
+
 #+BEGIN_SRC R
-library(readr)
-library(dplyr)
+ftp://eclipse.ncdc.noaa.gov/pub/ibtracs/v03r10/all/csv/basin
+#+END_SRC
+
+(the file is too big to re-distribute: do download and copy to ~data/~ directory please)
+
+*** Loading packages and data
+#+BEGIN_SRC R
 library(ggplot2)
-library(ggthemes)
+library(dplyr)
+
+# data source
+basin <- read.csv("data/Basin.WP.ibtracs_all.v03r10.csv",
+                  skip = 1, stringsAsFactors = FALSE)
+basin <- basin[-1, ] # first column is garbled, disegard
 #+END_SRC
-** Load data
+
+**** Preparing our data further...
 #+BEGIN_SRC R
-ref <- read_csv("data/EU-referendum-result-data.csv")
-#+END_SRC
-** Distribution of the leave vote
-#+BEGIN_QUOTE
-Visualise the distribution of a single continuous variable by dividing the x axis into bins and counting the number of observations in each bin. 
-#+END_QUOTE
+# cleaner columns
+basin$Season <- as.numeric(basin$Season)
+basin$Name <- as.factor(basin$Name)
 
-#+BEGIN_SRC R
-ref %>% select(Pct_Leave) %>% summary()
-
-   Pct_Leave    
- Min.   : 4.09  
- 1st Qu.:47.14  
- Median :54.27  
- Mean   :52.99  
- 3rd Qu.:60.34  
- Max.   :75.56  
-
-ref %>%
-  ggplot(aes(Pct_Leave)) + geom_histogram()
-
+# remove whitespace in numbers
+basin$Latitude <- as.numeric(gsub("^ ", "", basin$Latitude))
+basin$Longitude <- as.numeric(gsub("^ ", "", basin$Longitude))
+basin$Wind.WMO. <- as.numeric(gsub("^ ", "", basin$Wind.WMO.))
 #+END_SRC
 
-[[fig/Rplot.png]]
-
-** Distribution of the remain vote
-#+BEGIN_SRC R
-ref %>% select(Pct_Remain) %>% summary()
-
-   Pct_Remain   
- Min.   :24.44  
- 1st Qu.:39.66  
- Median :45.73  
- Mean   :47.01  
- 3rd Qu.:52.86  
- Max.   :95.91
-
-ref %>%
-  ggplot(aes(Pct_Remain)) + geom_histogram()
-#+END_SRC
-
-[[fig/Rplot01.png]]
-
-** Let's see the two together
-
-We can create a ~win~ column with the name of whichever winning camp:
+*** Filter 2000 to 2017
+For the purpose of this exercise we're only interested in the years 2000 to 2017
 
 #+BEGIN_SRC R
-ifelse(condition, value if true, value if false)
+substorms <- basin %>%
+  filter(Season %in% 2000:2017
+        !Name == "NOT NAMED",
+	!Latitude == -999,
+	!Longitude == -999)
+
+substorms$ID <- as.factor(paste(substorms$Name, substorms$Season, 
+                                sep <- "."))
 #+END_SRC
+
+
+**** Let's map 
+#+BEGIN_SRC R
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
+  geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group)) +
+  geom_path(data = substorms, aes(group = ID))
+#+END_SRC
+
+[[fig2/Rplot01.png]]
+
+*** Themes in ggplot
+#+BEGIN_SRC R
+theme_opts<-list(theme(panel.grid.minor = element_blank(),
+                       panel.grid.major = element_blank(),
+                       panel.background = element_blank(),
+                       plot.background = element_blank(),
+                       axis.line = element_blank(),
+                       axis.text.x = element_blank(),
+                       axis.text.y = element_blank(),
+                       axis.ticks = element_blank(),
+                       axis.title.x = element_blank(),
+                       axis.title.y = element_blank(),
+                       plot.title = element_blank()))
+#+END_SRC
+
+*** Let's zoom in
 
 #+BEGIN_SRC R
-ref %>%
-  mutate(win = ifelse(Pct_Leave > Pct_Remain,
-                      "Leave", 
-                      "Remain")) %>%
-  ggplot(aes(Pct_Leave)) +
-     geom_histogram() +
-     facet_wrap(win ~ .)
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
+  geom_polygon(data = map_data("world"),
+               aes(x = long, y = lat, group = group),
+               fill = "whitesmoke",
+	       colour = "gray10",
+	       size = 0.2) +
+  geom_path(data = substorms, aes(group = ID),
+            alpha = scales::rescale(substorms$Wind.WMO., 
+	            to = c(0,1)),
+	    size = 0.8,
+            color = "red") +
+  coord_map(xlim = c(60,180),
+            ylim = c(-20, 60)) +
+  labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts
 #+END_SRC
 
-[[fig/Rplot02.png]]
+[[fig2/Rplot03.png]]
 
-** Obscure viz number one
-    
-Since you can compose about anything you want with ~ggplot~ (provided you can translate your mad ideas into chunks of geometries and coordinates), let's have a go:
+**** Map issue to fix
+#+BEGIN_SRC R
+wm <- map_data("world")
+
+library("PBSmapping")
+data.table::setnames(wm, c("X","Y","PID","POS","region","subregion"))
+worldmap = clipPolys(wm,
+    xlim=c(60,180),
+    ylim=c(-20, 60),
+    keepExtra=TRUE)
+#+END_SRC
+
+**** Try again...
+#+BEGIN_SRC R
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
+  geom_polygon(data = worldmap,
+               aes(x = long, y = lat, group = group),
+               fill = "whitesmoke",
+	       colour = "gray10",
+	       size = 0.2) +
+  geom_path(data = substorms, aes(group = ID),
+            alpha = scales::rescale(substorms$Wind.WMO., 
+	            to = c(0,1)),
+	    size = 0.8,
+            color = "red") +
+  coord_map(xlim = c(60,180),
+            ylim = c(-20, 60)) +
+  labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts
+#+END_SRC
+
+[[fig2/Rplot04.png]]
+
+*** Extract dates from the data
 
 #+BEGIN_SRC R
-ref %>%
-  mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
-         Pct_won = ifelse(Pct_Leave > Pct_Remain, Pct_Leave, Pct_Remain)) %>%
-  ggplot(aes(Pct_Leave, Pct_Remain, color = win)) +
-  geom_point(aes(shape = "21")) +
-  xlim(0,100) + ylim(0,100) +
-  facet_wrap(. ~ Region)
+# extract month and year for facetting later
+library(lubridate)
+substorms <- substorms %>%
+  mutate(Month = month(as.Date(ISO_time)),
+         Year = year(as.Date(ISO_time)))
 #+END_SRC
 
-[[fig/Rplot03.png]]
-
-** Loading population data
-
-~readxl~ is a package we use to load and parse Excel spreadsheets
-
+*** facetted map
 #+BEGIN_SRC R
-library(readxl)
-popchange <- read_excel("data/ukmye2015/MYE3_population_change_for_local_authorities_UK_2015.xls",
-                        sheet = 3,
-                        range = "A3:N443")
+ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
+  geom_polygon(data = worldmap,
+               aes(x = long, y = lat, group = group),
+               fill = "whitesmoke",
+	       colour = "gray10",
+	       size = 0.2) +
+  geom_path(data = substorms, aes(group = ID),
+            alpha = scales::rescale(substorms$Wind.WMO., 
+	            to = c(0,1)),
+	    size = 0.8,
+            color = "red") +
+  coord_map(xlim = c(60,180),
+            ylim = c(-20, 60)) +
+  labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts
+  facet_wrap(~Year)
 #+END_SRC
 
-** Merging voting and population by ONS codes
+[[fig2/Rplot05.png]]
 
-Merging data means combining datasets together.
-
-In our example, ~popchange~ contains 440 geographical units; while ~ref~ only contains 382 (there were 382 voting areas at the EU referendum).
-
-So, ...?
-
-*** Understanding joins    
-
-[[https://mikoontz.github.io/data-carpentry-week/img/dplyr-joins.png]]
-
-*** Joining our data 
-
-~ref$Area_Code~ and ~popchange$Region_Code~ are the columns that contain the ONS codes (we like them because they are unique, thus avoiding us the risk of duplicates during the merge)
-
+*** facetted map
 #+BEGIN_SRC R
-left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% View()
+  + facet_wrap(~Month)
 #+END_SRC
-
-** Leave vote v migration
-
-#+BEGIN_SRC R
-left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% 
-    mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
-           migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %>%
-    ggplot(aes(migrationrate, Pct_Leave)) +
-      geom_point(aes(shape = "21", color = win))
-#+END_SRC
-
-[[fig/Rplot04.png]]
-
-** Log scale
-#+BEGIN_SRC R
-left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% # %>% View()
-    mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
-           migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %>%
-    ggplot(aes(migrationrate, Pct_Leave, color = win)) +
-      geom_point(aes(shape = "21")) +
-      scale_x_log10(labels = scales::percent)
-#+END_SRC
-
-[[fig/Rplot05.png]]
-
-** Facet by region
-#+BEGIN_SRC R
-left_join(ref, popchange, by = c("Area_Code" = "Region_Code")) %>% # %>% View()
-    mutate(win = ifelse(Pct_Leave > Pct_Remain, "Leave", "Remain"),
-           migrationrate = `International Migration Net` / `Estimated Population mid-2015` * 100) %>%
-    ggplot(aes(migrationrate, Pct_Leave, color = win)) +
-      geom_point(aes(shape = "21")) +
-      scale_x_log10(labels = scales::percent) +
-      geom_smooth(method = "lm") +
-      facet_wrap("Region")
-#+END_SRC
-
-[[fig/Rplot06.png]]
-
