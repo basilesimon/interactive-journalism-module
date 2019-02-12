@@ -1,5 +1,4 @@
 * Week 4: picking up storms project and going beyond
-  
 
 *** Getting our data
 CSV release of our data on the NOAA website:
@@ -14,6 +13,7 @@ ftp://eclipse.ncdc.noaa.gov/pub/ibtracs/v03r10/all/csv/basin
 #+BEGIN_SRC R
 library(ggplot2)
 library(dplyr)
+library(readr)
 
 # data source
 basin <- read.csv("data/Basin.WP.ibtracs_all.v03r10.csv",
@@ -38,7 +38,7 @@ For the purpose of this exercise we're only interested in the years 2000 to 2017
 
 #+BEGIN_SRC R
 substorms <- basin %>%
-  filter(Season %in% 2000:2017
+  filter(Season %in% 2000:2017,
         !Name == "NOT NAMED",
 	!Latitude == -999,
 	!Longitude == -999)
@@ -98,6 +98,7 @@ ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
 wm <- map_data("world")
 
 library("PBSmapping")
+library("data.table")
 data.table::setnames(wm, c("X","Y","PID","POS","region","subregion"))
 worldmap = clipPolys(wm,
     xlim=c(60,180),
@@ -109,7 +110,7 @@ worldmap = clipPolys(wm,
 #+BEGIN_SRC R
 ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
   geom_polygon(data = worldmap,
-               aes(x = long, y = lat, group = group),
+               aes(x = X, y = Y, group = PID),
                fill = "whitesmoke",
 	       colour = "gray10",
 	       size = 0.2) +
@@ -139,7 +140,7 @@ substorms <- substorms %>%
 #+BEGIN_SRC R
 ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
   geom_polygon(data = worldmap,
-               aes(x = long, y = lat, group = group),
+               aes(x = X, y = Y, group = PID),
                fill = "whitesmoke",
 	       colour = "gray10",
 	       size = 0.2) +
@@ -160,3 +161,11 @@ ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
 #+BEGIN_SRC R
   + facet_wrap(~Month)
 #+END_SRC
+
+*** exercises
+
+- highlight Katrina 2005:
+
+[[fig2/Rplot10.png]]
+
+- what were the 20 fastest storms on record?
