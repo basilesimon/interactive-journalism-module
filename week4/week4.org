@@ -55,7 +55,7 @@ ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
   geom_path(data = substorms, aes(group = ID))
 #+END_SRC
 
-[[fig2/Rplot01.png]]
+[[fig3/Rplot01.png]]
 
 *** Themes in ggplot
 #+BEGIN_SRC R
@@ -91,7 +91,7 @@ ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
   labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts
 #+END_SRC
 
-[[fig2/Rplot03.png]]
+[[fig3/Rplot03.png]]
 
 **** Map issue to fix
 #+BEGIN_SRC R
@@ -124,7 +124,7 @@ ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
   labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts
 #+END_SRC
 
-[[fig2/Rplot04.png]]
+[[fig3/Rplot04.png]]
 
 *** Extract dates from the data
 
@@ -155,7 +155,7 @@ ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
   facet_wrap(~Year)
 #+END_SRC
 
-[[fig2/Rplot05.png]]
+[[fig3/Rplot05.png]]
 
 *** facetted map
 #+BEGIN_SRC R
@@ -166,6 +166,6 @@ ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
 
 - highlight Katrina 2005:
 
-[[fig2/Rplot10.png]]
+[[fig3/Rplot10.png]]
 
 - what were the 20 fastest storms on record?
