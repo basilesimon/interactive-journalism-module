@@ -1,206 +1,408 @@
-** week 5: storms in the Pacific basin
+** scraping police data
    :LOGBOOK:
-   CLOCK: [2019-01-08 Tue 14:55]
-   CLOCK: [2018-12-15 Sat 14:10]--[2018-12-15 Sat 14:35] =>  0:25
+   CLOCK: [2019-01-11 Fri 13:23]--[2019-01-11 Fri 14:35] =>  1:12
+   CLOCK: [2019-01-11 Fri 10:00]--[2019-01-11 Fri 12:52] =>  2:52
    :END:
-*** Getting our data
-CSV release of our data on the NOAA website:
+*** Where do we find our data
 
-#+BEGIN_SRC R
-ftp://eclipse.ncdc.noaa.gov/pub/ibtracs/v03r10/all/csv/basin
-#+END_SRC
+In the UK, [[https://data.police.uk/][Police.uk]] distributes crime and outcome data as Open Government Licence.
 
-(the file is too big to re-distribute: do download and copy to ~data/~ directory please)
+The website provides both:
+- A bulk download (download big data files containing all the data)
+- An open API to create more precise queries ahead of download
 
-*** Loading packages
-#+BEGIN_SRC R
-library(ggplot2)
-library(dplyr)
-#+END_SRC
+**** What is an API
 
-*** Preparing our data
-#+BEGIN_SRC R
-# data source
-basin <- read.csv("data/Basin.WP.ibtracs_all.v03r10.csv",
-                  skip = 1, stringsAsFactors = FALSE)
-basin <- basin[-1, ] # first column is garbled, disegard
-#+END_SRC
+#+BEGIN_QUOTE
+An API is a way to serve your customers
+#+END_QUOTE
+[[https://medium.freecodecamp.org/what-is-an-api-in-english-please-b880a3214a82][Source]]
 
-**** Preparing our data further...
-#+BEGIN_SRC R
-# cleaner columns
-basin$Season <- as.numeric(basin$Season)
-basin$Name <- as.factor(basin$Name)
+Example:
 
-# remove whitespace in numbers
-basin$Latitude <- as.numeric(gsub("^ ", "", basin$Latitude))
-basin$Longitude <- as.numeric(gsub("^ ", "", basin$Longitude))
-basin$Wind.WMO. <- as.numeric(gsub("^ ", "", basin$Wind.WMO.))
-#+END_SRC
+You search a map area for AirBnB available at a particular date. AirBnB servers return to your web browser some relevant data after receiving your question and computing the answer;
 
-*** Filter 2000 to 2017
-For the purpose of this exercise we're only interested in the years 2000 to 2017
+Insofar as programming and data journalism are concerned, we're interested in APIs as they represent documented and open way to query a dataset.
 
-#+BEGIN_SRC R
-substorms <- basin %>%
-  filter(Season %in% 2000:2017) %>%
-  filter(!Name == "NOT NAMED")
+**** The Police.UK API
+[[https://data.police.uk/docs/method/crime-street/][The API documentation]]
 
-substorms$ID <- as.factor(paste(substorms$Name, substorms$Season, 
-                                sep <- "."))
-#+END_SRC
+Reading and understanding an API's documentation is paramount: this is the language we'll need to speak if we want the correct data sent back to us.
 
-*** A map of the world
+*** Getting data from an API
     
-Last week we worked with ~getMap()~
+Quite often for us, we will need to perform a ~GET~ request to a server:
 
-#+BEGIN_SRC R
-ggplot() +
-  geom_polygon(data = map_data("world"),
-  aes(x = long, y = lat, group = group)
+[[https://book.varnish-software.com/3.0/_images/httprequestflow.png]]
+
+Our work with an API is to construct a URL that makes sense.
+URLs are structured this way:
+
+#+BEGIN_SRC html
+https://this-is-a-url.com/
 #+END_SRC
 
-*** What's in our data
-#+BEGIN_SRC R
-substorms %>%
-  group_by(ID) %>%
-  summarise(average_winds = mean(Wind.WMO.)) %>% 
-  arrange(desc(average_winds))
+APIs usually live at an ~endpoint~:
 
-# A tibble: 467 x 2
-   ID               average_winds
-   <fct>                    <dbl>
- 1 FENGSHEN 2002 .           68.8
- 2 FRANCISCO 2013 .          68.5
- 3 SANBA 2012 .              65.9
- 4 SHANSHAN 2006 .           65.6
- 5 NANGKA 2015 .             64.9
+#+BEGIN_SRC html
+https://this-is-a-url.com/endpoint
 #+END_SRC
 
-*** First map
+And they require parameters:
+
+#+BEGIN_SRC html
+https://this-is-a-url.com/endpoint?parameter=1337
+#+END_SRC
+
+**** Test request in R
+We will perform a GET request of all crime around Northampton Square in November 2018.
+
+[[https://data.police.uk/docs/method/crime-street/][From the API documentation...]]
+
+#+BEGIN_SRC html
+This is the URL
+https://data.police.uk/api/crimes-street
+
+This is the endpoint
+/all-crime?
+
+These are the parameters
+lat=
+lon=
+date=
+#+END_SRC
+
 #+BEGIN_SRC R
-ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
-  geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group)) +
-  geom_path(data = substorms, aes(group = ID))
+url <- "https://data.police.uk/api/crimes-street/all-crime?lat=51.527317&lng=-0.102433&date=2018-11"
+#+END_SRC
+
+**** Test request in R
+
+This API returns data in another format: JSON – this is very common on the web. JSON looks like this:
+
+#+BEGIN_SRC js
+{"category":"anti-social-behaviour",
+ "location_type":"Force",
+ "location":{
+     "latitude":"51.529697",
+     "street":{
+         "id":960985,
+          "name":"On or near Conference\/exhibition Centre"
+     },
+     "longitude":"-0.118592"
+ },
+ "context":"",
+ "outcome_status":null,
+ "persistent_id":"",
+ "id":69909158,
+ "location_subtype":"",
+ "month":"2018-11"}
+#+END_SRC
+
+We will need to convert this format into something R prefers:
+
+#+BEGIN_SRC R
+library(httr)
+library(jsonlite)
+
+url <- "https://data.police.uk/api/crimes-street/all-crime?lat=51.527317&lng=-0.102433&date=2018-11"
+request <- GET(url)
+jsonRespText <- content(request, as="text") 
+df <- fromJSON(jsonRespText, flatten = TRUE)
+#+END_SRC
+
+**** Quick analysis
+How many crime of each type, sorted descending
+
+#+BEGIN_SRC R
+df %>% group_by(category) %>%
+  summarise(count = n()) %>% 
+  arrange(desc(count))
+
+# A tibble: 14 x 2
+   category              count
+   <chr>                 <int>
+ 1 other-theft             554
+ 2 anti-social-behaviour   394
+ 3 violent-crime           347
+ 4 theft-from-the-person   257
+ 5 vehicle-crime           158
+ 6 public-order            135
+ 7 shoplifting             112
+ 8 burglary                107
+#+END_SRC
+
+#+BEGIN_SRC R
+df %>% group_by(category) %>%
+  summarise(count = n()) %>% 
+  arrange(desc(count)) %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(category, -count),
+               y = count), stat = "identity") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
 [[fig/Rplot.png]]
 
-*** Where do all these crazy lines come from?
 #+BEGIN_SRC R
-substorms %>% summary()
-   Latitude        Longitude      
- Min.   :-999.0   Min.   :-999.00  
- 1st Qu.:  12.5   1st Qu.: 117.60  
- Median :  19.7   Median : 130.20  
- Mean   :-111.3   Mean   : -15.22 
-
-substorms <-  substorms %>%
-  filter(!Latitude == -999) %>%
-  filter(!Longitude == -999)
-#+END_SRC
-
-**** Let's map again
-#+BEGIN_SRC R
-ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
-  geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group)) +
-  geom_path(data = substorms, aes(group = ID))
+df %>% group_by(location.street.name) %>%
+  summarise(count = n()) %>% 
+  arrange(desc(count)) %>% head(10) %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(location.street.name, -count),
+               y = count), stat = "identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
 [[fig/Rplot01.png]]
 
-*** Themes in ggplot
+*** Querying several months of data
+
+So this was one month of data (November 2018) – what if we want more?
+
+A programming pattern you will see regularly is the following:
+
+- We create an empty thing/variable: our final dataset, empty for now
+- We have a list of things we need to do some work on
+- We iterate over each item in this list, build a temporary store
+- Then for each iteration we append the temporary store to our main dataset
+
+When we're finished running over each element in our main list, we end up with a complete main dataset!
+
+**** For loop
+
+The tool for the job is the for loop:
+
 #+BEGIN_SRC R
-theme_opts<-list(theme(panel.grid.minor = element_blank(),
-                       panel.grid.major = element_blank(),
-                       panel.background = element_blank(),
-                       plot.background = element_blank(),
-                       axis.line = element_blank(),
-                       axis.text.x = element_blank(),
-                       axis.text.y = element_blank(),
-                       axis.ticks = element_blank(),
-                       axis.title.x = element_blank(),
-                       axis.title.y = element_blank(),
-                       plot.title = element_blank()))
+vector <- c('one', 'two', 'basile')
+for (variable in vector) {
+  print(variable)
+}
+
+[1] "one"
+[1] "two"
+[1] "basile"
 #+END_SRC
 
-**** Map again
+**** Appending to an empty list
+
+Conceptually, we'll do this:
+
+#+BEGIN_SRC 
+# our main dataset
+records <- data.frame()
+list_of_months <- c("2018-10", "2018-11")
+
+for (month in list_of_months) {
+  # do get request
+  
+  # our temporary date store with all the right columns
+  df <- get_request
+  
+  # send our temporary data store back up
+  # to populate our main dataset
+  records <- bind_rows(records, df)
+}
+#+END_SRC
+
+**** Putting it together
+
 #+BEGIN_SRC R
-ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
-  geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group)) +
-  geom_path(data = substorms, aes(group = ID)) + theme_opts
+library(stringr)
+library(httr)
+library(jsonlite)
+library(dplyr)
+
+records <- data.frame()
+
+list_of_months <- c("2018-09", "2018-10", "2018-11")
+
+for (month in list_of_months) {
+
+  # url without the month
+  url <- "https://data.police.uk/api/crimes-street/all-crime?lat=51.527317&lng=-0.102433&date="
+  
+  # we paste the month at the end of the URL
+  resp <- GET(str_c(url, month))
+  
+  # then as normal
+  jsonRespText<-content(resp,as="text") 
+  jsonRespParsed<-content(resp,as="parsed") 
+  j <- fromJSON(jsonRespText, flatten = TRUE)
+  records <- bind_rows(records, j)
+}
+#+END_SRC
+ 
+*** Crime type analysis by month around university
+**** Simple tally
+#+BEGIN_SRC R
+records %>% group_by(category) %>%
+  summarise(count = n()) %>% 
+  arrange(desc(count)) %>% head(10) %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(category, -count),
+               y = count), stat = "identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
 [[fig/Rplot02.png]]
-*** Let's zoom in
 
+**** Simple locations
 #+BEGIN_SRC R
-wm <- map_data("world")
-
-ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) +
-  geom_polygon(data = wm, aes(x = long, y = lat, group = group),
-               fill = "whitesmoke", colour = "gray10", size = 0.2) +
-  geom_path(data = substorms, aes(group = ID),
-            alpha = substorms$Wind.WMO./500, size = 0.8,
-            color = "red") +
-  coord_map(xlim = c(60,180), ylim = c(-20, 60)) +
-  labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts
+records %>% group_by(location.street.name) %>%
+  summarise(count = n()) %>% 
+  arrange(desc(count)) %>% head(10) %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(location.street.name, -count),
+               y = count), stat = "identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
 [[fig/Rplot03.png]]
 
-**** Map issue to fix
+**** Crime type by month
 #+BEGIN_SRC R
-wm <- map_data("world")
-
-library("PBSmapping")
-data.table::setnames(wm, c("X","Y","PID","POS","region","subregion"))
-worldmap = clipPolys(wm,
-    xlim=c(60,180),
-    ylim=c(-20, 60),
-    keepExtra=TRUE)
-#+END_SRC
-
-**** Try again...
-#+BEGIN_SRC R
-ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
-  geom_polygon(data = worldmap, aes(x = X, y = Y, group = PID), 
-               fill = "whitesmoke", colour = "gray10", size = 0.2) +
-  geom_path(data = substorms, aes(group = ID), 
-            alpha = substorms$Wind.WMO./500, size = 0.8,
-            color = "red") + 
-  coord_map(xlim = c(60,180), ylim = c(-20, 60)) +
-  labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts
+records %>% group_by(category, month) %>%
+  mutate(count = n()) %>% 
+  select(month, count, category) %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(category, -count),
+               y = count), stat = "identity") + 
+  facet_wrap(month~.) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
 [[fig/Rplot04.png]]
 
-*** Extract dates from the data
-
+**** Crime type by month, cont
 #+BEGIN_SRC R
-# extract month and year for facetting later
-library(lubridate)
-substorms <- substorms %>%
-  mutate(Month = month(as.Date(ISO_time))) %>%
-  mutate(Year = year(as.Date(ISO_time)))
-#+END_SRC
-
-*** facetted map
-#+BEGIN_SRC R
-ggplot(substorms, aes(x = Longitude, y = Latitude, group = ID)) + 
-  geom_polygon(data = worldmap, aes(x = X, y = Y, group = PID), 
-               fill = "whitesmoke", colour = "gray10", size = 0.2) +
-  geom_path(data = substorms, aes(group = ID), 
-            alpha = substorms$Wind.WMO./500, size = 0.8,
-            color = "red") + 
-  coord_map(xlim = c(60,180), ylim = c(-20, 60)) +
-  labs(x = "", y = "", colour = "Wind \n(knots)") + theme_opts + 
-  facet_wrap(~Year)
+records %>% group_by(category, month) %>%
+  mutate(count = n()) %>%  distinct(month, count, category) %>%
+  select(month, count, category) %>% 
+  ggplot(aes(x = month,
+             y = count, group = 1)) +
+  geom_path(, colour="black") + 
+  facet_wrap(category~.) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
 [[fig/Rplot05.png]]
 
-*** facetted map
+**** Crime type change by month
 #+BEGIN_SRC R
-  + facet_wrap(~Month)
+records %>% group_by(category, month) %>%
+  summarise(count = n()) %>%
+  mutate(change = (count - lag(count))/lag(count) * 100) %>%
+  distinct(month, category, change) %>%
+  ggplot(aes(x = month, y = category, fill = change)) +
+  geom_tile(colour="white",size=0.25) +
+  scale_fill_viridis_c(option = "B", name = "Number of crimes") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 #+END_SRC
+
+[[fig/Rplot10.png]]
+
+
+*** Part two: Making some maps
+*** Bulk download of data
+   
+Aside from the API, we can [[https://data.police.uk/data/][download bulk data]]
+
+#+BEGIN_SRC R
+library(readr)
+df <- read_csv("data/2018-11-metropolitan-street.csv")
+#+END_SRC
+
+*** Simple map
+   
+#+BEGIN_SRC R
+library(ggplot2)
+df %>% 
+  ggplot() +
+  geom_point(aes(x = Longitude, y = Latitude, alpha = 1/100),
+             size = 1/100, color = I("tomato")) +
+  coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75))
+#+END_SRC
+
+[[fig/Rplot06.png]]
+
+**** Adding London boroughs
+     
+#+BEGIN_SRC R
+library("londonShapefiles")
+
+thames <- load_thames()
+thames.proj <- spTransform(thames, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"))
+thames.df <- fortify(thames.proj)
+
+boroughs <- load_la()
+boroughs.proj <- spTransform(boroughs, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"))
+boroughs.df <- fortify(boroughs.proj)
+
+ggplot() +
+  geom_polygon(boroughs.df, mapping=aes(long, lat, group = group,
+                                        color = I("gray90"))) +
+  geom_polygon(thames.df, mapping=aes(long, lat, group = group,
+                                      fill = I("skyblue"),
+                                      color = I("skyblue2"))) +
+  coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75))
+#+END_SRC
+
+[[fig/Rplot07.png]]
+
+**** Both together
+     
+#+BEGIN_SRC R
+idf %>% 
+  ggplot() +
+  geom_polygon(boroughs.df, mapping=aes(long, lat, group = group,
+                                        color = I("gray99"),
+                                        fill = I("gray90"))) +
+  geom_polygon(thames.df, mapping=aes(long, lat, group = group,
+                                      fill = I("skyblue"),
+                                      color = I("skyblue2"))) +
+  geom_point(aes(x = Longitude, y = Latitude),
+             size = 1/100, color = I("tomato"), alpha = 1/100) +
+  coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75)) +
+  theme_minimal() +
+  theme(legend.position = "none")
+#+END_SRC
+
+[[fig/Rplot08.png]]
+
+*** Obscure spatial analysis
+    
+As we've got many, may points (91,833 crimes), we can use ~geom_bin2d~ to provide an alternative to overplotting
+
+#+BEGIN_QUOTE
+Divides the plane into rectangles, counts the number of cases in each rectangle, and then (by default) maps the number of cases to the rectangle's fill. This is a useful alternative to geom_point() in the presence of overplotting.
+#+END_QUOTE
+
+#+BEGIN_SRC R
+df %>%
+  ggplot(mapping=aes(x = as.numeric(Longitude),
+                     y = as.numeric(Latitude))) +
+  geom_polygon(boroughs.df, mapping=aes(long, lat, group = group,
+                                        color = I("gray60"), alpha = 0.1)) +
+  geom_bin2d(bins = 1000, aes(alpha=..ncount..)) +
+  scale_alpha(range = c(0.3, 1)) +
+  coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75)) +
+  theme_minimal()
+#+END_SRC
+
+[[fig/Rplot09.png]]
+
+*** TODO Part three: Advanced scraping of Tube stations
+[[https://r-tastic.co.uk/post/exploring-london-crime-with-r-heat-maps/][Original tutorial]]
+*** TODO Scraping Tube stations
+*** TODO Scraping Crime by location
+**** TODO Merging everything
+**** TODO Quick map to check
+*** TODO Analysis heatmap

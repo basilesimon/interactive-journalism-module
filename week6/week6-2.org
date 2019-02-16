@@ -1,408 +1,323 @@
-** scraping police data
+** week 6-2: Italy poll of polls
    :LOGBOOK:
-   CLOCK: [2019-01-11 Fri 13:23]--[2019-01-11 Fri 14:35] =>  1:12
-   CLOCK: [2019-01-11 Fri 10:00]--[2019-01-11 Fri 12:52] =>  2:52
+   CLOCK: [2018-12-14 Fri 12:22]--[2018-12-14 Fri 13:09] =>  0:47
+   CLOCK: [2018-12-14 Fri 11:07]--[2018-12-14 Fri 11:11] =>  0:04
+   CLOCK: [2018-12-14 Fri 10:54]--[2018-12-14 Fri 11:06] =>  0:12
+   CLOCK: [2018-12-14 Fri 10:15]--[2018-12-14 Fri 10:54] =>  0:39
    :END:
-*** Where do we find our data
+*** install and load some packages
+#+BEGIN_SRC R
+# install a package
+install.packages('name of the package')
 
-In the UK, [[https://data.police.uk/][Police.uk]] distributes crime and outcome data as Open Government Licence.
-
-The website provides both:
-- A bulk download (download big data files containing all the data)
-- An open API to create more precise queries ahead of download
-
-**** What is an API
-
-#+BEGIN_QUOTE
-An API is a way to serve your customers
-#+END_QUOTE
-[[https://medium.freecodecamp.org/what-is-an-api-in-english-please-b880a3214a82][Source]]
-
-Example:
-
-You search a map area for AirBnB available at a particular date. AirBnB servers return to your web browser some relevant data after receiving your question and computing the answer;
-
-Insofar as programming and data journalism are concerned, we're interested in APIs as they represent documented and open way to query a dataset.
-
-**** The Police.UK API
-[[https://data.police.uk/docs/method/crime-street/][The API documentation]]
-
-Reading and understanding an API's documentation is paramount: this is the language we'll need to speak if we want the correct data sent back to us.
-
-*** Getting data from an API
-    
-Quite often for us, we will need to perform a ~GET~ request to a server:
-
-[[https://book.varnish-software.com/3.0/_images/httprequestflow.png]]
-
-Our work with an API is to construct a URL that makes sense.
-URLs are structured this way:
-
-#+BEGIN_SRC html
-https://this-is-a-url.com/
-#+END_SRC
-
-APIs usually live at an ~endpoint~:
-
-#+BEGIN_SRC html
-https://this-is-a-url.com/endpoint
-#+END_SRC
-
-And they require parameters:
-
-#+BEGIN_SRC html
-https://this-is-a-url.com/endpoint?parameter=1337
-#+END_SRC
-
-**** Test request in R
-We will perform a GET request of all crime around Northampton Square in November 2018.
-
-[[https://data.police.uk/docs/method/crime-street/][From the API documentation...]]
-
-#+BEGIN_SRC html
-This is the URL
-https://data.police.uk/api/crimes-street
-
-This is the endpoint
-/all-crime?
-
-These are the parameters
-lat=
-lon=
-date=
+# load a package
+library('name of the package')
 #+END_SRC
 
 #+BEGIN_SRC R
-url <- "https://data.police.uk/api/crimes-street/all-crime?lat=51.527317&lng=-0.102433&date=2018-11"
+# install.packages('rvest')
+# install.packages('tidyverse')
+# install.packages('tidyquant')
+# install.packages('ggthemes')
+library('rvest')
+library('dplyr')
+library('ggplot2')
+library('reshape2')
+library('tidyquant')
+library('ggthemes')
 #+END_SRC
 
-**** Test request in R
+*** scrape data from wikipedia table
+#+BEGIN_SRC R
+# we store our URL in a variable
+url <- 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_Italian_general_election,_2018'
 
-This API returns data in another format: JSON – this is very common on the web. JSON looks like this:
+# column names
+column_names <- c('date', 'firm', 'sample', 'pd', 'e', 'i', 'cp', 'fi', 'ln', 'fdl', 'ncl', 'm5s', 
+                  'leu', 'pap', 'cpi', 'others', 'lead')
 
-#+BEGIN_SRC js
-{"category":"anti-social-behaviour",
- "location_type":"Force",
- "location":{
-     "latitude":"51.529697",
-     "street":{
-         "id":960985,
-          "name":"On or near Conference\/exhibition Centre"
-     },
-     "longitude":"-0.118592"
- },
- "context":"",
- "outcome_status":null,
- "persistent_id":"",
- "id":69909158,
- "location_subtype":"",
- "month":"2018-11"}
+# decompose line by line:
+# request to the server, parsing, finding the right element,
+# filling blank cells, adding column titles, removing extra bits
+table_2018 <- url %>%
+  read_html() %>%
+  html_node(xpath='/html/body/div[3]/div[3]/div[4]/div/table[3]') %>%
+  html_table(fill = TRUE) %>%
+  setNames(column_names) %>%
+  tail(-2)
 #+END_SRC
 
-We will need to convert this format into something R prefers:
+*** just a quick thing...
+#+BEGIN_SRC R
+# I said no for loops - sorry.
+# we just need to convert all of these columns into numbers!
+for(i in c(4:ncol(table_2018))) {
+  table_2018[,i] <- as.numeric(as.character(table_2018[,i]))
+}
+#+END_SRC
+
+*** string operations to clean our dates
+Our dates currently look like this:
 
 #+BEGIN_SRC R
-library(httr)
-library(jsonlite)
-
-url <- "https://data.police.uk/api/crimes-street/all-crime?lat=51.527317&lng=-0.102433&date=2018-11"
-request <- GET(url)
-jsonRespText <- content(request, as="text") 
-df <- fromJSON(jsonRespText, flatten = TRUE)
+table_2018$date %>% head()
+[1] "4 March 2018" "12–16 Feb"    "14–15 Feb"    "14 Feb"       "13–14 Feb"    "12–14 Feb"
 #+END_SRC
 
-**** Quick analysis
-How many crime of each type, sorted descending
+This isn't quite ready to be read as dates by the code...
+
+**** Basics of date operations
 
 #+BEGIN_SRC R
-df %>% group_by(category) %>%
-  summarise(count = n()) %>% 
-  arrange(desc(count))
+# string operations
+str <- "30 Jan - 2 Feb"
+strsplit(str, "-")[[1]]
+tail(strsplit(str, "-")[[1]], n="1")
+paste(str, " 2018")
+#+END_SRC
 
-# A tibble: 14 x 2
-   category              count
-   <chr>                 <int>
- 1 other-theft             554
- 2 anti-social-behaviour   394
- 3 violent-crime           347
- 4 theft-from-the-person   257
- 5 vehicle-crime           158
- 6 public-order            135
- 7 shoplifting             112
- 8 burglary                107
+*** Let's make a function!
+A function has this syntax:
+
+#+BEGIN_SRC R
+myFunction <- function(parameter1, parameter2) {
+  # do things with parameters
+  # return a result
+}
+#+END_SRC
+
+The returned result can be accessed like this:
+
+#+BEGIN_SRC R
+myResult <- myFunction(parameter)
+#+END_SRC
+
+**** Our date-cleaning function
+#+BEGIN_SRC R
+clean_date_function <- function(date, year) {
+  date_split <- paste(
+    tail(
+      strsplit(date, "–")[[1]], 
+      n=1), 
+    year)
+  clean_date <- as.Date(date_split, format = "%d %b %Y")
+  return(clean_date)
+}
+#+END_SRC
+
+*** Let's apply our function
+#+BEGIN_SRC R
+# line by line...
+data_2018 <- table_2018 %>%
+  group_by(date) %>%
+  mutate(clean_date = clean_date_function(date, " 2018")) %>%
+  ungroup() %>%
+  select(-date, -firm, -sample, -lead) %>%
+  melt(id="clean_date")
 #+END_SRC
 
 #+BEGIN_SRC R
-df %>% group_by(category) %>%
-  summarise(count = n()) %>% 
-  arrange(desc(count)) %>%
-  ggplot() +
-  geom_bar(aes(x = reorder(category, -count),
-               y = count), stat = "identity") +
-    theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+> data_2018 %>% head()
+  clean_date variable value
+1 2018-03-04       pd  18.8
+2 2018-02-16       pd  21.3
+3 2018-02-15       pd  22.5
+4 2018-02-14       pd  22.1
+5 2018-02-14       pd  24.5
+6 2018-02-14       pd  21.9
+#+END_SRC
+
+One line for each observation!
+
+*** Result on a chart
+#+BEGIN_SRC R
+ggplot(data = data_2018, aes(clean_date, value, color=variable)) + 
+  geom_point() + 
+  geom_ma(ma_fun = SMA, n = 10)
 #+END_SRC
 
 [[fig2/Rplot.png]]
 
+*** We do the same for 2017
+Check column names, get table, clean numbers...
 #+BEGIN_SRC R
-df %>% group_by(location.street.name) %>%
-  summarise(count = n()) %>% 
-  arrange(desc(count)) %>% head(10) %>%
-  ggplot() +
-  geom_bar(aes(x = reorder(location.street.name, -count),
-               y = count), stat = "identity") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+## same for 2017 data
+column_names2017 <- c('date', 'firm', 'pd', 'e', 'i', 'cp', 'fi', 'ln', 'fdl', 'ncl', 'm5s', 
+                  'leu', 'pap', 'cpi', 'others', 'lead')
+one_year <- url %>%
+  read_html() %>%
+  html_node(xpath='/html/body/div[3]/div[3]/div[4]/div/table[4]') %>%
+  html_table(fill = TRUE) %>%
+  setNames(column_names2017) %>%
+  tail(-2)
+
+for(i in c(3:ncol(one_year))) {
+  one_year[,i] <- as.numeric(as.character(one_year[,i]))
+}
+#+END_SRC
+
+**** Tidy representation
+#+BEGIN_SRC R
+data_2017 <- one_year %>% group_by(date) %>%
+  mutate(clean_date = clean_date_function(date, " 2017")) %>%
+  ungroup() %>%
+  select(-date, -firm, -lead) %>%
+  melt(id="clean_date")
 #+END_SRC
 
 [[fig2/Rplot01.png]]
 
-*** Querying several months of data
-
-So this was one month of data (November 2018) – what if we want more?
-
-A programming pattern you will see regularly is the following:
-
-- We create an empty thing/variable: our final dataset, empty for now
-- We have a list of things we need to do some work on
-- We iterate over each item in this list, build a temporary store
-- Then for each iteration we append the temporary store to our main dataset
-
-When we're finished running over each element in our main list, we end up with a complete main dataset!
-
-**** For loop
-
-The tool for the job is the for loop:
-
+*** Results from 2017
 #+BEGIN_SRC R
-vector <- c('one', 'two', 'basile')
-for (variable in vector) {
-  print(variable)
-}
-
-[1] "one"
-[1] "two"
-[1] "basile"
+ggplot(data = data_2017, aes(clean_date, value, color=variable)) + 
+  geom_point(aes(shape="21",alpha=1/100)) + 
+  geom_ma(ma_fun = SMA, n = 10)
 #+END_SRC
 
-**** Appending to an empty list
+[[fig2/Rplot01.png]]
 
-Conceptually, we'll do this:
+*** Merging 2017 and 2018
 
-#+BEGIN_SRC 
-# our main dataset
-records <- data.frame()
-list_of_months <- c("2018-10", "2018-11")
-
-for (month in list_of_months) {
-  # do get request
-  
-  # our temporary date store with all the right columns
-  df <- get_request
-  
-  # send our temporary data store back up
-  # to populate our main dataset
-  records <- bind_rows(records, df)
-}
-#+END_SRC
-
-**** Putting it together
+Here we don't need ~left_join~ things, because our data is tidy: only three identical columns in both datasets
 
 #+BEGIN_SRC R
-library(stringr)
-library(httr)
-library(jsonlite)
-library(dplyr)
-
-records <- data.frame()
-
-list_of_months <- c("2018-09", "2018-10", "2018-11")
-
-for (month in list_of_months) {
-
-  # url without the month
-  url <- "https://data.police.uk/api/crimes-street/all-crime?lat=51.527317&lng=-0.102433&date="
-  
-  # we paste the month at the end of the URL
-  resp <- GET(str_c(url, month))
-  
-  # then as normal
-  jsonRespText<-content(resp,as="text") 
-  jsonRespParsed<-content(resp,as="parsed") 
-  j <- fromJSON(jsonRespText, flatten = TRUE)
-  records <- bind_rows(records, j)
-}
+data <- merge(data_2018, data_2017, all=TRUE)
 #+END_SRC
- 
-*** Crime type analysis by month around university
-**** Simple tally
+
+**** Let's quickly check what we've done
+
 #+BEGIN_SRC R
-records %>% group_by(category) %>%
-  summarise(count = n()) %>% 
-  arrange(desc(count)) %>% head(10) %>%
-  ggplot() +
-  geom_bar(aes(x = reorder(category, -count),
-               y = count), stat = "identity") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+> data_2017 %>% summary()
+   clean_date          
+ Min.   :2017-01-09    
+ 1st Qu.:2017-03-24    
+ Median :2017-06-08    
+ Mean   :2017-06-26    
+ 3rd Qu.:2017-10-08    
+ Max.   :2017-12-28    
+
+data_2018 %>% summary()
+   clean_date       
+ Min.   :2018-01-07 
+ 1st Qu.:2018-01-19 
+ Median :2018-02-01 
+ Mean   :2018-01-29 
+ 3rd Qu.:2018-02-11 
+ Max.   :2018-03-04 
+                    
+> data %>% summary()
+      date           
+ Min.   :2017-01-09  
+ 1st Qu.:2017-04-07  
+ Median :2017-07-19  
+ Mean   :2017-08-03  
+ 3rd Qu.:2017-11-29  
+ Max.   :2018-03-04  
+#+END_SRC
+
+*** Calculate moving average
+
+What we've got so far is a bunch of polls. A poll of polls is some kind of aggregate calculation.
+
+In this instance we will calculate a rolling average over 20 observations:
+
+#+BEGIN_SRC R
+data <- data %>%
+  rename(date = clean_date, party = variable) %>%
+  group_by(party) %>%
+  mutate(mean20_missing = rollapply(value, width = 20,
+                                    fill = NA, partial = TRUE, 
+                                    FUN=function(x) mean(x, na.rm=TRUE),
+                                    align = "right"))
+				    
+> data %>% tail()
+# A tibble: 6 x 4
+# Groups:   party [6]
+  date       party  value mean20_missing
+  <date>     <fct>  <dbl>          <dbl>
+1 2018-03-04 ncl      1.3          2.23 
+2 2018-03-04 m5s     32.7         27.9  
+3 2018-03-04 leu      3.4          5.54 
+4 2018-03-04 pap      1.1          1.41 
+5 2018-03-04 cpi      0.9          0.855
+6 2018-03-04 others   2.4          2.21
+#+END_SRC
+
+*** Final plot
+#+BEGIN_SRC R
+ggplot(data, 
+       aes(date, color=party)) + 
+  geom_point(aes(y=value, shape="21", alpha=1/100)) + 
+  geom_line(aes(y=mean20_missing, color=party)) +
+  theme_minimal()
 #+END_SRC
 
 [[fig2/Rplot02.png]]
 
-**** Simple locations
+*** More things
+**** Colours for parties
 #+BEGIN_SRC R
-records %>% group_by(location.street.name) %>%
-  summarise(count = n()) %>% 
-  arrange(desc(count)) %>% head(10) %>%
-  ggplot() +
-  geom_bar(aes(x = reorder(location.street.name, -count),
-               y = count), stat = "identity") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# visualise
+unique(data$party)
+colors <- c('firebrick', 'grey', 'steelblue', 'cadetblue1', 'dodgerblue4',
+            'brown4', 'gold', 'grey', 'grey', 'grey', 'grey', 'grey', 
+            'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey')
+names(colors) <- unique(data$party)
+
+> colors %>% head()
+   pd          i        cp           fi           ln             fdl 
+  "firebrick"  "grey"   "steelblue"  "cadetblue1" "dodgerblue4"  "brown4" 
+
+ggplot(data, 
+       aes(date, color=party)) + 
+  geom_point(aes(y=value, shape="21", alpha=1/100)) + 
+  geom_line(aes(y=mean20_missing, color=party)) +
+  scale_color_manual(values = colors) +
+  theme_minimal()
 #+END_SRC
 
 [[fig2/Rplot03.png]]
 
-**** Crime type by month
+**** Filtering parties
+
 #+BEGIN_SRC R
-records %>% group_by(category, month) %>%
-  mutate(count = n()) %>% 
-  select(month, count, category) %>%
-  ggplot() +
-  geom_bar(aes(x = reorder(category, -count),
-               y = count), stat = "identity") + 
-  facet_wrap(month~.) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+data %>% filter(party %in% c('pd', 'fi', 'ln', 'fdl', 'm5s', 'leu')) %>%
+ggplot(aes(date, color=party)) + 
+  geom_point(aes(y=value, shape="21", alpha=1/100)) + 
+  geom_line(aes(y=mean20_missing, color=party)) +
+  scale_color_manual(values = colors)
+  theme_minimal()
 #+END_SRC
 
 [[fig2/Rplot04.png]]
 
-**** Crime type by month, cont
+**** Annotations
+
 #+BEGIN_SRC R
-records %>% group_by(category, month) %>%
-  mutate(count = n()) %>%  distinct(month, count, category) %>%
-  select(month, count, category) %>% 
-  ggplot(aes(x = month,
-             y = count, group = 1)) +
-  geom_path(, colour="black") + 
-  facet_wrap(category~.) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+annot <- read.table(text=
+                    "year|wait|just|text|pcolor
+                    2018-01-01|0.22|0|Democratic party|firebrick
+                    2018-01-01|0.3|0|Five Star|gold
+                    2018-01-01|0.17|0|Forza|steelblue
+                    2018-01-01|0.12|0|League|cadetblue1
+                    2018-01-01|0.08|0|Free and Equal|brown4
+                    2018-01-01|0.03|0|Brothers of Italy|dodgerblue4",
+                    sep="|", header=TRUE, stringsAsFactors=FALSE)
+#annot$text <- gsub("", "\n", annot$text)
+annot$year <- as.Date(annot$year)
+
+data %>% filter(party %in% c('pd', 'fi', 'ln', 'fdl', 'm5s', 'leu')) %>%
+ggplot(aes(date, color=party)) + 
+  geom_point(aes(y=value/100, shape="21", alpha=0.001)) +
+  geom_line(aes(y=mean20_missing/100)) +
+  theme_minimal() + scale_color_manual(values = colors) +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("Italian party polling") +
+  xlab("Date") + ylab("Poll") + geom_label(data=annot, aes(x=year, y=wait, label=text),
+                                           lineheight=0.95,
+                                           size=4, label.size=0, color=annot$pcolor)+ 
+  theme(legend.position = "none")
+
 #+END_SRC
 
 [[fig2/Rplot05.png]]
-
-**** Crime type change by month
-#+BEGIN_SRC R
-records %>% group_by(category, month) %>%
-  summarise(count = n()) %>%
-  mutate(change = (count - lag(count))/lag(count) * 100) %>%
-  distinct(month, category, change) %>%
-  ggplot(aes(x = month, y = category, fill = change)) +
-  geom_tile(colour="white",size=0.25) +
-  scale_fill_viridis_c(option = "B", name = "Number of crimes") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-#+END_SRC
-
-[[fig2/Rplot10.png]]
-
-
-*** Part two: Making some maps
-*** Bulk download of data
-   
-Aside from the API, we can [[https://data.police.uk/data/][download bulk data]]
-
-#+BEGIN_SRC R
-library(readr)
-df <- read_csv("data/2018-11-metropolitan-street.csv")
-#+END_SRC
-
-*** Simple map
-   
-#+BEGIN_SRC R
-library(ggplot2)
-df %>% 
-  ggplot() +
-  geom_point(aes(x = Longitude, y = Latitude, alpha = 1/100),
-             size = 1/100, color = I("tomato")) +
-  coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75))
-#+END_SRC
-
-[[fig2/Rplot06.png]]
-
-**** Adding London boroughs
-     
-#+BEGIN_SRC R
-library("londonShapefiles")
-
-thames <- load_thames()
-thames.proj <- spTransform(thames, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"))
-thames.df <- fortify(thames.proj)
-
-boroughs <- load_la()
-boroughs.proj <- spTransform(boroughs, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"))
-boroughs.df <- fortify(boroughs.proj)
-
-ggplot() +
-  geom_polygon(boroughs.df, mapping=aes(long, lat, group = group,
-                                        color = I("gray90"))) +
-  geom_polygon(thames.df, mapping=aes(long, lat, group = group,
-                                      fill = I("skyblue"),
-                                      color = I("skyblue2"))) +
-  coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75))
-#+END_SRC
-
-[[fig2/Rplot07.png]]
-
-**** Both together
-     
-#+BEGIN_SRC R
-idf %>% 
-  ggplot() +
-  geom_polygon(boroughs.df, mapping=aes(long, lat, group = group,
-                                        color = I("gray99"),
-                                        fill = I("gray90"))) +
-  geom_polygon(thames.df, mapping=aes(long, lat, group = group,
-                                      fill = I("skyblue"),
-                                      color = I("skyblue2"))) +
-  geom_point(aes(x = Longitude, y = Latitude),
-             size = 1/100, color = I("tomato"), alpha = 1/100) +
-  coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75)) +
-  theme_minimal() +
-  theme(legend.position = "none")
-#+END_SRC
-
-[[fig2/Rplot08.png]]
-
-*** Obscure spatial analysis
-    
-As we've got many, may points (91,833 crimes), we can use ~geom_bin2d~ to provide an alternative to overplotting
-
-#+BEGIN_QUOTE
-Divides the plane into rectangles, counts the number of cases in each rectangle, and then (by default) maps the number of cases to the rectangle's fill. This is a useful alternative to geom_point() in the presence of overplotting.
-#+END_QUOTE
-
-#+BEGIN_SRC R
-df %>%
-  ggplot(mapping=aes(x = as.numeric(Longitude),
-                     y = as.numeric(Latitude))) +
-  geom_polygon(boroughs.df, mapping=aes(long, lat, group = group,
-                                        color = I("gray60"), alpha = 0.1)) +
-  geom_bin2d(bins = 1000, aes(alpha=..ncount..)) +
-  scale_alpha(range = c(0.3, 1)) +
-  coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75)) +
-  theme_minimal()
-#+END_SRC
-
-[[fig2/Rplot09.png]]
-
-*** TODO Part three: Advanced scraping of Tube stations
-[[https://r-tastic.co.uk/post/exploring-london-crime-with-r-heat-maps/][Original tutorial]]
-*** TODO Scraping Tube stations
-*** TODO Scraping Crime by location
-**** TODO Merging everything
-**** TODO Quick map to check
-*** TODO Analysis heatmap
