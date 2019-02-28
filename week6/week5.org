@@ -143,7 +143,7 @@ df %>% group_by(category) %>%
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[fig/Rplot.png]]
+[[fig2/Rplot.png]]
 
 #+BEGIN_SRC R
 df %>% group_by(location.street.name) %>%
@@ -156,7 +156,7 @@ df %>% group_by(location.street.name) %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[fig/Rplot01.png]]
+[[fig2/Rplot01.png]]
 
 *** Querying several months of data
 
@@ -248,7 +248,7 @@ records %>% group_by(category) %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[fig/Rplot02.png]]
+[[fig2/Rplot02.png]]
 
 **** Simple locations
 #+BEGIN_SRC R
@@ -262,7 +262,7 @@ records %>% group_by(location.street.name) %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[fig/Rplot03.png]]
+[[fig2/Rplot03.png]]
 
 **** Crime type by month
 #+BEGIN_SRC R
@@ -277,7 +277,7 @@ records %>% group_by(category, month) %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[fig/Rplot04.png]]
+[[fig2/Rplot04.png]]
 
 **** Crime type by month, cont
 #+BEGIN_SRC R
@@ -292,7 +292,7 @@ records %>% group_by(category, month) %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[fig/Rplot05.png]]
+[[fig2/Rplot05.png]]
 
 **** Crime type change by month
 #+BEGIN_SRC R
@@ -307,7 +307,7 @@ records %>% group_by(category, month) %>%
 
 #+END_SRC
 
-[[fig/Rplot10.png]]
+[[fig2/Rplot10.png]]
 
 
 *** Part two: Making some maps
@@ -331,7 +331,7 @@ df %>%
   coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75))
 #+END_SRC
 
-[[fig/Rplot06.png]]
+[[fig2/Rplot06.png]]
 
 **** Adding London boroughs
      
@@ -355,7 +355,7 @@ ggplot() +
   coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75))
 #+END_SRC
 
-[[fig/Rplot07.png]]
+[[fig2/Rplot07.png]]
 
 **** Both together
      
@@ -375,7 +375,7 @@ idf %>%
   theme(legend.position = "none")
 #+END_SRC
 
-[[fig/Rplot08.png]]
+[[fig2/Rplot08.png]]
 
 *** Obscure spatial analysis
     
@@ -397,12 +397,7 @@ df %>%
   theme_minimal()
 #+END_SRC
 
-[[fig/Rplot09.png]]
+[[fig2/Rplot09.png]]
 
 *** TODO Part three: Advanced scraping of Tube stations
 [[https://r-tastic.co.uk/post/exploring-london-crime-with-r-heat-maps/][Original tutorial]]
-*** TODO Scraping Tube stations
-*** TODO Scraping Crime by location
-**** TODO Merging everything
-**** TODO Quick map to check
-*** TODO Analysis heatmap
