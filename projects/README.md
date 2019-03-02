@@ -5,6 +5,7 @@
 * [Scraping Twitter data with twittR](http://utstat.toronto.edu/~nathan/teaching/sta4002/Class1/scrapingtwitterinR-NT.html): basic scaping and word analysis
 * [Intro to rweet, word and semantic analysis](https://mkearney.github.io/blog/2017/06/01/intro-to-rtweet/): this uses the very good [rtweet package](https://cran.r-project.org/web/packages/rtweet/vignettes/intro.html)
 
+
 ## Tutorials on website building
 
 Go through these four pages first, before looking at the contents of [`website-template`](website-template/)
@@ -13,6 +14,8 @@ Go through these four pages first, before looking at the contents of [`website-t
 * [https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics](Basics of HTML)
 * [https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics](Basics of CSS)
 * [https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics](Basics of Javascript)
+
+<img src="fig/template.png" width="400"/>
 
 ### Wrangling data about the EU referendum
 
