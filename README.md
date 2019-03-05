@@ -78,9 +78,7 @@ We keep looking at representing geographical data through studying 20 year of st
 We will dip our toes into scraping with the assistance of packages and module wrapping around these services' APIs. We will illustrate how clear questions and hypotheses can be illustrated quickly with familiar tools.
 
 
-## Week 7 - Italian election poll of polls
-
-We will work through more involved scraping and data cleaning to produce of a poll of polls including original rolling average calculations ahead of an election.
+## Week 7 - Self-directed learning
 
 
 ## Weeks 8, 9, 10 - Project work
