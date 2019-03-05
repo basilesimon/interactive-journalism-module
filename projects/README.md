@@ -1,4 +1,4 @@
-# Interactive Journalism MA - Advanced Data and Coding module
+# Self-directed learning
 
 ## Recommended tutorials
 
@@ -10,12 +10,17 @@
 
 Go through these four pages first, before looking at the contents of [`website-template`](website-template/)
 
-* [https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web](Getting started with the web)
-* [https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics](Basics of HTML)
-* [https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics](Basics of CSS)
-* [https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics](Basics of Javascript)
+* [Getting started with the web](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web)
+* [Basics of HTML](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics)
+* [Basics of CSS](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics)
+* [Basics of Javascript](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)
+
 
 <img src="fig/template.png" width="400"/>
+
+---
+
+# Other resources
 
 ### Wrangling data about the EU referendum
 
