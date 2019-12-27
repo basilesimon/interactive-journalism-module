@@ -2,7 +2,7 @@
 #+Author: Basile Simon
 #+Email: basile.simon@city.ac.uk
 
-* week 4: map of LGBTI index
+* week 3: map of LGBTI index
 *** Getting data
 #+BEGIN_SRC R
 library(readr)
