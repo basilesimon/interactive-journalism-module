@@ -1,0 +1,194 @@
+#+Title: JOM299
+#+Author: Basile Simon
+#+Email: basile.simon@city.ac.uk
+
+* week 4: map of LGBTI index
+*** Getting data
+#+BEGIN_SRC R
+library(readr)
+library(tidyverse)
+library(dplyr)
+rainbow_index <- read_csv("data/exportmap.csv") %>%
+  select(Country, Score)
+  
+  Country    Score
+  <chr>      <dbl>
+1 Albania       33
+2 Andorra       35
+3 Armenia        7
+4 Austria       56
+#+END_SRC
+
+*** What does our data look like?
+#+BEGIN_SRC R
+rainbow_index %>% summary()
+
+   Country              Score      
+ Length:53          Min.   : 5.00  
+ Class :character   1st Qu.:21.00  
+ Mode  :character   Median :34.00  
+                    Mean   :39.29  
+                    3rd Qu.:56.75  
+                    Max.   :91.00  
+                    NA's   :5     
+
+library(ggplot2)
+rainbow_index %>% ggplot(aes(Score)) +
+  geom_histogram(binwidth = 3)
+#+END_SRC
+
+[[figures/lgbtmap.png]]
+
+*** A simple map of the world
+**** getMap
+
+Very simple solution to download and map country borders
+
+#+BEGIN_SRC R
+library(rworldmap)
+plot(getMap())
+#+END_SRC
+
+[[figures/lgbtmap02.png]]
+
+**** getMap and ggplot
+
+~getMap~ give us loads of informations about countries: their names, abbreviations, the continent they're on, their population and GDP estimates, etc.
+
+We use ~ggplot~ here to be able to compose our layers: ~getMap~ is our base map
+
+#+BEGIN_SRC R
+library(sf)
+worldMap <- getMap(resolution = "low")
+worldMap <- st_as_sf(worldMap)
+
+ggplot(worldMap) + geom_sf()
+#+END_SRC
+
+[[figures/lgbtmap01.png]]
+
+*** Merging our index score and the map data
+    
+Our task is to find a way to merge our two datasets. We remember this helpful cheatsheet:
+
+[[https://camo.githubusercontent.com/c8c1f1bda76407340ae37fa210c38cac480016bb/68747470733a2f2f6d696b6f6f6e747a2e6769746875622e696f2f646174612d63617270656e7472792d7765656b2f696d672f64706c79722d6a6f696e732e706e67]]
+
+**** Finding the common property
+
+And it seems that the ~SOVEREIGNT~ column of our map contains full country names:
+
+#+BEGIN_SRC R
+library(sf)
+worldMap <- getMap(resolution = "high")
+worldMap$SOVEREIGNT %>% head()
+
+[1] Netherlands    Afghanistan    Angola         United Kingdom Albania        Finland       
+204 Levels: Afghanistan Albania Algeria Andorra Angola Antarctica ... Zimbabwe
+#+END_SRC
+
+**** Final merge
+
+We can merge with our ~rainbow_index$Country~.
+
+#+BEGIN_SRC R
+# get the map again!!!
+worldMap <- getMap(resolution = "low")
+worldMap@data <- left_join(worldMap@data, rainbow_index, 
+                    by = c("SOVEREIGNT" = "Country"))
+worldMap <- st_as_sf(worldMap)
+#+END_SRC
+
+*** Basics of mapping
+**** Simple map
+
+Technically, this is a map of our data...
+
+#+BEGIN_SRC R
+worldMap %>%
+  ggplot() +
+  geom_sf(aes(fill = Score))
+#+END_SRC
+
+[[figures/lgbtmap03.png]]
+
+**** Let's zoom in
+
+We zoom in by specifying latitude and longitude minimum and maximums to ~coord_sf~
+
+[[http://www.isobudgets.com/wp-content/uploads/2014/03/latitude-longitude.jpg]]
+
+**** Let's zoom in
+
+#+BEGIN_SRC R
+worldMap %>%
+  ggplot() +
+  geom_sf(aes(fill = Score)) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE)
+#+END_SRC
+
+[[figures/lgbtmap04.png]]
+
+**** Filter missing data
+
+#+BEGIN_SRC R
+worldMap %>% filter(!is.na(Score)) %>%
+  ggplot() + 
+  geom_sf(aes(fill = Score)) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE)
+#+END_SRC
+
+[[figures/lgbtmap05.png]]
+
+*** Better colours
+[[https://blog.datawrapper.de/colorguide/][Excellent Datawrapper guide on colours]]
+
+One important tool among other is [[http://colorbrewer2.org/][ColorBrewer]].
+
+From there we can grab colours we like and feed them like so:
+
+#+BEGIN_SRC R
+scale_fill_gradient(low, high)
+#+END_SRC
+
+**** In action
+
+#+BEGIN_SRC R
+library(RColorBrewer)
+worldMap %>% filter(!is.na(Score)) %>%
+  ggplot() + 
+  geom_sf(aes(fill = Score,
+    colour = I("gray80")), size = 1/100) +
+  coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE) +
+  scale_fill_gradient(low = I("#d7191c"), high = I("#1a9641")) + 
+  theme_minimal()
+#+END_SRC
+
+[[figures/lgbtmap06.png]]
+
+*** Er, actual better colours
+#+BEGIN_SRC R
+theme_opts<-list(theme(panel.grid.minor = element_blank(),
+                         panel.grid.major = element_line(colour = "transparent"),
+                         panel.background = element_blank(),
+                         plot.background = element_blank(),
+                         axis.line = element_blank(),
+                         axis.text.x = element_blank(),
+                         axis.text.y = element_blank(),
+                         axis.ticks = element_blank(),
+                         axis.title.x = element_blank(),
+                         axis.title.y = element_blank(),
+                         legend.position = "right"))
+#+END_SRC
+
+*** Bis
+#+BEGIN_SRC R
+worldMap %>% filter(!is.na(Score)) %>%
+    ggplot() + 
+    geom_sf(aes(fill = Score, colour = I("gray80")), size = 1/100) +
+    coord_sf(xlim = c(-10, 50), ylim = c(30, 75), expand = FALSE) +
+    scale_fill_distiller(type = "div", palette = "RdYlGn", direction = 1) +
+    theme_minimal() + theme_opts +
+    ggtitle("LGBT rights in eastern and western Europe")
+#+END_SRC
+
+[[figures/lgbtmap07.png]]
