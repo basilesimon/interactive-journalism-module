@@ -1,50 +1,19 @@
 #+Title: JOM299
 #+Author: Basile Simon
-#+Email: @basilesimon
+#+Email: basile.simon@city.ac.uk
 
-#+OPTIONS: toc:nil num:nil
-#+OPTIONS: reveal_width:1200
-#+OPTIONS: reveal_height:800
-#+REVEAL_MARGIN: 0.1
-#+REVEAL_MIN_SCALE: 0.5
-#+REVEAL_MAX_SCALE: 2.5
-#+OPTIONS: reveal_center:nil 
-#+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t 
-#+OPTIONS: org-html-indent:nil
-#+REVEAL_TRANS: linear
-#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Title">
-#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
-#+REVEAL_EXTRA_CSS: ../presentation/mozilla-devrel-light.css
-#+REVEAL_PLUGINS: (highlight)
-#+REVEAL_HLEVEL: 2
-
-* Week 1 - The basics
-e'll talk at length about the module itself and how it will be evaluated. We'll look at some online resources to look at every week to get a feel for what's going on in the field of interactive journalism.
-
-e will also go through a general introduction to programming concepts - which are applicable regardless of the programming language you choose.
-
-* Week 2 - A basic data visualisation of air pollution
-e will work our way through a dataset of air pollution in London and produce a simple visualisation.
-
-his will give us the chance to clean and tidy up a dataset (a prerequisite to much of the work we do) and enrich it with average calculations.
-
-* Week 3 - Exploring the EU referendum data
-e will explore the results of the EU referendum as we would on an election results day, producing incresingly interesting visualisations supporting news lines as we go along.
-
-e will also learn to combine datasets together to create richer, original data based on our hypotheses.
-
-* Week 4 - A simple map of LGBT rights in Europe
-e will represent a dataset as a map of Europe and talk through geographical projections and colour theory to illustrate the state of LGBT rights on the continent.
-
-* Week 5 - Complex maps of Pacific storms
-e keep looking at representing geographical data through studying 20 year of storms in the Asia-Pacific basin. Once again, we'll model several visualisations based on hypotheses and news lines.
-
-* Week 6 - Scraping Reddit and Twitter
-e will dip our toes into scraping with the assistance of packages and module wrapping around these services' APIs. We will illustrate how clear questions and hypotheses can be illustrated quickly with familiar tools.
-
-* Week 7 - Italian election poll of polls
-e will work through more involved scraping and data cleaning to produce of a poll of polls including original rolling average calculations ahead of an election.
-
-* Weeks 8, 9, 10 - Project work
+* week 1 - The basics
+We'll talk at length about the module itself and how it will be evaluated. We'll look at some online resources to look at every week to get a feel for what's going on in the field of interactive journalism. We will also go through a general introduction to programming concepts - which are applicable regardless of the programming language you choose.
+* week 2: air pollution on Euston Road
+We will work our way through a dataset of air pollution in London and produce a simple visualisation. This will give us the chance to clean and tidy up a dataset (a prerequisite to much of the work we do) and enrich it with average calculations.
+* week 3: LGBTI index in Europe
+We will represent a dataset as a map of Europe and talk through geographical projections and colour theory to illustrate the state of LGBT rights on the continent.
+* week 4: wrangling GE2019 data
+We will push our mapping skills a little further and model some of the results from the December general election, as we would on an election results day, producing incresingly interesting visualisations supporting news lines as we go along.
+* week 5: scraping crime data in London
+We will understand how to automate the collection of police and crime data and design from the ground up a large-ish dataset.
+* week 6: exploring crime data in London
+From the aforementioned dataset of crime, we will move on to some exploratory data analysis, looking out for patterns and broad trends in our data.
+* week 7: ???
+* weeks 8, 9, 10: final project
 We will go round the room and take questions about final project. Come prepared with actual problems, be happy to work collaboratively and to make progress in class while we tackle challenges collectively, on the big screen.
-
