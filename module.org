@@ -2,7 +2,7 @@
 #+Author: Basile Simon
 #+Email: basile.simon@city.ac.uk
 
-* week 1 - The basics
+* week 1: the basics
 We'll talk at length about the module itself and how it will be evaluated. We'll look at some online resources to look at every week to get a feel for what's going on in the field of interactive journalism. We will also go through a general introduction to programming concepts - which are applicable regardless of the programming language you choose.
 * week 2: air pollution on Euston Road
 We will work our way through a dataset of air pollution in London and produce a simple visualisation. This will give us the chance to clean and tidy up a dataset (a prerequisite to much of the work we do) and enrich it with average calculations.
