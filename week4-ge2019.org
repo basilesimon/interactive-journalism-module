@@ -1,0 +1,176 @@
+#+Title: JOM299
+#+Author: Basile Simon
+#+Email: basile.simon@city.ac.uk
+
+* wrangling general election 2019 data
+** Where do we find our data
+
+Good way to find data very cheekily: open the DevTools on colleagues' pieces!
+
+[[https://graphics.thomsonreuters.com/british-election-2019/full-results/][Reuters GE2019 results]]
+
+[[figures/devtools.png]]
+
+In this instance, we're able to pick up all the map shapefiles and the data loaded by the page.
+
+*** Importing into R
+~jsonlite~ is a library that helps us work with JSON data. ~curl~ is a very popular utility to fetch data from the internet.
+
+#+BEGIN_SRC R
+install.packages("jsonlite")
+install.packages('curl')
+
+library(jsonlite)
+df <- fromJSON("https://graphics.thomsonreuters.com/ge2019/results/all_results.json")
+#+END_SRC
+
+#+BEGIN_SRC R
+> head(df)
+   constituencyName constituencyID winningParty sittingParty gainOrHold
+1          Aberavon      W07000049          Lab          Lab       hold
+2         Aberconwy      W07000058            C          Ind       gain
+3    Aberdeen North      S14000001          SNP          SNP       hold
+4    Aberdeen South      S14000002          SNP            C       gain
+#+END_SRC
+** Simple questions about the results
+
+Now that we've stored our data in ~df~, can we quickly get out:
+
+- the average electorate across all constituencies?
+- the median turnout (in percent)?
+- the average majority (in percent)?
+  
+Hint: it's all in ~summary~.
+** Distributions at a glance
+*** A quick word about distributions
+- Left/right skew v "normal" distribution
+- Too small a sample size
+- Multiple modes
+- Outliers and what they can mean about your data
+
+Read more: [[https://support.minitab.com/en-us/minitab-express/1/help-and-how-to/graphs/histogram/interpret-the-results/key-results/][Minitab.com]]
+
+*** Turnout and majority   
+We can take a quick look at the turnout and majority in each constituency by looking at the distribution of our data. This adds a little bit of depth to our analysis and helps us understand how different places voted.
+
+#+BEGIN_SRC R
+df %>% 
+  ggplot() +
+  geom_density(aes(percentageTurnout, 
+                   fill = I("red"))) +
+  geom_density(aes(percentageMajority, 
+                   fill = I("orange"))) +
+  geom_text(aes(x = 20,
+                y = 0.01,
+                label = "Turnout (%)")) +
+  geom_text(aes(x = 68,
+                y = 0.015,
+                label = "Majority (%)")) +
+  theme_minimal()
+#+END_SRC
+
+
+[[figures/simpledistributions.png]]
+
+*** Changes in turnout and majority
+#+BEGIN_SRC R
+df %>% 
+  ggplot() +
+  geom_density(aes(percentageChangeTurnout, fill = I("red"))) +
+  geom_density(aes(percentageChangeMajority, fill = I("orange"))) +
+  geom_text(aes(x = 13,
+                y = 0.15,
+                label = "← Change turnout (%)")) +
+  geom_text(aes(x = 0,
+                y = 0.01,
+                label = "Majority change (%)")) +
+  theme_minimal()
+#+END_SRC
+
+[[figures/changeturnoutandmajority]]
+** Winners and losers
+How many seats were lost, and how many seats held (i.e. were kept by the incumbent party)?
+
+#+BEGIN_SRC R
+df %>%
+  group_by(gainOrHold) %>%
+  summarise(total = n())
+#+END_SRC
+
+or this shorthand: [[https://dplyr.tidyverse.org/reference/tally.html][tally()]] :
+
+#+BEGIN_SRC R
+df %>%
+  group_by(gainOrHold) %>%
+  tally()
+#+END_SRC
+
+Now can we break up these numbers between Labour and Conservative? Yes, if we add the party name to the _group_ we set up.
+
+Note the ~%in%~, which essentally applies a filter based on several test conditions.
+
+#+BEGIN_SRC R
+df %>% 
+  filter(winningParty %in% c("Lab", "C")) %>%
+  group_by(winningParty, gainOrHold) %>%
+  tally()
+#+END_SRC
+
+** Wins by party
+How could we write a column chart with one column per political party that would show seats won on top of seats held?
+
+Hint:
+- Calculate the number of won seats by party (we've done this above)
+- Use this number with ~geom_bar()~
+
+*** Another way to look at wins
+Could we compare majority and turnout with a scatterplot across parties?
+
+Hint:
+- We can compare parties against each other with ~facet_wrap()~
+- We probably only want to compare parties that won a certain number of seats... which means calculating the parties' number of seats and ~filter()~ out small parties
+** Let's bring in the Census
+   
+The latest census in the UK was carried out in 2011 and is now available [[https://www.ons.gov.uk/census/2011census][from the ONS]]. It is carried out every ten years and the 2021 should start soon (?).
+
+We could go and download the whole lot but then we'd run into the issue of matching it against Westminster constituencies.
+
+Fortunately, we can use [[https://github.com/evanodell/parlitools][parlitools]], which contains census data matched to our constituencies.
+
+#+BEGIN_SRC R
+install.packages("sf")
+install.packages("parlitools")
+library(parlitools)
+
+census <- parlitools::census_11
+View(census)
+#+END_SRC
+
+*** Combine with our election data
+
+#+BEGIN_SRC R
+join <- left_join(df, census, by = c("constituencyID" = "ons_const_id"))
+#+END_SRC
+
+Let's also try a few things with different joins, e.g.:
+- ~full_join~
+- ~anti_join~
+  
+*** Let's be creative!
+
+[[https://docs.evanodell.com/parlitools/articles/census-11.html][Full list of variables available in our census data]]
+
+For example, how did Conservative and Labour fare in constituencies containing fewer deprived households?
+
+#+BEGIN_SRC R
+join %>% 
+  filter(winningParty %in% c("Lab", "C")) %>%
+  ggplot(aes(x = percentageMajority,
+             y = deprived_none)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  facet_wrap(~winningParty)
+#+END_SRC
+
+
+
