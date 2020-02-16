@@ -144,7 +144,7 @@ df %>% group_by(category) %>%
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[figures/Rplot.png]]
+[[figures/crime.png]]
 
 #+BEGIN_SRC R
 df %>% group_by(location.street.name) %>%
@@ -157,7 +157,7 @@ df %>% group_by(location.street.name) %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[figures/Rplot01.png]]
+[[figures/crime01.png]]
 
 ** Querying several months of data
 
@@ -249,7 +249,7 @@ records %>% group_by(category) %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[figures/Rplot02.png]]
+[[figures/crime02.png]]
 
 **** Simple locations
 #+BEGIN_SRC R
@@ -263,7 +263,7 @@ records %>% group_by(location.street.name) %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[figures/Rplot03.png]]
+[[figures/crime03.png]]
 
 **** Crime type by month
 #+BEGIN_SRC R
@@ -278,7 +278,7 @@ records %>% group_by(category, month) %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[figures/Rplot04.png]]
+[[figures/crime04.png]]
 
 **** Crime type by month, cont
 #+BEGIN_SRC R
@@ -293,7 +293,7 @@ records %>% group_by(category, month) %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #+END_SRC
 
-[[figures/Rplot05.png]]
+[[figures/crime05.png]]
 
 **** Crime type change by month
 #+BEGIN_SRC R
@@ -308,7 +308,7 @@ records %>% group_by(category, month) %>%
 
 #+END_SRC
 
-[[figures/Rplot10.png]]
+[[figures/crime10.png]]
 
 ** Part two: Making some maps
 ** Bulk download of data
@@ -331,7 +331,7 @@ df %>%
   coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75))
 #+END_SRC
 
-[[figures/Rplot06.png]]
+[[figures/crime06.png]]
 
 *** Adding London boroughs
      
@@ -355,7 +355,7 @@ ggplot() +
   coord_map(xlim = c(-0.6,0.4), ylim = c(51.25, 51.75))
 #+END_SRC
 
-[[figures/Rplot07.png]]
+[[figures/crime07.png]]
 
 *** Both together
      
@@ -375,7 +375,7 @@ idf %>%
   theme(legend.position = "none")
 #+END_SRC
 
-[[figures/Rplot08.png]]
+[[figures/crime08.png]]
 
 ** Obscure spatial analysis
     
@@ -397,7 +397,7 @@ df %>%
   theme_minimal()
 #+END_SRC
 
-[[figures/Rplot09.png]]
+[[figures/crime09.png]]
 
 ** TODO Part three: Advanced scraping of Tube stations
 [[https://r-tastic.co.uk/post/exploring-london-crime-with-r-heat-maps/][Original tutorial]]
