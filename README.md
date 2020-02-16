@@ -54,4 +54,4 @@ We will go round the room and take questions about final project. Come prepared 
 
 * [2016-2017](https://github.com/basilesimon/interactive-journalism-module/releases/tag/v1.0)
 * [2017-2018](https://github.com/basilesimon/interactive-journalism-module/releases/tag/v2.0)
-* [2018-2019](https://github.com/basilesimon/interactive-journalism-module/releases/tag/v3.0)
+* [2018-2019](https://github.com/basilesimon/interactive-journalism-module/releases/tag/3.0)
