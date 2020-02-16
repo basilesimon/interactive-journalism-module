@@ -79,7 +79,7 @@ url <- "https://data.police.uk/api/crimes-street/all-crime?lat=51.527317&lng=-0.
 
 *** Test request in R
 
-This API returns data in another format: JSON  this is very common on the web. JSON looks like this:
+This API returns data in another format: JSON  this is very common on the web. JSON looks like this:
 
 #+BEGIN_SRC js
 {"category":"anti-social-behaviour",
@@ -161,7 +161,7 @@ df %>% group_by(location.street.name) %>%
 
 ** Querying several months of data
 
-So this was one month of data (November 2018)  what if we want more?
+So this was one month of data (November 2018)  what if we want more?
 
 A programming pattern you will see regularly is the following:
 
@@ -401,8 +401,3 @@ df %>%
 
 ** TODO Part three: Advanced scraping of Tube stations
 [[https://r-tastic.co.uk/post/exploring-london-crime-with-r-heat-maps/][Original tutorial]]
-** TODO Scraping Tube stations
-** TODO Scraping Crime by location
-*** TODO Merging everything
-*** TODO Quick map to check
-*** TODO Analysis heatmap
